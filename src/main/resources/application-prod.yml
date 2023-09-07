@@ -1,0 +1,31 @@
+server:
+  port: 5000
+
+logging.level:
+  root: info
+  org.hibernate:
+    SQL: info
+    type.descriptor.sql.BasicBinder: info
+
+spring:
+  datasource:
+    url: jdbc:mysql://${rds.hostname}:${rds.port}/${rds.db.name}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${rds.username}
+    password: ${rds.password}
+
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+
+  jpa:
+    open-in-view: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    database: h2
+    properties:
+      hibernate:
+        format_sql: true

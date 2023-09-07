@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    '[com.application.javajober-server]': DEBUG
+    '[org.hibernate.type]': TRACE
+
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/javajober;MODE=MySQL;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=true
+    driver-class-name: org.h2.Driver
+    username: team3
+    password:
+
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: false
+
+  jpa:
+    open-in-view: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: update
+    database: h2
+    properties:
+      hibernate:
+        format_sql: true

@@ -1,4 +1,4 @@
-package com.javajober.javajoberserver;
+package com.javajober;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

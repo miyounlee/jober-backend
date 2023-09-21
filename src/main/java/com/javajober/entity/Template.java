@@ -1,0 +1,48 @@
+package com.javajober.entity;
+
+import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Getter
+@Table(name = "template")
+@Entity
+public class Template {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "template_title", nullable = false)
+    private String templateTitle;
+
+    @Column(name = "template_description", nullable = false)
+    private String templateDescription;
+
+     @OneToMany(fetch = FetchType.LAZY)
+     @JoinColumn(name = "space_wall_category_id")
+     private List<SpaceWallCategory> spaceWallCategory;
+
+    @CreatedDate
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    protected Template() {}
+
+    public Template(final String templateTitle, final String templateDescription, final List<SpaceWallCategory> spaceWallCategory) {
+        this.templateTitle = templateTitle;
+        this.templateDescription = templateDescription;
+        this.spaceWallCategory = spaceWallCategory;
+    }
+}

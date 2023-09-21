@@ -5,13 +5,15 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder
+
 @Getter
 @Table(name="wall_info_block")
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class WallInfoBlock {
 
@@ -44,6 +46,7 @@ public class WallInfoBlock {
 
     protected WallInfoBlock() {}
 
+    @Builder
     public WallInfoBlock(final String wallInfoBackgroundImageUrl, final String wallInfoProfileImageUrl, final String wallInfoTitle, final String wallInfoDescription){
         this.wallInfoBackgroundImageUrl = wallInfoBackgroundImageUrl;
         this.wallInfoProfileImageUrl = wallInfoProfileImageUrl;

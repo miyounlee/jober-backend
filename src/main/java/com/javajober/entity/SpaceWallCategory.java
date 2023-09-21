@@ -1,11 +1,13 @@
 package com.javajober.entity;
 
 import lombok.Getter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
 @Getter
 @Table(name = "space_wall_category")
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class SpaceWallCategory {
 

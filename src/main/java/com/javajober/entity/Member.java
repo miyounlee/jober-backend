@@ -1,14 +1,17 @@
 package com.javajober.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Table(name = "member")
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class Member {
 
@@ -18,6 +21,12 @@ public class Member {
 
     @Column(name = "member_name", nullable = false)
     private String memberName;
+
+    @Column(name = "member_email", nullable = false)
+    private String memberEmail;
+
+    @Column(name = "password", nullable = false)
+    private String password;
 
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
@@ -41,14 +50,19 @@ public class Member {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
+
     protected Member() {
 
     }
 
-    public Member(final MemberHashtagType memberHashtagType, final AccountType accountType, final String memberName, final String phoneNumber) {
+    @Builder
+    public Member(final String memberName, final String memberEmail, final String password, final String phoneNumber,
+                  final MemberHashtagType memberHashtagType, final AccountType accountType) {
+        this.memberName = memberName;
+        this.memberEmail = memberEmail;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
         this.memberHashtagType = memberHashtagType;
         this.accountType = accountType;
-        this.memberName = memberName;
-        this.phoneNumber = phoneNumber;
     }
 }

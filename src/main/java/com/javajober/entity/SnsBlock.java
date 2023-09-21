@@ -4,13 +4,15 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder
+
 @Getter
 @Table(name = "sns_block")
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class SnsBlock {
 
@@ -38,6 +40,7 @@ public class SnsBlock {
 
     protected SnsBlock() {}
 
+    @Builder
     public SnsBlock(final SnsType snsType, final String snsURL) {
         this.snsType = snsType;
         this.snsURL = snsURL;

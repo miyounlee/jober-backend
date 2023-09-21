@@ -1,17 +1,18 @@
 package com.javajober.entity;
 
-
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder
+
 @Getter
 @Table(name = "background_setting")
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class BackgroundSetting {
 
@@ -41,6 +42,7 @@ public class BackgroundSetting {
 
     protected BackgroundSetting() {};
 
+    @Builder
     public BackgroundSetting(final String solidColor, final Boolean gradation, final String styleImageURL) {
         this.solidColor = solidColor;
         this.gradation = gradation;

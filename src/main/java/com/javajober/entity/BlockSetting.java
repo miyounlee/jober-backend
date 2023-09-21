@@ -4,13 +4,14 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder
 @Getter
 @Table(name = "block_setting")
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class BlockSetting {
 
@@ -45,6 +46,7 @@ public class BlockSetting {
 
     }
 
+    @Builder
     public BlockSetting(final String shape, final String style, final String styleColor, final Boolean gradation) {
         this.shape = shape;
         this.style = style;

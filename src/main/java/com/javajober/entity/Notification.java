@@ -1,13 +1,17 @@
 package com.javajober.entity;
 
 
+import lombok.Builder;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Table(name = "notification")
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class Notification {
 
@@ -23,6 +27,7 @@ public class Notification {
     @JoinColumn(name = "subscriber_id")
     private Member subscriber;
 
+    @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

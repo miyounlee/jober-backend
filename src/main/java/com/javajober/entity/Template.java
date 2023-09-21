@@ -1,8 +1,10 @@
 package com.javajober.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,6 +12,7 @@ import java.util.List;
 
 @Getter
 @Table(name = "template")
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class Template {
 
@@ -23,9 +26,9 @@ public class Template {
     @Column(name = "template_description", nullable = false)
     private String templateDescription;
 
-     @OneToMany(fetch = FetchType.LAZY)
-     @JoinColumn(name = "space_wall_category_id")
-     private List<SpaceWallCategory> spaceWallCategory;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "space_wall_category_id")
+    private List<SpaceWallCategory> spaceWallCategory;
 
     @CreatedDate
     @Column(name = "created_at")
@@ -40,6 +43,7 @@ public class Template {
 
     protected Template() {}
 
+    @Builder
     public Template(final String templateTitle, final String templateDescription, final List<SpaceWallCategory> spaceWallCategory) {
         this.templateTitle = templateTitle;
         this.templateDescription = templateDescription;

@@ -2,12 +2,14 @@ package com.javajober.entity;
 
 
 import lombok.Getter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Table(name = "subscription")
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class Subscription {
 

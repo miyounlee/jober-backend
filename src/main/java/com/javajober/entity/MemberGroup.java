@@ -32,7 +32,7 @@ public class MemberGroup {
     @JoinColumn(name = "add_space_id", nullable = false)
     private AddSpace addSpace;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_group_id", nullable = false)
     private List<Member> members;
 

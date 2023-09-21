@@ -5,13 +5,15 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder
+
 @Getter
 @Table(name = "free_block")
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class FreeBlock {
 
@@ -40,6 +42,7 @@ public class FreeBlock {
 
     protected FreeBlock() {};
 
+    @Builder
     public FreeBlock(final String freeTitle, final String freeContent) {
         this.freeTitle = freeTitle;
         this.freeContent = freeContent;

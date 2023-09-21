@@ -4,13 +4,15 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder
+
 @Getter
 @Table(name = "template_block")
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class TemplateBlock {
 
@@ -45,6 +47,7 @@ public class TemplateBlock {
 
     protected TemplateBlock() {}
 
+    @Builder
     public TemplateBlock(final String templateTitle, final String templateDescription, final TemplateAuth templateAuth) {
         this.templateTitle = templateTitle;
         this.templateDescription = templateDescription;

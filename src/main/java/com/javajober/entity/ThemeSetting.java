@@ -5,13 +5,15 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder
+
 @Getter
 @Table (name = "theme_setting")
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class ThemeSetting {
 
@@ -37,6 +39,7 @@ public class ThemeSetting {
 
     }
 
+    @Builder
     public ThemeSetting(final String theme) {
         this.theme = theme;
     }

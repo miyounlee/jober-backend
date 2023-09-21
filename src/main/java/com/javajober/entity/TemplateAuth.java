@@ -1,14 +1,17 @@
 package com.javajober.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Table(name = "template_auth")
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class TemplateAuth {
 
@@ -38,6 +41,7 @@ public class TemplateAuth {
 
     }
 
+    @Builder
     public TemplateAuth(final Member authMember, final Boolean hasAccess) {
         this.authMember = authMember;
         this.hasAccess = hasAccess;

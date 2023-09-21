@@ -1,15 +1,18 @@
 package com.javajober.entity;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Table(name = "style_setting")
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class StyleSetting {
 
@@ -44,6 +47,7 @@ public class StyleSetting {
 
     }
 
+    @Builder
     public StyleSetting(final BackgroundSetting backgroundSetting, final BlockSetting blockSetting, final ThemeSetting themeSetting) {
         this.backgroundSetting = backgroundSetting;
         this.blockSetting = blockSetting;

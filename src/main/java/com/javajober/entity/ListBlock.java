@@ -4,13 +4,15 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder
+
 @Getter
 @Table(name = "list_block")
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class ListBlock {
 
@@ -46,6 +48,7 @@ public class ListBlock {
 
     protected ListBlock() {}
 
+    @Builder
     public ListBlock(final String listLabel, final String listTitle, final String listDescription, final Boolean isLink) {
         this.listLabel = listLabel;
         this.listTitle = listTitle;

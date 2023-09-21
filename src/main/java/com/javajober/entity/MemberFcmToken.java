@@ -2,11 +2,13 @@ package com.javajober.entity;
 
 
 import lombok.Getter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
 @Getter
 @Table(name = "member_fcm_token")
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class MemberFcmToken {
 

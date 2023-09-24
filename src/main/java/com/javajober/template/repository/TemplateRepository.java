@@ -22,5 +22,16 @@ public interface TemplateRepository extends Repository<Template, Long> {
 		return templates;
 	}
 
+	List<Template> findByTemplateTitleContaining(String keyword);
+
+	default List<Template> getTemplateTitle(final String keyword){
+		List<Template> templates = findByTemplateTitleContaining(keyword);
+
+		if(templates == null || templates.isEmpty()){
+			throw new Exception404( "'" + keyword + "'" + " 템플릿을 찾을 수 없습니다.");
+		}
+
+		return templates;
+	}
 }
 

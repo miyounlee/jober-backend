@@ -36,9 +36,8 @@ public class TemplateBlockService {
 	private final SpaceWallCategoryRepository spaceWallCategoryRepository;
 	private final TemplateRepository templateRepository;
 
-
 	@Transactional
-	public MemberAuthResponse getTemplateAuthList(SpaceType spaceType, Long memberId){
+	public MemberAuthResponse getTemplateAuthList(SpaceType spaceType, Long memberId) {
 
 		AddSpace addSpace = addSpaceRepository.getBySpaceTypeAndId(spaceType, memberId);
 
@@ -55,7 +54,8 @@ public class TemplateBlockService {
 
 			TemplateAuth templateAuth = templateAuthRepository.getByAuthMemberId(memberGroup.getId());
 
-			MemberAuthResponse.MemberInfo memberInfo = MemberAuthResponse.MemberInfo.from(memberGroup, member, templateAuth);
+			MemberAuthResponse.MemberInfo memberInfo = MemberAuthResponse.MemberInfo.from(memberGroup, member,
+				templateAuth);
 			memberInfos.add(memberInfo);
 		}
 
@@ -63,7 +63,7 @@ public class TemplateBlockService {
 	}
 
 	@Transactional
-	public TemplateResponse getTemplateRecommend(SpaceWallCategoryType spaceWallCategoryType){
+	public TemplateResponse getTemplateRecommend(SpaceWallCategoryType spaceWallCategoryType) {
 
 		SpaceWallCategory spaceWallCategory = spaceWallCategoryRepository.getBySpaceWallCategory(spaceWallCategoryType);
 
@@ -71,12 +71,27 @@ public class TemplateBlockService {
 
 		List<TemplateResponse.TemplateInfo> templateInfos = new ArrayList<>();
 
-		for(Template template : templates) {
+		for (Template template : templates) {
 			TemplateResponse.TemplateInfo templateInfo = TemplateResponse.TemplateInfo.from(template);
 			templateInfos.add(templateInfo);
 		}
 
 		return new TemplateResponse(templateInfos);
 
+	}
+
+	@Transactional
+	public TemplateResponse getSearchTemplatesByTitle(String keyword) {
+
+		List<Template> templates = templateRepository.getTemplateTitle(keyword);
+
+		List<TemplateResponse.TemplateInfo> templateInfos = new ArrayList<>();
+
+		for (Template template : templates) {
+			TemplateResponse.TemplateInfo info = TemplateResponse.TemplateInfo.from(template);
+			templateInfos.add(info);
+		}
+
+		return new TemplateResponse(templateInfos);
 	}
 }

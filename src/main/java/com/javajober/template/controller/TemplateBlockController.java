@@ -38,4 +38,10 @@ public class TemplateBlockController {
 		TemplateResponse templateResponse = templateBlockService.getTemplateRecommend(category);
 		return ResponseEntity.ok(ApiUtils.success(templateResponse));
 	}
+
+	@GetMapping(params = "search")
+	public ResponseEntity<?> getSearchTemplatesByTitle(@RequestParam String search){
+		TemplateResponse templateResponse = templateBlockService.getSearchTemplatesByTitle(search);
+		return ResponseEntity.ok(ApiUtils.success(templateResponse));
+	}
 }

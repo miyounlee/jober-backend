@@ -25,11 +25,18 @@ public class Member {
     @Column(name = "member_email", nullable = false)
     private String memberEmail;
 
+    @Column(name = "member_profile_image_url")
+    private String memberProfileImageUrl;
+
     @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "member_ship", nullable = false)
+    private MemberShipType memberShip;
 
     @CreatedDate
     @Column(name = "created_at")
@@ -47,10 +54,13 @@ public class Member {
     }
 
     @Builder
-    public Member(final String memberName, final String memberEmail, final String password, final String phoneNumber) {
+    public Member(final String memberName, final String memberEmail, final String memberProfileImageUrl,
+        final String password, final String phoneNumber, final MemberShipType memberShip) {
         this.memberName = memberName;
         this.memberEmail = memberEmail;
+        this.memberProfileImageUrl = memberProfileImageUrl;
         this.password = password;
         this.phoneNumber = phoneNumber;
+        this.memberShip = memberShip;
     }
 }

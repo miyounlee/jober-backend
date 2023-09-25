@@ -36,7 +36,7 @@ public class FcmInitializer {
 
         } catch (IOException e) {
             log.error("FCM initialization ERROR {}", e.getMessage());
-            throw new Exception500(ErrorMessage.FCM_INITIALIZATION_FAILED.getMessage());
+            throw new Exception500(ErrorMessage.FCM_INITIALIZATION_FAILED);
         }
     }
 }

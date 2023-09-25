@@ -14,7 +14,7 @@ import com.javajober.entity.SpaceWallCategoryType;
 import com.javajober.entity.Template;
 import com.javajober.template.dto.MemberAuthResponse;
 import com.javajober.entity.AddSpace;
-import com.javajober.entity.Member;
+import com.javajober.member.domain.Member;
 import com.javajober.entity.MemberGroup;
 import com.javajober.entity.SpaceType;
 import com.javajober.entity.TemplateAuth;

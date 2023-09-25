@@ -3,7 +3,7 @@ package com.javajober.template.dto;
 
 import java.util.List;
 
-import com.javajober.entity.Member;
+import com.javajober.member.domain.Member;
 import com.javajober.entity.MemberGroup;
 import com.javajober.entity.TemplateAuth;
 

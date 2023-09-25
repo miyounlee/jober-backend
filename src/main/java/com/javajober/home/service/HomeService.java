@@ -1,16 +1,13 @@
 package com.javajober.home.service;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.javajober.entity.Member;
 import com.javajober.entity.SpaceType;
-import com.javajober.entity.SpaceWall;
 import com.javajober.home.dto.AddSpaceResponse;
 import com.javajober.home.dto.HomeResponse;
 import com.javajober.home.dto.MemberResponse;

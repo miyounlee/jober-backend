@@ -40,7 +40,9 @@ VALUES
     ('윤다미', 'PERSONAL', 9, NOW(), NOW(), NULL),
     ('임시회사명', 'ORGANIZATION', 9, NOW(), NOW(), NULL),
     ('이하빈', 'PERSONAL', 10, NOW(), NOW(), NULL),
-    ('임시회사명', 'ORGANIZATION', 10, NOW(), NOW(), NULL);
+    ('임시회사명', 'ORGANIZATION', 10, NOW(), NOW(), NULL),
+    ('패스트캠퍼스 X Jober', 'ORGANIZATION', 1, NOW(), NOW(), NULL),
+    ('근로계약서', 'ORGANIZATION', 1, NOW(), NOW(), NULL);
 
 
 insert into member_group (member_hashtag_type, account_type, add_space_id, member_id, created_at, updated_at,deleted_at)

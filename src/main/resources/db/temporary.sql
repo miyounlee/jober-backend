@@ -1,14 +1,22 @@
-INSERT INTO member(member_name, member_email, password, phone_number, created_at, updated_at, deleted_at)
-VALUES ('변백현', 'baek2@gmail.com', '1234', '010-1175-1312', NOW(), NOW(), NULL),
-       ('이수민', 'sumin@gmail.com', '1234', '010-1135-2486', NOW(), NOW(), NULL),
-       ('김영희', 'younghee@gmail.com', '1234', '010-1158-3741', NOW(), NOW(), NULL),
-       ('정민준', 'minjun@gmail.com', '1234', '010-1179-4285', NOW(), NOW(), NULL),
-       ('박지영', 'jiyoung@gmail.com', '1234', '010-1136-5279', NOW(), NOW(), NULL),
-       ('최우진', 'woojin@gmail.com', '1234', '010-1157-6384', NOW(), NOW(), NULL),
-       ('한지훈', 'jihun@gmail.com', '1234', '010-1178-7942', NOW(), NOW(), NULL),
-       ('서예진', 'yejin@gmail.com', '1234', '010-1139-8425', NOW(), NOW(), NULL),
-       ('윤다미', 'dami131@gmail.com', '1234', '010-6012-4904', NOW(), NOW(), NULL),
-       ('이하빈', 'habin132@gmail.com', '1234', '010-6123-6015', NOW(), NOW(), NULL);
+INSERT INTO member(member_name, member_email, password, phone_number, member_ship, created_at, updated_at, deleted_at)
+VALUES ('변백현', 'baek2@gmail.com', '1234', '010-1175-1312', 'FREE', NOW(), NOW(), NULL),
+       ('이수민', 'sumin@gmail.com', '1234', '010-1135-2486', 'FREE', NOW(), NOW(), NULL),
+       ('김영희', 'younghee@gmail.com', '1234', '010-1158-3741', 'FREE', NOW(), NOW(), NULL),
+       ('정민준', 'minjun@gmail.com', '1234', '010-1179-4285', 'STANDARD', NOW(), NOW(), NULL),
+       ('박지영', 'jiyoung@gmail.com', '1234', '010-1136-5279', 'FREE', NOW(), NOW(), NULL),
+       ('최우진', 'woojin@gmail.com', '1234', '010-1157-6384', 'FREE', NOW(), NOW(), NULL),
+       ('한지훈', 'jihun@gmail.com', '1234', '010-1178-7942', 'STANDARD', NOW(), NOW(), NULL),
+       ('서예진', 'yejin@gmail.com', '1234', '010-1139-8425', 'FREE', NOW(), NOW(), NULL),
+       ('윤다미', 'dami131@gmail.com', '1234', '010-6012-4904', 'FREE', NOW(), NOW(), NULL),
+       ('이하빈', 'habin132@gmail.com', '1234', '010-6123-6015', 'STANDARD', NOW(), NOW(), NULL),
+       ('박서인', 'seoin133@gmail.com', '1234', '010-6234-7126', 'FREE', NOW(), NOW(), NULL),
+       ('최지안', 'jian134@gmail.com', '1234', '010-6345-8237', 'FREE', NOW(), NOW(), NULL),
+       ('김하늘', 'haneul135@gmail.com', '1234', '010-6456-9348', 'FREE', NOW(), NOW(), NULL),
+       ('윤하나', 'hana136@gmail.com', '1234', '010-6567-0459', 'FREE', NOW(), NOW(), NULL),
+       ('이서하', 'seoha137@gmail.com', '1234', '010-6678-1560', 'FREE', NOW(), NOW(), NULL),
+       ('박다은', 'daeun138@gmail.com', '1234', '010-6789-2671', 'FREE', NOW(), NOW(), NULL),
+       ('최수하', 'sooha139@gmail.com', '1234', '010-6890-3782', 'FREE', NOW(), NOW(), NULL),
+       ('김지하', 'jinha140@gmail.com', '1234', '010-6901-4893', 'FREE', NOW(), NOW(), NULL);
 
 
 INSERT INTO add_space (space_title, space_type, member_id, created_at, updated_at, deleted_at)

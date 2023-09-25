@@ -1,5 +1,7 @@
-package com.javajober.entity;
+package com.javajober.spaceWall.domain;
 
+import com.javajober.entity.AddSpace;
+import com.javajober.entity.SpaceWallCategoryType;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -32,6 +34,10 @@ public class SpaceWall {
     @Column(name = "space_wall_category", nullable = false)
     private SpaceWallCategoryType spaceWallCategoryType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "flag", nullable = false)
+    private FlagType flag;
+
     @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -47,9 +53,10 @@ public class SpaceWall {
 
     }
 
-    public SpaceWall(final String blocks, final SpaceWallCategoryType spaceWallCategoryType, final String shareURL) {
+    public SpaceWall(final String blocks, final SpaceWallCategoryType spaceWallCategoryType, final String shareURL, final FlagType flag) {
         this.blocks = blocks;
         this.spaceWallCategoryType = spaceWallCategoryType;
         this.shareURL = shareURL;
+        this.flag = flag;
     }
 }

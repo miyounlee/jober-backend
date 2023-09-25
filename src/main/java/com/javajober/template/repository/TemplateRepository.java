@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.repository.Repository;
 
 import com.javajober.core.error.exception.Exception404;
+import com.javajober.core.message.ErrorMessage;
 import com.javajober.entity.Template;
 
 public interface TemplateRepository extends Repository<Template, Long> {
@@ -16,7 +17,7 @@ public interface TemplateRepository extends Repository<Template, Long> {
 		List<Template> templates = findBySpaceWallCategoryId(templateCategoryId);
 
 		if(templates == null || templates.isEmpty()){
-			throw new Exception404("추천 템플릿 그룹을 찾을 수 없습니다.");
+			throw new Exception404(ErrorMessage.TEMPLATE_RECOMMEND_NOT_FOUND);
 		}
 
 		return templates;
@@ -28,7 +29,7 @@ public interface TemplateRepository extends Repository<Template, Long> {
 		List<Template> templates = findByTemplateTitleContaining(keyword);
 
 		if(templates == null || templates.isEmpty()){
-			throw new Exception404( "'" + keyword + "'" + " 템플릿을 찾을 수 없습니다.");
+			throw new Exception404( ErrorMessage.TEMPLATE_SEARCH_NOT_FOUND);
 		}
 
 		return templates;

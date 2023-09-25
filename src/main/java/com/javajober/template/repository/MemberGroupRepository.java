@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.repository.Repository;
 
 import com.javajober.core.error.exception.Exception404;
+import com.javajober.core.message.ErrorMessage;
 import com.javajober.entity.MemberGroup;
 
 
@@ -15,7 +16,7 @@ public interface MemberGroupRepository extends Repository<MemberGroup, Long> {
 		List<MemberGroup> memberGroups = findByAddSpaceId(addSpaceId);
 
 		if (memberGroups == null || memberGroups.isEmpty()) {
-			throw new Exception404("해당 스페이스 연락처를 찾을 수 없습니다.");
+			throw new Exception404(ErrorMessage.ADD_SPACE_NOT_FOUND);
 		}
 
 		return memberGroups;

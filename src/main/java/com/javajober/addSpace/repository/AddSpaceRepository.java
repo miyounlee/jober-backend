@@ -21,4 +21,11 @@ public interface AddSpaceRepository extends Repository<AddSpace, Long> {
 		return findById(id)
 			.orElseThrow(() -> new Exception404(ErrorMessage.ADD_SPACE_NOT_FOUND));
 	}
+
+	Optional<AddSpace> findBySpaceTypeAndId(SpaceType spaceType, Long memberId);
+
+	default AddSpace getBySpaceTypeAndId(final SpaceType spaceType, final Long memberId){
+		return findBySpaceTypeAndId(spaceType,memberId)
+			.orElseThrow(() -> new Exception404(ErrorMessage.ADD_SPACE_NOT_FOUND));
+	}
 }

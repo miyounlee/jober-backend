@@ -6,8 +6,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import com.javajober.addSpace.repository.AddSpaceRepository;
 import com.javajober.core.error.exception.Exception404;
+import com.javajober.core.message.ErrorMessage;
 import com.javajober.entity.SpaceWallCategory;
 import com.javajober.entity.SpaceWallCategoryType;
 import com.javajober.entity.Template;
@@ -18,7 +19,6 @@ import com.javajober.entity.MemberGroup;
 import com.javajober.entity.SpaceType;
 import com.javajober.entity.TemplateAuth;
 import com.javajober.template.dto.TemplateResponse;
-import com.javajober.template.repository.AddSpaceRepository;
 import com.javajober.template.repository.MemberGroupRepository;
 import com.javajober.template.repository.SpaceWallCategoryRepository;
 import com.javajober.template.repository.TemplateAuthRepository;
@@ -49,7 +49,7 @@ public class TemplateBlockService {
 			Member member = memberGroup.getMember();
 
 			if (member == null) {
-				throw new Exception404("멤버 정보를 찾을 수 없습니다.");
+				throw new Exception404(ErrorMessage.MEMBER_NOT_FOUND);
 			}
 
 			TemplateAuth templateAuth = templateAuthRepository.getByAuthMemberId(memberGroup.getId());

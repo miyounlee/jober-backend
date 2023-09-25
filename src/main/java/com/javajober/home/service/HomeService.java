@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.javajober.entity.Member;
+import com.javajober.member.domain.Member;
 import com.javajober.entity.SpaceType;
 import com.javajober.home.dto.AddSpaceResponse;
 import com.javajober.home.dto.HomeResponse;

@@ -1,6 +1,6 @@
 package com.javajober.home.dto;
 
-import com.javajober.entity.Member;
+import com.javajober.member.domain.Member;
 import com.javajober.entity.MemberShipType;
 
 import lombok.Builder;

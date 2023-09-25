@@ -1,4 +1,5 @@
 package com.javajober.entity;
+import com.javajober.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

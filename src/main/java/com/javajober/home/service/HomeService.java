@@ -1,5 +1,6 @@
 package com.javajober.home.service;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.javajober.entity.Member;
 import com.javajober.entity.SpaceType;
+import com.javajober.entity.SpaceWall;
 import com.javajober.home.dto.AddSpaceResponse;
 import com.javajober.home.dto.HomeResponse;
 import com.javajober.home.dto.MemberResponse;
@@ -42,9 +44,9 @@ public class HomeService {
 				.map(AddSpaceResponse::from)
 				.collect(Collectors.toList());
 
-		Map<String, List<AddSpaceResponse>> spaces = new HashMap<>();
-		spaces.put("personal", personalSpaces);
-		spaces.put("organization", organizationSpaces);
+		EnumMap<SpaceType, List<AddSpaceResponse>> spaces = new EnumMap<>(SpaceType.class);
+		spaces.put(SpaceType.PERSONAL, personalSpaces);
+		spaces.put(SpaceType.ORGANIZATION, organizationSpaces);
 
 		return new HomeResponse(memberInfo, spaces);
 	}

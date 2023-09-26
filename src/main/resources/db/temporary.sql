@@ -103,33 +103,33 @@ values
     ('ENTERPRISE'),
     ('BASIC');
 
-INSERT INTO space_wall (blocks, share_url, add_space_id, space_wall_category, flag, created_at, updated_at)
+INSERT INTO space_wall (blocks, share_url, add_space_id, space_wall_category, flag, created_at, updated_at, deleted_at)
 VALUES ('[
         {"position":1, "block_type":"fileBlock", "block_id":1, "block_UUID": "c4c78f17-e9a8-4937-adfb-5c19c27c1197"},
         {"position":2, "block_type":"listBlock", "block_id":2, "block_UUID": "d4d88e28-f9b9-4948-bcdb-6d29d27e2198"},
         {"position":3, "block_type":"snsBlock", "block_id":3, "block_UUID": "e5e99f39-ga0a-5959-dede-7e39f37f3299"}
-    ]', 'https://javajober.shop/combined1', 1, 'PERSONAL', 'PENDING', NOW(), NULL),
+    ]', 'https://javajober.shop/combined1', 1, 'PERSONAL', 'PENDING', NOW(), NULL, NOW()),
 
        ('[
         {"position":1, "block_type":"wallInfoBlock", "block_id":4, "block_UUID": "f6f10g40-hb1b-6969-efef-8f49g48g439a"},
         {"position":2, "block_type":"freeBlock", "block_id":5, "block_UUID": "g7g11h51-ic2c-7070-fgfg-9g50h59h549b"},
         {"position":3, "block_type":"templateBlock", "block_id":6, "block_UUID": "h8h12i62-jd3d-8181-ghgh-0h61i60i659c"}
-    ]', 'https://javajober.shop/combined2', 2, 'ENTERPRISE', 'SAVED', NOW(), NULL),
+    ]', 'https://javajober.shop/combined2', 2, 'ENTERPRISE', 'SAVED', NOW(), NULL, NULL),
 
        ('[
         {"position":1, "block_type":"fileBlock", "block_id":7, "block_UUID": "i9i13j73-ke4e-9292-hihi-1i72j71j769d"},
         {"position":2, "block_type":"listBlock", "block_id":8, "block_UUID": "j0j14k84-lf5f-0303-ijij-2j83k82k879e"},
         {"position":3, "block_type":"snsBlock", "block_id":9, "block_UUID": "k1k15l95-mg6g-1414-jkjk-3k94l93l989f"}
-    ]', 'https://javajober.shop/combined3', 3, 'CAREER', 'PENDING', NOW(), NULL),
+    ]', 'https://javajober.shop/combined3', 3, 'CAREER', 'PENDING', NOW(), NULL, NULL),
 
        ('[
         {"position":1, "block_type":"wallInfoBlock", "block_id":10, "block_UUID": "l2l16m06-ng7h-2525-klkl-4l05m04m099g"},
         {"position":2, "block_type":"freeBlock", "block_id":11, "block_UUID": "m3m17n17-oh8i-3636-lmlm-5m16n15n109h"},
         {"position":3, "block_type":"templateBlock", "block_id":12, "block_UUID": "n4n18o28-pi9j-4747-mnmn-6n27o26o219i"}
-    ]', 'https://javajober.shop/combined4', 4, 'PERSONAL', 'SAVED', NOW(), NULL),
+    ]', 'https://javajober.shop/combined4', 4, 'PERSONAL', 'SAVED', NOW(), NULL, NULL),
 
        ('[
         {"position":1, "block_type":"fileBlock", "block_id":13, "block_UUID": "o5o19p39-qj0k-5858-nonp-7o38p37p329j"},
         {"position":2, "block_type":"listBlock", "block_id":14, "block_UUID": "p6p20q40-rk1l-6969-opoq-8p49q48q439k"},
         {"position":3, "block_type":"snsBlock", "block_id":15, "block_UUID": "q7q21r51-sl2m-7070-pqpr-9q50r59r549l"}
-    ]', 'https://javajober.shop/combined5', 5, 'BASIC', 'PENDING', NOW(), NULL);
+    ]', 'https://javajober.shop/combined5', 5, 'BASIC', 'PENDING', NOW(), NULL, NULL);

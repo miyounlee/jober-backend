@@ -1,8 +1,9 @@
-package com.javajober.entity;
+package com.javajober.fcm.domain;
 
-
+import com.javajober.member.domain.Member;
 import com.javajober.spaceWall.domain.SpaceWall;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -26,7 +27,8 @@ public class Subscription {
     @JoinColumn(name = "space_wall_id", nullable = false)
     private SpaceWall spaceWall;
 
-    @Column(name="created_at")
+    @CreatedDate
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     protected Subscription() {

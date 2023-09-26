@@ -9,6 +9,8 @@ import com.javajober.spaceWall.domain.SpaceWall;
 import com.javajober.spaceWall.repository.SpaceWallRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class SubscriptionService {
 
@@ -28,5 +30,13 @@ public class SubscriptionService {
 
         Subscription subscription = SubscriptionRequest.toEntity(request, subscriber, spaceWall);
         subscriptionRepository.save(subscription);
+    }
+
+    public void unsubscribe(SubscriptionRequest request) {
+        Member subscriber = memberRepository.findMember(request.getSubscriberMemberId());
+        SpaceWall spaceWall = spaceWallRepository.getById(request.getMemberId(), request.getSpaceWallId());
+
+        Optional<Subscription> existingSubscription = subscriptionRepository.findBySubscriberAndSpaceWall(subscriber, spaceWall);
+        existingSubscription.ifPresent(subscriptionRepository::delete);
     }
 }

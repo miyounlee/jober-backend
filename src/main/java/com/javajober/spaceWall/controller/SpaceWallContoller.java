@@ -1,7 +1,7 @@
 package com.javajober.spaceWall.controller;
 
 import com.javajober.core.util.ApiUtils;
-import com.javajober.spaceWall.dto.SpaceWallResponse;
+import com.javajober.spaceWall.dto.response.SpaceWallResponse;
 import com.javajober.spaceWall.service.SpaceWallService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,5 +1,6 @@
 package com.javajober.core.error.exception;
 
+import com.javajober.core.message.ErrorMessage;
 import com.javajober.core.util.ApiUtils;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -16,8 +17,8 @@ public class Exception400 extends RuntimeException {
         this.value = value;
     }
 
-    public Exception400(String message) {
-        super(message);
+    public Exception400(ErrorMessage errorMessage) {
+        super(errorMessage.getMessage());
     }
 
     public ApiUtils.ApiResult<?> body(){

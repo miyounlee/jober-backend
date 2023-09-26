@@ -4,7 +4,7 @@ import com.javajober.core.error.exception.Exception500;
 import com.javajober.core.message.ErrorMessage;
 import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.domain.SpaceWall;
-import com.javajober.spaceWall.dto.SpaceWallResponse;
+import com.javajober.spaceWall.dto.response.SpaceWallResponse;
 import com.javajober.spaceWall.repository.SpaceWallRepository;
 import org.springframework.stereotype.Service;
 

@@ -25,7 +25,7 @@ public class MemberFcmTokenController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiUtils.ApiResponse<Object>> saveFcmToken(@RequestBody @Valid MemberFcmTokenRequest request) {
+    public ResponseEntity<ApiUtils.ApiResponse<Object>> saveFcmToken(@RequestBody MemberFcmTokenRequest request) {
         memberFcmTokenService.saveFcmToken(request);
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.CREATED, SuccessMessage.CREATE_SUCCESS, null));
     }

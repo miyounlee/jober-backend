@@ -7,6 +7,8 @@ import com.javajober.fcm.repository.MemberFcmTokenRepository;
 import com.javajober.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class MemberFcmTokenService {
 
@@ -20,7 +22,18 @@ public class MemberFcmTokenService {
 
     public void saveFcmToken(MemberFcmTokenRequest request) {
         Member member = memberRepository.findMember(request.getMemberId());
+        Optional<MemberFcmToken> existingTokenOpt = memberFcmTokenRepository.findByMemberAndDeviceId(member, request.getDeviceId());
+
+        if (existingTokenOpt.isPresent()) {
+            updateExistingToken(existingTokenOpt.get(), request.getFcmToken());
+            return;
+        }
         MemberFcmToken token = MemberFcmTokenRequest.toEntity(request, member);
         memberFcmTokenRepository.save(token);
+    }
+
+    private void updateExistingToken(MemberFcmToken existingToken, String newFcmToken) {
+        existingToken.updateFcmToken(newFcmToken);
+        memberFcmTokenRepository.save(existingToken);
     }
 }

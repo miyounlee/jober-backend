@@ -49,4 +49,8 @@ public class MemberFcmToken {
         this.fcmToken = fcmToken;
         this.deviceId = deviceId;
     }
+
+    public void updateFcmToken(String newFcmToken) {
+        this.fcmToken = newFcmToken;
+    }
 }

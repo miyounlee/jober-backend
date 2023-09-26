@@ -6,13 +6,10 @@ import com.javajober.fcm.dto.SubscriptionRequest;
 import com.javajober.fcm.service.SubscriptionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/wall")
+@RequestMapping("/api/wall/subscription")
 public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
@@ -21,9 +18,15 @@ public class SubscriptionController {
         this.subscriptionService = subscriptionService;
     }
 
-    @PostMapping("/subscription")
+    @PostMapping
     public ResponseEntity<ApiUtils.ApiResponse<Object>> subscribe(@RequestBody SubscriptionRequest request) {
         subscriptionService.subscribe(request);
-        return ResponseEntity.ok(ApiUtils.success(HttpStatus.CREATED, SuccessMessage.CREATE_SUCCESS, null));
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.CREATE_SUCCESS, null));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<ApiUtils.ApiResponse<Object>> unsubscribe(@RequestBody SubscriptionRequest request) {
+        subscriptionService.unsubscribe(request);
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.DELETE_SUCCESS, null));
     }
 }

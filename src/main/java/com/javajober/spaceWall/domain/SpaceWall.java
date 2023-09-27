@@ -2,6 +2,8 @@ package com.javajober.spaceWall.domain;
 
 import com.javajober.entity.AddSpace;
 import com.javajober.entity.SpaceWallCategoryType;
+import com.javajober.member.domain.Member;
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -30,6 +32,10 @@ public class SpaceWall {
     @JoinColumn(name = "add_space_id", nullable = false)
     private AddSpace addSpace;
 
+    @OneToOne
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "space_wall_category", nullable = false)
     private SpaceWallCategoryType spaceWallCategoryType;
@@ -53,10 +59,14 @@ public class SpaceWall {
 
     }
 
-    public SpaceWall(final String blocks, final SpaceWallCategoryType spaceWallCategoryType, final String shareURL, final FlagType flag) {
+    @Builder
+    public SpaceWall(final String blocks, final String shareURL, final AddSpace addSpace, final Member member,
+                     final SpaceWallCategoryType spaceWallCategoryType, final FlagType flag) {
         this.blocks = blocks;
-        this.spaceWallCategoryType = spaceWallCategoryType;
         this.shareURL = shareURL;
+        this.addSpace = addSpace;
+        this.member = member;
+        this.spaceWallCategoryType = spaceWallCategoryType;
         this.flag = flag;
     }
 }

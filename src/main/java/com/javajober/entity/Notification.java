@@ -1,6 +1,6 @@
 package com.javajober.entity;
 
-
+import com.javajober.member.domain.Member;
 import com.javajober.spaceWall.domain.SpaceWall;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

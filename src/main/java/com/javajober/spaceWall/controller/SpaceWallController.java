@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class SpaceWallContoller {
+public class SpaceWallController {
 
     private final SpaceWallService spaceWallService;
 
-    public SpaceWallContoller(SpaceWallService spaceWallService) {
+    public SpaceWallController(SpaceWallService spaceWallService) {
         this.spaceWallService = spaceWallService;
     }
 

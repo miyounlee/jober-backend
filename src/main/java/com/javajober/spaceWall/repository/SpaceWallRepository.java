@@ -11,12 +11,12 @@ import java.util.List;
 
 public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
 
-    @Query("SELECT s FROM SpaceWall s LEFT JOIN s.addSpace a " +
-            "WHERE a.id = :addSpaceId AND a.member.id = :memberId")
-    List<SpaceWall> findSpaceWall(@Param("memberId") Long memberId, @Param("addSpaceId") Long addSpaceId);
+    @Query("SELECT s FROM SpaceWall s LEFT JOIN s.addSpace a LEFT JOIN s.member m " +
+            "WHERE a.id = :addSpaceId AND m.id = :memberId")
+    List<SpaceWall> findSpaceWalls(@Param("memberId") Long memberId, @Param("addSpaceId") Long addSpaceId);
 
     default SpaceWall getById(final Long memberId, final Long spaceWallId) {
-        return findSpaceWall(memberId, spaceWallId).stream()
+        return findSpaceWalls(memberId, spaceWallId).stream()
                 .findFirst()
                 .orElseThrow(() -> new Exception404(ErrorMessage.ADD_SPACE_NOT_FOUND));
     }

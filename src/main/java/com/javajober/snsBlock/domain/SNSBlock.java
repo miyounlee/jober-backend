@@ -1,4 +1,4 @@
-package com.javajober.entity;
+package com.javajober.snsBlock.domain;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -14,15 +14,18 @@ import java.time.LocalDateTime;
 @Table(name = "sns_block")
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class SnsBlock {
+public class SNSBlock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "sns_uuid", nullable = false)
+    private String snsUUID;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "sns_type", nullable = false)
-    private SnsType snsType;
+    private SNSType snsType;
 
     @Column(name = "sns_url", nullable = false)
     private String snsURL;
@@ -38,11 +41,22 @@ public class SnsBlock {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    protected SnsBlock() {}
+    protected SNSBlock() {}
 
     @Builder
-    public SnsBlock(final SnsType snsType, final String snsURL) {
+    public SNSBlock(final String snsUUID, final SNSType snsType, final String snsURL) {
+        this.snsUUID = snsUUID;
         this.snsType = snsType;
         this.snsURL = snsURL;
+    }
+
+    public void update(final String snsUUID, final SNSType snsType, final String snsURL) {
+        this.snsUUID = snsUUID;
+        this.snsType = snsType;
+        this.snsURL = snsURL;
+    }
+
+    public void updateTimeOnDelete() {
+        this.deletedAt = LocalDateTime.now();
     }
 }

@@ -6,92 +6,97 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.javajober.addSpace.repository.AddSpaceRepository;
 import com.javajober.core.error.exception.Exception404;
 import com.javajober.core.message.ErrorMessage;
-import com.javajober.entity.SpaceWallCategory;
-import com.javajober.entity.SpaceWallCategoryType;
-import com.javajober.entity.Template;
-import com.javajober.template.dto.MemberAuthResponse;
-import com.javajober.entity.AddSpace;
-import com.javajober.member.domain.Member;
 import com.javajober.entity.MemberGroup;
-import com.javajober.entity.SpaceType;
 import com.javajober.entity.TemplateAuth;
-import com.javajober.template.dto.TemplateResponse;
+import com.javajober.entity.TemplateBlock;
+import com.javajober.template.dto.TemplateBlockRequest;
+import com.javajober.template.dto.TemplateBlockRequests;
+import com.javajober.template.dto.TemplateBlockResponse;
 import com.javajober.template.repository.MemberGroupRepository;
-import com.javajober.template.repository.SpaceWallCategoryRepository;
 import com.javajober.template.repository.TemplateAuthRepository;
-import com.javajober.template.repository.TemplateRepository;
+import com.javajober.template.repository.TemplateBlockRepository;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 @Service
 public class TemplateBlockService {
 
 	private final MemberGroupRepository memberGroupRepository;
-	private final AddSpaceRepository addSpaceRepository;
 	private final TemplateAuthRepository templateAuthRepository;
-	private final SpaceWallCategoryRepository spaceWallCategoryRepository;
-	private final TemplateRepository templateRepository;
+	private final TemplateBlockRepository templateBlockRepository;
+
+	public TemplateBlockService(MemberGroupRepository memberGroupRepository, TemplateAuthRepository templateAuthRepository, TemplateBlockRepository templateBlockRepository) {
+		this.memberGroupRepository = memberGroupRepository;
+		this.templateAuthRepository = templateAuthRepository;
+		this.templateBlockRepository = templateBlockRepository;
+	}
 
 	@Transactional
-	public MemberAuthResponse getTemplateAuthList(SpaceType spaceType, Long memberId) {
+	public void save(final TemplateBlockRequests<TemplateBlockRequest> templateBlockRequests) {
 
-		AddSpace addSpace = addSpaceRepository.getBySpaceTypeAndId(spaceType, memberId);
+		List<TemplateBlockRequest> subDataList = templateBlockRequests.getSubData();
 
-		List<MemberGroup> memberGroups = memberGroupRepository.getByAddSpaceId(addSpace.getId());
+		for (TemplateBlockRequest templateBlockRequest : subDataList) {
 
-		List<MemberAuthResponse.MemberInfo> memberInfos = new ArrayList<>();
+			TemplateBlock templateBlock = TemplateBlockRequest.toEntity(templateBlockRequest);
+			templateBlockRepository.save(templateBlock);
 
-		for (MemberGroup memberGroup : memberGroups) {
-			Member member = memberGroup.getMember();
+			List<Long> allAuthIds = templateBlockRequest.getAllAuthIds();
 
-			if (member == null) {
-				throw new Exception404(ErrorMessage.MEMBER_NOT_FOUND);
+			for (Long authId : allAuthIds) {
+				MemberGroup memberGroup = memberGroupRepository.getById(authId);
+				Boolean hasAccess = templateBlockRequest.getHasAccessTemplateAuth().contains(authId);
+				TemplateAuth templateAuth = new TemplateAuth(memberGroup, hasAccess, templateBlock);
+				templateAuthRepository.save(templateAuth);
 			}
-
-			TemplateAuth templateAuth = templateAuthRepository.getByAuthMemberId(memberGroup.getId());
-
-			MemberAuthResponse.MemberInfo memberInfo = MemberAuthResponse.MemberInfo.from(memberGroup, member,
-				templateAuth);
-			memberInfos.add(memberInfo);
 		}
-
-		return new MemberAuthResponse(memberInfos);
 	}
 
 	@Transactional
-	public TemplateResponse getTemplateRecommend(SpaceWallCategoryType spaceWallCategoryType) {
+	public TemplateBlockResponse getTemplateBlock(Long templateBlockId){
 
-		SpaceWallCategory spaceWallCategory = spaceWallCategoryRepository.getBySpaceWallCategory(spaceWallCategoryType);
+		TemplateBlock templateBlock = templateBlockRepository.getById(templateBlockId);
 
-		List<Template> templates = templateRepository.getBySpaceWallCategoryId(spaceWallCategory.getId());
+		List<TemplateAuth> templateAuths = templateAuthRepository.findByTemplateBlockId(templateBlockId);
 
-		List<TemplateResponse.TemplateInfo> templateInfos = new ArrayList<>();
-
-		for (Template template : templates) {
-			TemplateResponse.TemplateInfo templateInfo = TemplateResponse.TemplateInfo.from(template);
-			templateInfos.add(templateInfo);
+		if(templateAuths == null || templateAuths.isEmpty()){
+			throw new Exception404(ErrorMessage.TEMPLATE_AUTH_NOT_FOUND);
 		}
 
-		return new TemplateResponse(templateInfos);
+		List<Long> hasAccessTemplateAuth = new ArrayList<>();
+		List<Long> hasDenyTemplateAuth = new ArrayList<>();
 
+		for (TemplateAuth auth : templateAuths) {
+			if (auth.getHasAccess()) {
+				hasAccessTemplateAuth.add(auth.getAuthMember().getId());
+			} else {
+				hasDenyTemplateAuth.add(auth.getAuthMember().getId());
+			}
+		}
+		return TemplateBlockResponse.from(templateBlock, hasAccessTemplateAuth, hasDenyTemplateAuth);
 	}
+
+
 
 	@Transactional
-	public TemplateResponse getSearchTemplatesByTitle(String keyword) {
+	public void deleteTemplateBlock(Long templateBlockId){
 
-		List<Template> templates = templateRepository.getTemplateTitle(keyword);
+		TemplateBlock templateBlock = templateBlockRepository.getById(templateBlockId);
 
-		List<TemplateResponse.TemplateInfo> templateInfos = new ArrayList<>();
+		templateBlock.setDeletedAt();
 
-		for (Template template : templates) {
-			TemplateResponse.TemplateInfo info = TemplateResponse.TemplateInfo.from(template);
-			templateInfos.add(info);
+		List<TemplateAuth> authIds = templateAuthRepository.findByTemplateBlock(templateBlock);
+
+		if(authIds == null || authIds.isEmpty()){
+			throw new Exception404(ErrorMessage.TEMPLATE_AUTH_NOT_FOUND);
 		}
 
-		return new TemplateResponse(templateInfos);
+		for (TemplateAuth auth : authIds) {
+			templateAuthRepository.delete(auth);
+			auth.setDeletedAt();
+		}
+
+		templateBlockRepository.delete(templateBlock);
 	}
+
 }

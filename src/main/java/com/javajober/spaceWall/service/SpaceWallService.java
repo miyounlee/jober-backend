@@ -1,6 +1,6 @@
 package com.javajober.spaceWall.service;
 
-import com.javajober.core.error.exception.Exception400;
+import com.javajober.core.error.exception.Exception404;
 import com.javajober.core.message.ErrorMessage;
 import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.domain.SpaceWall;
@@ -21,21 +21,21 @@ public class SpaceWallService {
 
     public SpaceWallResponse checkSpaceWallTemporary(Long memberId, Long addSpaceId) {
 
-        List<SpaceWall> spaceWalls = spaceWallRepository.findSpaceWall(memberId, addSpaceId);
+        List<SpaceWall> spaceWalls = spaceWallRepository.findSpaceWalls(memberId, addSpaceId);
 
         if (spaceWalls == null || spaceWalls.isEmpty()) {
-            return SpaceWallResponse.from(null, false);
+            return new SpaceWallResponse(null, false);
         }
 
         for (SpaceWall spaceWall : spaceWalls) {
-
             if (spaceWall.getFlag().equals(FlagType.PENDING) && spaceWall.getDeletedAt() == null) {
-                return SpaceWallResponse.from(spaceWall.getId(), true);
+                return new SpaceWallResponse(spaceWall.getId(), true);
             }
             if (spaceWall.getFlag().equals(FlagType.SAVED) && spaceWall.getDeletedAt() == null) {
-                throw new Exception400(ErrorMessage.SAVED_SPACE_WALL_ALREADY_EXISTS);
+                throw new Exception404(ErrorMessage.SAVED_SPACE_WALL_ALREADY_EXISTS);
             }
         }
-        return SpaceWallResponse.from(null, false);
+
+        return new SpaceWallResponse(null, false);
     }
 }

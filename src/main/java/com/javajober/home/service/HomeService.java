@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.javajober.member.domain.Member;
 import com.javajober.entity.SpaceType;
+
 import com.javajober.home.dto.AddSpaceResponse;
 import com.javajober.home.dto.HomeResponse;
 import com.javajober.home.dto.MemberResponse;

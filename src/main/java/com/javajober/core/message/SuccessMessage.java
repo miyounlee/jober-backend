@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum SuccessMessage {
 
+
 	HOME_SUCCESS("홈 조회를 성공했습니다."),
 	SPACE_WALL_TEMPORARY_QUERY_SUCCESS("임시 저장 조회를 성공했습니다."),
 
@@ -18,6 +19,7 @@ public enum SuccessMessage {
 	UPDATE_SUCCESS("성공적으로 수정되었습니다."),
 	DELETE_SUCCESS("성공적으로 삭제되었습니다.")
 	;
+
 
 	private final String message;
 

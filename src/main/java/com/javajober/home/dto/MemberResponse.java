@@ -1,5 +1,6 @@
 package com.javajober.home.dto;
 
+
 import com.javajober.member.domain.Member;
 import com.javajober.entity.MemberShipType;
 

@@ -1,4 +1,4 @@
-package com.javajober.entity;
+package com.javajober.freeBlock.domain;
 
 
 import lombok.Builder;
@@ -46,5 +46,14 @@ public class FreeBlock {
     public FreeBlock(final String freeTitle, final String freeContent) {
         this.freeTitle = freeTitle;
         this.freeContent = freeContent;
+    }
+
+    public void update(FreeBlock freeBlock) {
+        this.freeTitle = freeBlock.getFreeTitle();
+        this.freeContent = freeBlock.getFreeContent();
+    }
+
+    public void setDeletedAt() {
+        this.deletedAt = LocalDateTime.now();
     }
 }

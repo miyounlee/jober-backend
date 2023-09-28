@@ -1,4 +1,4 @@
-package com.javajober.entity;
+package com.javajober.wallInfoBlock.domain;
 
 
 import lombok.Builder;

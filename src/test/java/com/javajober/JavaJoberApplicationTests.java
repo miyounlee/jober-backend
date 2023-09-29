@@ -1,4 +1,4 @@
-package com.javajober.javajoberserver;
+package com.javajober;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

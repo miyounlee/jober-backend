@@ -42,7 +42,7 @@ public class SpaceWallController {
     ) {
 
         validationMultipartFile(files);
-        spaceWallService.save(spaceWallRequest, files);
+        spaceWallService.save(spaceWallRequest, files, backgroundImgURL, wallInfoImgURL, styleImgURL);
 
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.CREATE_SUCCESS, null));
     }
@@ -53,8 +53,14 @@ public class SpaceWallController {
             if (file == null || file.isEmpty()) {
                 throw new Exception404(ErrorMessage.FILE_IS_EMPTY);
             }
-            String contentType = file.getContentType();
-            if (!"application/pdf".equals(contentType)) {
+
+            String originalFilename = file.getOriginalFilename();
+            if (originalFilename == null) {
+                throw new Exception404(ErrorMessage.INVALID_FILE_NAME);
+            }
+
+            int dotIndex = originalFilename.lastIndexOf('.');
+            if (dotIndex < 0 || !(originalFilename.substring(dotIndex + 1).equalsIgnoreCase("pdf"))) {
                 throw new Exception404(ErrorMessage.INVALID_FILE_TYPE);
             }
         }

@@ -15,7 +15,8 @@ public enum ErrorMessage {
 	FAILED_DELETE_FILE("파일 삭제를 실패하였습니다."),
 	FILE_UPLOAD_FAILED("파일 업로드에 실패하였습니다."),
 	FILE_IS_EMPTY("업로드할 파일이 없습니다."),
-	INVALID_FILE_TYPE("파일타입이 유효하지 않습니다."),
+	INVALID_FILE_TYPE("pdf 파일만 첨부 가능합니다."),
+	INVALID_FILE_NAME("파일 이름이 없습니다."),
 	FAILED_TO_DELETE_THE_FILE("파일 삭제를 실패하였습니다."),
 	SAVED_SPACE_WALL_ALREADY_EXISTS("저장된 공유페이지가 있습니다."),
 

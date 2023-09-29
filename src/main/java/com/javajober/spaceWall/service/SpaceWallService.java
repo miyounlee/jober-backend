@@ -94,10 +94,11 @@ public class SpaceWallService {
 	}
 
 	@Transactional
-	public void save(final SpaceWallRequest spaceWallRequest, final List<MultipartFile> files) {
+	public void save(final SpaceWallRequest spaceWallRequest, final List<MultipartFile> files,
+					 final MultipartFile backgroundImgURL, final MultipartFile wallInfoImgURL, final MultipartFile styleImgURL) {
     
 		WallInfoBlockRequest wallInfoBlockRequest = spaceWallRequest.getData().getWallInfoBlock();
-		saveWallInfoBlock(wallInfoBlockRequest);
+		saveWallInfoBlock(wallInfoBlockRequest, backgroundImgURL, wallInfoImgURL);
     
 		ObjectMapper mapper = new ObjectMapper();
 		AtomicInteger i = new AtomicInteger();
@@ -131,36 +132,13 @@ public class SpaceWallService {
 		});
 	}
 
-	private void saveFreeBlocks(List<FreeBlockSaveRequest> subData) {
-		subData.forEach(block -> {
-			FreeBlock freeBlock = FreeBlockSaveRequest.toEntity(block);
-			freeBlockRepository.save(freeBlock);
-		});
-	}
+	private void saveWallInfoBlock(WallInfoBlockRequest wallInfoBlockRequest, MultipartFile backgroundImgURL,
+								   MultipartFile wallInfoImgURL) {
 
-	private void saveSnsBlocks(List<SNSBlockRequest> subData) {
-		subData.forEach(block -> {
-			SNSBlock snsBlock = SNSBlockRequest.toEntity(block);
-			snsBlockRepository.save(snsBlock);
-		});
-	}
+		String backgroundImgName = uploadFile(backgroundImgURL);
+		String wallInfoImgName = uploadFile(wallInfoImgURL);
 
-	private void saveTemplateBlock(List<TemplateBlockRequest> subData){
-		subData.forEach(block -> {
-			TemplateBlock templateBlock = TemplateBlockRequest.toEntity(block);
-			templateBlockRepository.save(templateBlock);
-
-			block.getAllAuthIds().forEach(authId -> {
-				MemberGroup memberGroup = memberGroupRepository.getById(authId);
-				Boolean hasAccess = block.getHasAccessTemplateAuth().contains(authId);
-				TemplateAuth templateAuth = new TemplateAuth(memberGroup, hasAccess, templateBlock);
-				templateAuthRepository.save(templateAuth);
-			});
-		});
-	}
-
-	private void saveWallInfoBlock(WallInfoBlockRequest wallInfoBlockRequest) {
-		WallInfoBlock wallInfoBlock = WallInfoBlockRequest.toEntity(wallInfoBlockRequest);
+		WallInfoBlock wallInfoBlock = WallInfoBlockRequest.toEntity(wallInfoBlockRequest, backgroundImgName, wallInfoImgName);
 		wallInfoBlockRepository.save(wallInfoBlock);
 	}
 
@@ -203,6 +181,13 @@ public class SpaceWallService {
 
 	private String uploadFile(MultipartFile file) {
 
+		if (file.isEmpty()) {   // 파일 첨부를 안했을 경우
+			return null;
+		}
+
+		if (file.getOriginalFilename() == null) {   // 이름이 없는 파일일 경우
+			throw new Exception404(ErrorMessage.INVALID_FILE_NAME);
+		}
 		String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename(); // 테스트용
 		String fileUploadPth = getDirectoryPath() + fileName;
 

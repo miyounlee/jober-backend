@@ -164,6 +164,7 @@ public class SpaceWallService {
 							new TypeReference<List<FileBlockSaveRequest>>() {
 							});
 					saveFileBlocks(fileBlockSaveRequests);
+					break;
 				case LIST_BLOCK:
 					List<ListBlockSaveRequest> listBlockRequests = mapper.convertValue(block.getSubData(),
 						new TypeReference<List<ListBlockSaveRequest>>() {

@@ -27,7 +27,7 @@ public class FileBlock {
     @Column(name = "file_description",length = 1000, nullable = false)
     private String fileDescription;
 
-    @Column(name = "file_name", nullable = false)
+    @Column(name = "file_name")
     private String fileName;
 
     @CreatedDate

@@ -1,5 +1,10 @@
 package com.javajober.spaceWall.domain;
 
+import java.util.Arrays;
+
+import com.javajober.core.error.exception.Exception404;
+import com.javajober.core.message.ErrorMessage;
+
 import lombok.Getter;
 
 @Getter
@@ -20,4 +25,10 @@ public enum BlockType {
         this.korTitle = korTitle;
     }
 
+    public static BlockType findBlockTypeByString(String type) {
+        return Arrays.stream(values())
+            .filter(blockType -> blockType.getEngTitle().equals(type))
+            .findAny()
+            .orElseThrow(() -> new Exception404(ErrorMessage.INVALID_BLOCK_TYPE));
+    }
 }

@@ -1,4 +1,4 @@
-package com.javajober.entity;
+package com.javajober.listBlock.domain;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -33,7 +33,7 @@ public class ListBlock {
     private String listDescription;
 
     @Column (name = "is_link", nullable = false)
-    private Boolean isLink;
+    private boolean isLink;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
@@ -49,7 +49,8 @@ public class ListBlock {
     protected ListBlock() {}
 
     @Builder
-    public ListBlock(final String listLabel, final String listTitle, final String listDescription, final Boolean isLink) {
+    public ListBlock(final String listUUID, final String listLabel, final String listTitle, final String listDescription, final boolean isLink) {
+        this.listUUID = listUUID;
         this.listLabel = listLabel;
         this.listTitle = listTitle;
         this.listDescription = listDescription;

@@ -39,7 +39,7 @@ public class FileBlockService {
 
         List<FileBlockSaveRequest> subData = saveRequests.getSubData();
         for (FileBlockSaveRequest saveRequest : subData) {
-            FileBlock fileBlock = FileBlockSaveRequest.toEntity(saveRequest, fileName);
+            FileBlock fileBlock = FileBlockSaveRequest.toEntity(saveRequest);
             fileBlockRepository.save(fileBlock);
         }
     }

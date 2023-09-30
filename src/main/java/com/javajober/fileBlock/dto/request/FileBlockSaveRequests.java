@@ -11,4 +11,7 @@ public class FileBlockSaveRequests {
 
     private FileBlockSaveRequests() {}
 
+    public FileBlockSaveRequests(List<FileBlockSaveRequest> subData) {
+        this.subData = subData;
+    }
 }

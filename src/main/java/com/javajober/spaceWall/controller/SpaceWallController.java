@@ -34,36 +34,13 @@ public class SpaceWallController {
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_TEMPORARY_QUERY_SUCCESS, response));
     }
 
-    @PostMapping(path = "/wall", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> save(@RequestPart(value = "data") final SpaceWallRequest spaceWallRequest,
-                                  @RequestPart(value = "fileName", required = false) List<MultipartFile> files,
-                                  @RequestPart(value = "backgroundImgURL", required = false) MultipartFile backgroundImgURL,
-                                  @RequestPart(value = "wallInfoImgURL", required = false) MultipartFile wallInfoImgURL,
-                                  @RequestPart(value = "styleImgURL", required = false) MultipartFile styleImgURL
-    ) {
+    @PostMapping("/wall")
+    public ResponseEntity<?> save(@RequestBody final SpaceWallRequest spaceWallRequest) {
 
-        validationMultipartFile(files);
-        spaceWallService.save(spaceWallRequest, files, backgroundImgURL, wallInfoImgURL, styleImgURL);
+        spaceWallService.save(spaceWallRequest);
 
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.CREATE_SUCCESS, null));
     }
 
-    private void validationMultipartFile(List<MultipartFile> files) {
 
-        for (MultipartFile file : files) {
-            if (file == null || file.isEmpty()) {
-                throw new Exception404(ErrorMessage.FILE_IS_EMPTY);
-            }
-
-            String originalFilename = file.getOriginalFilename();
-            if (originalFilename == null) {
-                throw new Exception404(ErrorMessage.INVALID_FILE_NAME);
-            }
-
-            int dotIndex = originalFilename.lastIndexOf('.');
-            if (dotIndex < 0 || !(originalFilename.substring(dotIndex + 1).equalsIgnoreCase("pdf"))) {
-                throw new Exception404(ErrorMessage.INVALID_FILE_TYPE);
-            }
-        }
-    }
 }

@@ -19,13 +19,10 @@ public class WallInfoBlockRequest {
 		this.wallInfoDescription = wallInfoDescription;
 	}
 
-	public static WallInfoBlock toEntity(final WallInfoBlockRequest wallInfoBlock, final String backgroundImgName,
-										 final String wallInfoImgName) {
+	public static WallInfoBlock toEntity(final WallInfoBlockRequest wallInfoBlock) {
 		return WallInfoBlock.builder()
 				.wallInfoTitle(wallInfoBlock.getWallInfoTitle())
 				.wallInfoDescription(wallInfoBlock.getWallInfoDescription())
-				.wallInfoBackgroundImageUrl(backgroundImgName)
-				.wallInfoProfileImageUrl(wallInfoImgName)
 				.build();
 	}
 }

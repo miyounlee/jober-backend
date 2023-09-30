@@ -12,11 +12,10 @@ public class FileBlockSaveRequest {
     public FileBlockSaveRequest() {
     }
 
-    public static FileBlock toEntity(FileBlockSaveRequest fileBlockSaveRequest, String fileName) {
+    public static FileBlock toEntity(FileBlockSaveRequest fileBlockSaveRequest) {
         return FileBlock.builder()
                 .fileTitle(fileBlockSaveRequest.getFileTitle())
-                .fileDescription(fileBlockSaveRequest.fileDescription)
-                .fileName(fileName)
+                .fileDescription(fileBlockSaveRequest.getFileDescription())
                 .build();
     }
 }

@@ -60,7 +60,7 @@ public class SpaceWallService {
 	public SpaceWallService(SpaceWallRepository spaceWallRepository, SNSBlockRepository snsBlockRepository,
 							FreeBlockRepository freeBlockRepository, TemplateBlockRepository templateBlockRepository,
 							MemberGroupRepository memberGroupRepository, TemplateAuthRepository templateAuthRepository, WallInfoBlockRepository wallInfoBlockRepository,
-              FileBlockRepository fileBlockRepository, FileDirectoryConfig fileDirectoryConfig) {
+							FileBlockRepository fileBlockRepository, FileDirectoryConfig fileDirectoryConfig) {
 
 		this.spaceWallRepository = spaceWallRepository;
 		this.snsBlockRepository = snsBlockRepository;
@@ -94,12 +94,11 @@ public class SpaceWallService {
 	}
 
 	@Transactional
-	public void save(final SpaceWallRequest spaceWallRequest, final List<MultipartFile> files,
-					 final MultipartFile backgroundImgURL, final MultipartFile wallInfoImgURL, final MultipartFile styleImgURL) {
-    
+	public void save(final SpaceWallRequest spaceWallRequest) {
+
 		WallInfoBlockRequest wallInfoBlockRequest = spaceWallRequest.getData().getWallInfoBlock();
-		saveWallInfoBlock(wallInfoBlockRequest, backgroundImgURL, wallInfoImgURL);
-    
+		saveWallInfoBlock(wallInfoBlockRequest);
+
 		ObjectMapper mapper = new ObjectMapper();
 		AtomicInteger i = new AtomicInteger();
 
@@ -107,38 +106,34 @@ public class SpaceWallService {
 			switch (block.getBlockType()) {
 				case FREE_BLOCK:
 					List<FreeBlockSaveRequest> freeBlockRequests = mapper.convertValue(block.getSubData(),
-						new TypeReference<List<FreeBlockSaveRequest>>() {
-						});
+							new TypeReference<List<FreeBlockSaveRequest>>() {
+							});
 					saveFreeBlocks(freeBlockRequests);
 					break;
 				case SNS_BLOCK:
 					List<SNSBlockRequest> snsBlockRequests = mapper.convertValue(block.getSubData(),
-						new TypeReference<List<SNSBlockRequest>>() {
-						});
+							new TypeReference<List<SNSBlockRequest>>() {
+							});
 					saveSnsBlocks(snsBlockRequests);
 					break;
 				case TEMPLATE_BLOCK:
 					List<TemplateBlockRequest> templateBlockRequests = mapper.convertValue(block.getSubData(),
-						new TypeReference<List<TemplateBlockRequest>>() {
-						});
+							new TypeReference<List<TemplateBlockRequest>>() {
+							});
 					saveTemplateBlock(templateBlockRequests);
 					break;
-       case FILE_BLOCK:
+				case FILE_BLOCK:
 					List<FileBlockSaveRequest> fileBlockSaveRequests = mapper.convertValue(block.getSubData(),
 							new TypeReference<List<FileBlockSaveRequest>>() {
 							});
-					saveFileBlocks(fileBlockSaveRequests, files.get(i.getAndIncrement()));
+					saveFileBlocks(fileBlockSaveRequests);
 			}
 		});
 	}
 
-	private void saveWallInfoBlock(WallInfoBlockRequest wallInfoBlockRequest, MultipartFile backgroundImgURL,
-								   MultipartFile wallInfoImgURL) {
+	private void saveWallInfoBlock(WallInfoBlockRequest wallInfoBlockRequest) {
 
-		String backgroundImgName = uploadFile(backgroundImgURL);
-		String wallInfoImgName = uploadFile(wallInfoImgURL);
-
-		WallInfoBlock wallInfoBlock = WallInfoBlockRequest.toEntity(wallInfoBlockRequest, backgroundImgName, wallInfoImgName);
+		WallInfoBlock wallInfoBlock = WallInfoBlockRequest.toEntity(wallInfoBlockRequest);
 		wallInfoBlockRepository.save(wallInfoBlock);
 	}
 
@@ -170,11 +165,9 @@ public class SpaceWallService {
 		});
 	}
 
-	private void saveFileBlocks(List<FileBlockSaveRequest> subData, MultipartFile file) {
-
-		String fileName = uploadFile(file);
+	private void saveFileBlocks(List<FileBlockSaveRequest> subData) {
 		subData.forEach(block -> {
-			FileBlock fileBlock = FileBlockSaveRequest.toEntity(block, fileName);
+			FileBlock fileBlock = FileBlockSaveRequest.toEntity(block);
 			fileBlockRepository.save(fileBlock);
 		});
 	}
@@ -202,5 +195,24 @@ public class SpaceWallService {
 
 	private String getDirectoryPath() {
 		return fileDirectoryConfig.getDirectoryPath();
+	}
+
+	private void validationPdfMultipartFile(List<MultipartFile> files) {
+
+		for (MultipartFile file : files) {
+			if (file == null || file.isEmpty()) {
+				throw new Exception404(ErrorMessage.FILE_IS_EMPTY);
+			}
+
+			String originalFilename = file.getOriginalFilename();
+			if (originalFilename == null) {
+				throw new Exception404(ErrorMessage.INVALID_FILE_NAME);
+			}
+
+			int dotIndex = originalFilename.lastIndexOf('.');
+			if (dotIndex < 0 || !(originalFilename.substring(dotIndex + 1).equalsIgnoreCase("pdf"))) {
+				throw new Exception404(ErrorMessage.INVALID_FILE_TYPE);
+			}
+		}
 	}
 }

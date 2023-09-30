@@ -1,19 +1,14 @@
 package com.javajober.spaceWall.controller;
 
-import com.javajober.core.error.exception.Exception404;
-import com.javajober.core.message.ErrorMessage;
 import com.javajober.core.message.SuccessMessage;
 import com.javajober.core.util.ApiUtils;
+import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.dto.request.SpaceWallRequest;
 import com.javajober.spaceWall.dto.response.SpaceWallResponse;
 import com.javajober.spaceWall.service.SpaceWallService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 
 @RequestMapping("/api")
@@ -37,10 +32,18 @@ public class SpaceWallController {
     @PostMapping("/wall")
     public ResponseEntity<?> save(@RequestBody final SpaceWallRequest spaceWallRequest) {
 
-        spaceWallService.save(spaceWallRequest);
+        spaceWallService.save(spaceWallRequest, FlagType.SAVED);
 
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.CREATE_SUCCESS, null));
     }
 
+    @PostMapping(path = "/wall-temporary")
+    public ResponseEntity<?> savePending (@RequestBody final SpaceWallRequest spaceWallRequest)
+    {
+
+        spaceWallService.save(spaceWallRequest, FlagType.PENDING);
+
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.CREATE_SUCCESS, null));
+    }
 
 }

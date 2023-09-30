@@ -3,11 +3,13 @@ package com.javajober.spaceWall.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.javajober.addSpace.repository.AddSpaceRepository;
 import com.javajober.core.config.FileDirectoryConfig;
 import com.javajober.core.error.exception.Exception404;
 import com.javajober.core.error.exception.Exception500;
 import com.javajober.core.message.ErrorMessage;
 
+import com.javajober.entity.AddSpace;
 import com.javajober.fileBlock.domain.FileBlock;
 import com.javajober.fileBlock.dto.request.FileBlockSaveRequest;
 import com.javajober.fileBlock.repository.FileBlockRepository;
@@ -17,7 +19,9 @@ import com.javajober.freeBlock.repository.FreeBlockRepository;
 import com.javajober.listBlock.domain.ListBlock;
 import com.javajober.listBlock.dto.ListBlockSaveRequest;
 import com.javajober.listBlock.listBlockRepository.ListBlockRepository;
+import com.javajober.member.domain.Member;
 import com.javajober.member.domain.MemberGroup;
+import com.javajober.member.repository.MemberRepository;
 import com.javajober.setting.domain.BackgroundSetting;
 import com.javajober.setting.domain.BlockSetting;
 import com.javajober.setting.domain.StyleSetting;
@@ -50,6 +54,7 @@ import com.javajober.wallInfoBlock.domain.WallInfoBlock;
 import com.javajober.wallInfoBlock.dto.request.WallInfoBlockRequest;
 import com.javajober.wallInfoBlock.repository.WallInfoBlockRepository;
 
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -78,6 +83,8 @@ public class SpaceWallService {
 	private final BackgroundSettingRepository backgroundSettingRepository;
 	private final BlockSettingRepository blockSettingRepository;
 	private final ThemeSettingRepository themeSettingRepository;
+	private final MemberRepository memberRepository;
+	private final AddSpaceRepository addSpaceRepository;
 
 	public SpaceWallService(SpaceWallRepository spaceWallRepository, SNSBlockRepository snsBlockRepository,
 							FreeBlockRepository freeBlockRepository, TemplateBlockRepository templateBlockRepository,
@@ -85,7 +92,8 @@ public class SpaceWallService {
 							WallInfoBlockRepository wallInfoBlockRepository, FileBlockRepository fileBlockRepository,
 							FileDirectoryConfig fileDirectoryConfig, ListBlockRepository listBlockRepository,
 		StyleSettingRepository styleSettingRepository, BackgroundSettingRepository backgroundSettingRepository,
-		BlockSettingRepository blockSettingRepository, ThemeSettingRepository themeSettingRepository) {
+		BlockSettingRepository blockSettingRepository, ThemeSettingRepository themeSettingRepository,
+		MemberRepository memberRepository, AddSpaceRepository addSpaceRepository) {
 
 		this.spaceWallRepository = spaceWallRepository;
 		this.snsBlockRepository = snsBlockRepository;
@@ -101,6 +109,8 @@ public class SpaceWallService {
 		this.backgroundSettingRepository = backgroundSettingRepository;
 		this.blockSettingRepository = blockSettingRepository;
 		this.themeSettingRepository = themeSettingRepository;
+		this.memberRepository = memberRepository;
+		this.addSpaceRepository = addSpaceRepository;
 	}
 
 	public SpaceWallResponse checkSpaceWallTemporary(Long memberId, Long addSpaceId) {
@@ -124,7 +134,7 @@ public class SpaceWallService {
 	}
 
 	@Transactional
-	public void save(final SpaceWallRequest spaceWallRequest) {
+	public void save(final SpaceWallRequest spaceWallRequest, FlagType flagType) {
 
 		WallInfoBlockRequest wallInfoBlockRequest = spaceWallRequest.getData().getWallInfoBlock();
 		saveWallInfoBlock(wallInfoBlockRequest);
@@ -136,6 +146,9 @@ public class SpaceWallService {
 		AtomicInteger i = new AtomicInteger();
 
 		SpaceWallCategoryType spaceWallCategoryType = SpaceWallCategoryType.findSpaceWallCategoryTypeByString(spaceWallRequest.getData().getCategory());
+
+		AddSpace addSpace = addSpaceRepository.findAddSpace(spaceWallRequest.getData().getAddSpaceId());
+		Member member = memberRepository.findMember(spaceWallRequest.getData().getMemberId());
 
 		spaceWallRequest.getData().getBlocks().forEach(block -> {
 			BlockType blockType = BlockType.findBlockTypeByString(block.getBlockType());

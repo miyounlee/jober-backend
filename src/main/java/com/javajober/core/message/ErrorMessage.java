@@ -28,6 +28,7 @@ public enum ErrorMessage {
 	TEMPLATE_BLOCK_NOT_FOUND("템플릿 블럭을 찾을 수 없습니다."),
 
 	INVALID_BLOCK_TYPE("유효하지 않은 블록 타입입니다."),
+	INVALID_SPACE_WALL_CATEGORY_TYPE("유효하지 않은 카테고리 타입입니다."),
 
 	NOT_FOUND("요청하신 데이터를 찾을 수 없습니다.");
 

@@ -1,4 +1,4 @@
-package com.javajober.entity;
+package com.javajober.spaceWall.domain;
 
 import lombok.Getter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

@@ -1,7 +1,6 @@
 package com.javajober.spaceWall.domain;
 
 import com.javajober.entity.AddSpace;
-import com.javajober.entity.SpaceWallCategoryType;
 import com.javajober.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;

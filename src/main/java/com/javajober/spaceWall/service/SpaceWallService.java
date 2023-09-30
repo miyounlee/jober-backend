@@ -24,6 +24,7 @@ import com.javajober.snsBlock.repository.SNSBlockRepository;
 import com.javajober.spaceWall.domain.BlockType;
 import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.domain.SpaceWall;
+import com.javajober.spaceWall.domain.SpaceWallCategoryType;
 import com.javajober.spaceWall.dto.request.SpaceWallRequest;
 import com.javajober.spaceWall.dto.response.SpaceWallResponse;
 import com.javajober.spaceWall.repository.SpaceWallRepository;
@@ -109,8 +110,11 @@ public class SpaceWallService {
 		ObjectMapper mapper = new ObjectMapper();
 		AtomicInteger i = new AtomicInteger();
 
+		SpaceWallCategoryType spaceWallCategoryType = SpaceWallCategoryType.findSpaceWallCategoryTypeByString(spaceWallRequest.getData().getCategory());
+
 		spaceWallRequest.getData().getBlocks().forEach(block -> {
 			BlockType blockType = BlockType.findBlockTypeByString(block.getBlockType());
+      
 			switch (blockType) {
 				case FREE_BLOCK:
 					List<FreeBlockSaveRequest> freeBlockRequests = mapper.convertValue(block.getSubData(),

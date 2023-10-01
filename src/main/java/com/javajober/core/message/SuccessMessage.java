@@ -9,6 +9,9 @@ public enum SuccessMessage {
 	HOME_SUCCESS("홈 조회를 성공했습니다."),
 	SPACE_WALL_TEMPORARY_QUERY_SUCCESS("임시 저장 조회를 성공했습니다."),
 
+	PERSONAL_SPACE_QUERY_SUCCESS("개인스페이스 조회를 성공했습니다."),
+	ORGANIZATION_SPACE_QUERY_SUCCESS("단체스페이스 조회를 성공했습니다."),
+
 	TEMPLATE_AUTH_SUCCESS("권한설정을 위한 유저정보 조회를 성공했습니다."),
 	TEMPLATE_RECOMMEND_SUCCESS("추천템플릿 조회를 성공했습니다."),
 	TEMPLATE_SEARCH_SUCCESS("템플릿 검색을 성공했습니다."),

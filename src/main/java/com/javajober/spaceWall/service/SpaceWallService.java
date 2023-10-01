@@ -22,7 +22,6 @@ import com.javajober.listBlock.domain.ListBlock;
 import com.javajober.listBlock.dto.ListBlockSaveRequest;
 import com.javajober.listBlock.listBlockRepository.ListBlockRepository;
 import com.javajober.member.domain.Member;
-import com.javajober.member.domain.MemberGroup;
 import com.javajober.member.repository.MemberRepository;
 import com.javajober.setting.domain.BackgroundSetting;
 import com.javajober.setting.domain.BlockSetting;
@@ -47,11 +46,8 @@ import com.javajober.spaceWall.dto.request.BlockRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallRequest;
 import com.javajober.spaceWall.dto.response.SpaceWallResponse;
 import com.javajober.spaceWall.repository.SpaceWallRepository;
-import com.javajober.template.domain.TemplateAuth;
 import com.javajober.template.domain.TemplateBlock;
 import com.javajober.template.dto.TemplateBlockRequest;
-import com.javajober.template.repository.MemberGroupRepository;
-import com.javajober.template.repository.TemplateAuthRepository;
 import com.javajober.template.repository.TemplateBlockRepository;
 import com.javajober.wallInfoBlock.domain.WallInfoBlock;
 import com.javajober.wallInfoBlock.dto.request.WallInfoBlockRequest;
@@ -77,8 +73,6 @@ public class SpaceWallService {
 	private final SNSBlockRepository snsBlockRepository;
 	private final FreeBlockRepository freeBlockRepository;
 	private final TemplateBlockRepository templateBlockRepository;
-	private final MemberGroupRepository memberGroupRepository;
-	private final TemplateAuthRepository templateAuthRepository;
 	private final WallInfoBlockRepository wallInfoBlockRepository;
 	private final FileBlockRepository fileBlockRepository;
 	private final FileDirectoryConfig fileDirectoryConfig;
@@ -92,7 +86,6 @@ public class SpaceWallService {
 
 	public SpaceWallService(SpaceWallRepository spaceWallRepository, SNSBlockRepository snsBlockRepository,
 							FreeBlockRepository freeBlockRepository, TemplateBlockRepository templateBlockRepository,
-							MemberGroupRepository memberGroupRepository, TemplateAuthRepository templateAuthRepository,
 							WallInfoBlockRepository wallInfoBlockRepository, FileBlockRepository fileBlockRepository,
 							FileDirectoryConfig fileDirectoryConfig, ListBlockRepository listBlockRepository,
 		StyleSettingRepository styleSettingRepository, BackgroundSettingRepository backgroundSettingRepository,
@@ -103,8 +96,6 @@ public class SpaceWallService {
 		this.snsBlockRepository = snsBlockRepository;
 		this.freeBlockRepository = freeBlockRepository;
 		this.templateBlockRepository = templateBlockRepository;
-		this.memberGroupRepository = memberGroupRepository;
-		this.templateAuthRepository = templateAuthRepository;
 		this.wallInfoBlockRepository = wallInfoBlockRepository;
 		this.fileBlockRepository = fileBlockRepository;
 		this.fileDirectoryConfig = fileDirectoryConfig;
@@ -239,14 +230,7 @@ public class SpaceWallService {
 
 		subData.forEach(block -> {
 			TemplateBlock templateBlock = TemplateBlockRequest.toEntity(block);
-			templateBlockRepository.save(templateBlock);
-
-			block.getAllAuthIds().forEach(authId -> {
-				MemberGroup memberGroup = memberGroupRepository.getById(authId);
-				Boolean hasAccess = block.getHasAccessTemplateAuth().contains(authId);
-				TemplateAuth templateAuth = new TemplateAuth(memberGroup, hasAccess, templateBlock);
-				templateBlockIds.add(templateAuthRepository.save(templateAuth).getId());
-			});
+			templateBlockIds.add(templateBlockRepository.save(templateBlock).getId());
 		});
 		return templateBlockIds;
 	}

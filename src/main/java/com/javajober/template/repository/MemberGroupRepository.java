@@ -13,6 +13,8 @@ import com.javajober.member.domain.MemberGroup;
 public interface MemberGroupRepository extends Repository<MemberGroup, Long> {
 	List<MemberGroup> findByAddSpaceId(Long addSpaceId);
 
+	List<MemberGroup> findByMemberIdAndAddSpaceId(Long memberId, Long addSpaceId);
+
 	default List<MemberGroup> getByAddSpaceId(final Long addSpaceId) {
 		List<MemberGroup> memberGroups = findByAddSpaceId(addSpaceId);
 

@@ -3,8 +3,9 @@ package com.javajober.space.service;
 import com.javajober.member.domain.MemberGroup;
 import com.javajober.space.dto.MemberGroupResponse;
 import com.javajober.space.dto.SpaceResponse;
-import com.javajober.space.repository.MemberGroupRepository;
-import com.javajober.space.repository.SpaceWallRepository;
+import com.javajober.spaceWall.repository.SpaceWallRepository;
+import com.javajober.template.repository.MemberGroupRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,18 +13,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class SpaceService {
-    private final SpaceWallRepository spaceWallRepo;
-    private final MemberGroupRepository memberGroupRepo;
+    private final SpaceWallRepository spaceWallRepository;
+    private final MemberGroupRepository memberGroupRepository;
 
-    public SpaceService(SpaceWallRepository spaceWallRepo, MemberGroupRepository memberGroupRepo) {
-        this.spaceWallRepo = spaceWallRepo;
-        this.memberGroupRepo = memberGroupRepo;
+    public SpaceService(SpaceWallRepository spaceWallRepository, MemberGroupRepository memberGroupRepository) {
+        this.spaceWallRepository = spaceWallRepository;
+        this.memberGroupRepository = memberGroupRepository;
     }
 
     public SpaceResponse getSpaceDetails(Long memberId, Long addSpaceId) {
-        boolean hasWall = spaceWallRepo.existsByAddSpaceId(addSpaceId);
+        boolean hasWall = spaceWallRepository.existsByAddSpaceId(addSpaceId);
 
-        List<MemberGroup> memberGroups = memberGroupRepo.findByMemberIdAndAddSpaceId(memberId, addSpaceId);
+        List<MemberGroup> memberGroups = memberGroupRepository.findByMemberIdAndAddSpaceId(memberId, addSpaceId);
         List<MemberGroupResponse> list = memberGroups.stream().map(mg ->
                 new MemberGroupResponse(
                         mg.getMember().getId(),

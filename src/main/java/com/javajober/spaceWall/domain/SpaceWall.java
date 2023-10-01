@@ -21,7 +21,7 @@ public class SpaceWall {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "blocks", columnDefinition = "json", nullable = false)
+    @Column(name = "blocks", columnDefinition = "text", nullable = false)
     private String blocks;
 
     @Column(name ="share_url", nullable = false)

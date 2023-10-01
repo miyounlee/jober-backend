@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface FreeBlockRepository extends Repository<FreeBlock, Long> {
 
-    void save(FreeBlock freeBlock);
+    FreeBlock save(FreeBlock freeBlock);
 
     Optional<FreeBlock> findByIdAndDeletedAtIsNull(Long freeId);
 

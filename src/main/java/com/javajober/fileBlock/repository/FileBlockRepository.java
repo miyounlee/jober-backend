@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface FileBlockRepository extends Repository<FileBlock, Long> {
 
-    void save(FileBlock fileBlock);
+    FileBlock save(FileBlock fileBlock);
 
     Optional<FileBlock> findByIdAndDeletedAtIsNull(Long id);
 

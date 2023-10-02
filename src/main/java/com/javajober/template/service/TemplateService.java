@@ -6,25 +6,25 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.javajober.addSpace.repository.AddSpaceRepository;
+import com.javajober.space.repository.AddSpaceRepository;
 import com.javajober.core.error.exception.Exception404;
 import com.javajober.core.message.ErrorMessage;
-import com.javajober.spaceWall.domain.SpaceWallCategory;
+import com.javajober.spaceWallCategory.domain.SpaceWallCategory;
 import com.javajober.member.domain.Member;
-import com.javajober.spaceWall.domain.SpaceWallCategoryType;
-import com.javajober.template.domain.Template;
+import com.javajober.spaceWallCategory.domain.SpaceWallCategoryType;
+import com.javajober.templateBlock.domain.Template;
 import com.javajober.template.domain.TemplateBlock;
-import com.javajober.template.dto.MemberAuthResponse;
-import com.javajober.entity.AddSpace;
-import com.javajober.member.domain.MemberGroup;
-import com.javajober.entity.SpaceType;
+import com.javajober.template.dto.response.MemberAuthResponse;
+import com.javajober.space.domain.AddSpace;
+import com.javajober.memberGroup.domain.MemberGroup;
+import com.javajober.space.domain.SpaceType;
 import com.javajober.template.domain.TemplateAuth;
-import com.javajober.template.dto.TemplateResponse;
-import com.javajober.template.repository.MemberGroupRepository;
-import com.javajober.template.repository.SpaceWallCategoryRepository;
+import com.javajober.templateBlock.dto.response.TemplateResponse;
+import com.javajober.memberGroup.repository.MemberGroupRepository;
+import com.javajober.spaceWallCategory.repository.SpaceWallCategoryRepository;
 import com.javajober.template.repository.TemplateAuthRepository;
 import com.javajober.template.repository.TemplateBlockRepository;
-import com.javajober.template.repository.TemplateRepository;
+import com.javajober.templateBlock.repository.TemplateRepository;
 
 @Service
 public class TemplateService {

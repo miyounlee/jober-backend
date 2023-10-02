@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.javajober.core.message.SuccessMessage;
 import com.javajober.core.util.ApiUtils;
-import com.javajober.spaceWall.domain.SpaceWallCategoryType;
-import com.javajober.template.dto.MemberAuthResponse;
-import com.javajober.entity.SpaceType;
-import com.javajober.template.dto.TemplateResponse;
+import com.javajober.spaceWallCategory.domain.SpaceWallCategoryType;
+import com.javajober.template.dto.response.MemberAuthResponse;
+import com.javajober.space.domain.SpaceType;
+import com.javajober.templateBlock.dto.response.TemplateResponse;
 import com.javajober.template.service.TemplateService;
 
 import lombok.RequiredArgsConstructor;

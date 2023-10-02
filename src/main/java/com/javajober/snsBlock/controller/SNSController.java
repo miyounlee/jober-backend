@@ -2,7 +2,6 @@ package com.javajober.snsBlock.controller;
 
 import java.util.List;
 
-import com.javajober.snsBlock.dto.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.javajober.core.message.SuccessMessage;
 import com.javajober.core.util.ApiUtils;
+import com.javajober.snsBlock.dto.request.SNSBlockDeleteRequest;
+import com.javajober.snsBlock.dto.request.SNSBlockRequest;
+import com.javajober.snsBlock.dto.request.SNSBlockRequests;
+import com.javajober.snsBlock.dto.request.SNSBlockUpdateRequest;
+import com.javajober.snsBlock.dto.response.SNSBlockResponses;
 import com.javajober.snsBlock.service.SNSBlockService;
 
 @RequestMapping("/api/wall/sns/blocks")

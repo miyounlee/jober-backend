@@ -7,12 +7,12 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.javajober.member.domain.Member;
-import com.javajober.entity.SpaceType;
+import com.javajober.space.domain.SpaceType;
 
-import com.javajober.home.dto.AddSpaceResponse;
-import com.javajober.home.dto.HomeResponse;
-import com.javajober.home.dto.MemberResponse;
-import com.javajober.addSpace.repository.AddSpaceRepository;
+import com.javajober.home.dto.response.AddSpaceResponse;
+import com.javajober.home.dto.response.HomeResponse;
+import com.javajober.home.dto.response.MemberResponse;
+import com.javajober.space.repository.AddSpaceRepository;
 import com.javajober.member.repository.MemberRepository;
 
 @Service

@@ -7,16 +7,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.javajober.member.domain.MemberGroup;
+import com.javajober.memberGroup.domain.MemberGroup;
 import com.javajober.template.domain.TemplateAuth;
 import com.javajober.template.domain.TemplateBlock;
-import com.javajober.template.dto.TemplateBlockDeleteRequest;
-import com.javajober.template.dto.TemplateBlockRequest;
-import com.javajober.template.dto.TemplateBlockRequests;
-import com.javajober.template.dto.TemplateBlockResponse;
-import com.javajober.template.dto.TemplateBlockResponses;
-import com.javajober.template.dto.TemplateBlockUpdateRequest;
-import com.javajober.template.repository.MemberGroupRepository;
+import com.javajober.template.dto.request.TemplateBlockDeleteRequest;
+import com.javajober.template.dto.request.TemplateBlockRequest;
+import com.javajober.template.dto.request.TemplateBlockRequests;
+import com.javajober.template.dto.response.TemplateBlockResponse;
+import com.javajober.template.dto.response.TemplateBlockResponses;
+import com.javajober.template.dto.request.TemplateBlockUpdateRequest;
+import com.javajober.memberGroup.repository.MemberGroupRepository;
 import com.javajober.template.repository.TemplateAuthRepository;
 import com.javajober.template.repository.TemplateBlockRepository;
 

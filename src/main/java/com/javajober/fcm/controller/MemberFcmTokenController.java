@@ -1,6 +1,6 @@
 package com.javajober.fcm.controller;
 
-import com.javajober.fcm.dto.MemberFcmTokenRequest;
+import com.javajober.fcm.dto.request.MemberFcmTokenRequest;
 import com.javajober.fcm.service.MemberFcmTokenService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.javajober.core.message.SuccessMessage;
 import com.javajober.core.util.ApiUtils;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/fcm-token")

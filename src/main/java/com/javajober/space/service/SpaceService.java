@@ -1,10 +1,10 @@
 package com.javajober.space.service;
 
-import com.javajober.member.domain.MemberGroup;
-import com.javajober.space.dto.MemberGroupResponse;
-import com.javajober.space.dto.SpaceResponse;
+import com.javajober.memberGroup.domain.MemberGroup;
+import com.javajober.space.dto.response.MemberGroupResponse;
+import com.javajober.space.dto.response.SpaceResponse;
 import com.javajober.spaceWall.repository.SpaceWallRepository;
-import com.javajober.template.repository.MemberGroupRepository;
+import com.javajober.memberGroup.repository.MemberGroupRepository;
 
 import org.springframework.stereotype.Service;
 

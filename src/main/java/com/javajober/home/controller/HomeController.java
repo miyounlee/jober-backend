@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.javajober.core.message.SuccessMessage;
 import com.javajober.core.util.ApiUtils;
-import com.javajober.home.dto.HomeResponse;
+import com.javajober.home.dto.response.HomeResponse;
 import com.javajober.home.service.HomeService;
 
 @RestController

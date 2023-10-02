@@ -3,13 +3,18 @@ package com.javajober.snsBlock.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.javajober.snsBlock.dto.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.javajober.snsBlock.domain.SNSBlock;
 import com.javajober.snsBlock.domain.SNSType;
+import com.javajober.snsBlock.dto.request.SNSBlockDeleteRequest;
+import com.javajober.snsBlock.dto.request.SNSBlockRequest;
+import com.javajober.snsBlock.dto.request.SNSBlockRequests;
+import com.javajober.snsBlock.dto.request.SNSBlockUpdateRequest;
+import com.javajober.snsBlock.dto.response.SNSBlockResponse;
+import com.javajober.snsBlock.dto.response.SNSBlockResponses;
 import com.javajober.snsBlock.repository.SNSBlockRepository;
 
 @Service

@@ -2,8 +2,8 @@ package com.javajober.space.controller;
 
 import com.javajober.core.message.SuccessMessage;
 import com.javajober.core.util.ApiUtils;
-import com.javajober.entity.SpaceType;
-import com.javajober.space.dto.SpaceResponse;
+import com.javajober.space.domain.SpaceType;
+import com.javajober.space.dto.response.SpaceResponse;
 import com.javajober.space.service.SpaceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

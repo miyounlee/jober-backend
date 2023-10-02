@@ -1,7 +1,7 @@
 package com.javajober.fcm.service;
 
 import com.javajober.fcm.domain.Subscription;
-import com.javajober.fcm.dto.SubscriptionRequest;
+import com.javajober.fcm.dto.request.SubscriptionRequest;
 import com.javajober.fcm.repository.SubscriptionRepository;
 import com.javajober.member.domain.Member;
 import com.javajober.member.repository.MemberRepository;

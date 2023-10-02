@@ -1,7 +1,9 @@
 package com.javajober.spaceWall.domain;
 
-import com.javajober.entity.AddSpace;
+import com.javajober.space.domain.AddSpace;
 import com.javajober.member.domain.Member;
+import com.javajober.spaceWallCategory.domain.SpaceWallCategoryType;
+
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

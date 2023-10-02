@@ -2,7 +2,7 @@ package com.javajober.fcm.service;
 
 import com.javajober.member.domain.Member;
 import com.javajober.fcm.domain.MemberFcmToken;
-import com.javajober.fcm.dto.MemberFcmTokenRequest;
+import com.javajober.fcm.dto.request.MemberFcmTokenRequest;
 import com.javajober.fcm.repository.MemberFcmTokenRepository;
 import com.javajober.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;

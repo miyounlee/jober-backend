@@ -2,7 +2,7 @@ package com.javajober.spaceWall.dto.request;
 
 import java.util.List;
 
-import com.javajober.setting.dto.StyleSettingSaveRequest;
+import com.javajober.styleSetting.dto.request.StyleSettingSaveRequest;
 import com.javajober.wallInfoBlock.dto.request.WallInfoBlockRequest;
 import lombok.Getter;
 

@@ -44,7 +44,7 @@ import com.javajober.spaceWall.domain.SpaceWall;
 import com.javajober.spaceWallCategory.domain.SpaceWallCategoryType;
 import com.javajober.spaceWall.dto.request.BlockRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallRequest;
-import com.javajober.spaceWall.dto.response.SpaceWallResponse;
+import com.javajober.spaceWall.dto.response.SpaceWallTemporaryResponse;
 import com.javajober.spaceWall.repository.SpaceWallRepository;
 import com.javajober.templateBlock.domain.TemplateBlock;
 import com.javajober.templateBlock.dto.request.TemplateBlockRequest;
@@ -108,24 +108,24 @@ public class SpaceWallService {
 		this.addSpaceRepository = addSpaceRepository;
 	}
 
-	public SpaceWallResponse checkSpaceWallTemporary(Long memberId, Long addSpaceId) {
+	public SpaceWallTemporaryResponse checkSpaceWallTemporary(Long memberId, Long addSpaceId) {
 
 		List<SpaceWall> spaceWalls = spaceWallRepository.findSpaceWalls(memberId, addSpaceId);
 
 		if (spaceWalls == null || spaceWalls.isEmpty()) {
-			return new SpaceWallResponse(null, false);
+			return new SpaceWallTemporaryResponse(null, false);
 		}
 
 		for (SpaceWall spaceWall : spaceWalls) {
 			if (spaceWall.getFlag().equals(FlagType.PENDING) && spaceWall.getDeletedAt() == null) {
-				return new SpaceWallResponse(spaceWall.getId(), true);
+				return new SpaceWallTemporaryResponse(spaceWall.getId(), true);
 			}
 			if (spaceWall.getFlag().equals(FlagType.SAVED) && spaceWall.getDeletedAt() == null) {
 				throw new Exception404(ErrorMessage.SAVED_SPACE_WALL_ALREADY_EXISTS);
 			}
 		}
 
-		return new SpaceWallResponse(null, false);
+		return new SpaceWallTemporaryResponse(null, false);
 	}
 
 	@Transactional
@@ -286,9 +286,9 @@ public class SpaceWallService {
 		ObjectNode blockInfoObject = jsonMapper.createObjectNode();
 
 		blockInfoObject.put("position", position);
-		blockInfoObject.put("block_type", currentBlockTypeTitle);
-		blockInfoObject.put("block_id", blockId);
-		blockInfoObject.put("block_UUID", blockUUID);
+		blockInfoObject.put("blockType", currentBlockTypeTitle);
+		blockInfoObject.put("blockId", blockId);
+		blockInfoObject.put("blockUUID", blockUUID);
 
 		blockInfoArray.add(blockInfoObject);
 	}

@@ -1,9 +1,9 @@
-package com.javajober.template.dto.response;
+package com.javajober.templateBlock.dto.response;
 
 
 import java.util.List;
 
-import com.javajober.template.domain.TemplateBlock;
+import com.javajober.templateBlock.domain.TemplateBlock;
 
 import lombok.Builder;
 import lombok.Getter;

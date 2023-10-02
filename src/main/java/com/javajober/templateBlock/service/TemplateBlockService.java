@@ -1,4 +1,4 @@
-package com.javajober.template.service;
+package com.javajober.templateBlock.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.javajober.memberGroup.domain.MemberGroup;
 import com.javajober.template.domain.TemplateAuth;
-import com.javajober.template.domain.TemplateBlock;
-import com.javajober.template.dto.request.TemplateBlockDeleteRequest;
-import com.javajober.template.dto.request.TemplateBlockRequest;
-import com.javajober.template.dto.request.TemplateBlockRequests;
-import com.javajober.template.dto.response.TemplateBlockResponse;
-import com.javajober.template.dto.response.TemplateBlockResponses;
-import com.javajober.template.dto.request.TemplateBlockUpdateRequest;
+import com.javajober.templateBlock.domain.TemplateBlock;
+import com.javajober.templateBlock.dto.request.TemplateBlockDeleteRequest;
+import com.javajober.templateBlock.dto.request.TemplateBlockRequest;
+import com.javajober.templateBlock.dto.request.TemplateBlockRequests;
+import com.javajober.templateBlock.dto.response.TemplateBlockResponse;
+import com.javajober.templateBlock.dto.response.TemplateBlockResponses;
+import com.javajober.templateBlock.dto.request.TemplateBlockUpdateRequest;
 import com.javajober.memberGroup.repository.MemberGroupRepository;
 import com.javajober.template.repository.TemplateAuthRepository;
-import com.javajober.template.repository.TemplateBlockRepository;
+import com.javajober.templateBlock.repository.TemplateBlockRepository;
 
 @Service
 public class TemplateBlockService {

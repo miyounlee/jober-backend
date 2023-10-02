@@ -12,7 +12,7 @@ import com.javajober.core.util.ApiUtils;
 import com.javajober.spaceWallCategory.domain.SpaceWallCategoryType;
 import com.javajober.template.dto.response.MemberAuthResponse;
 import com.javajober.space.domain.SpaceType;
-import com.javajober.templateBlock.dto.response.TemplateResponse;
+import com.javajober.template.dto.response.TemplateResponse;
 import com.javajober.template.service.TemplateService;
 
 import lombok.RequiredArgsConstructor;

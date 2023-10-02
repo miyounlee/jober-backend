@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.javajober.core.message.SuccessMessage;
 import com.javajober.core.util.ApiUtils;
-import com.javajober.template.dto.request.TemplateBlockDeleteRequest;
-import com.javajober.template.dto.request.TemplateBlockRequest;
-import com.javajober.template.dto.request.TemplateBlockRequests;
-import com.javajober.template.dto.response.TemplateBlockResponses;
-import com.javajober.template.dto.request.TemplateBlockUpdateRequest;
-import com.javajober.template.service.TemplateBlockService;
+import com.javajober.templateBlock.dto.request.TemplateBlockDeleteRequest;
+import com.javajober.templateBlock.dto.request.TemplateBlockRequest;
+import com.javajober.templateBlock.dto.request.TemplateBlockRequests;
+import com.javajober.templateBlock.dto.response.TemplateBlockResponses;
+import com.javajober.templateBlock.dto.request.TemplateBlockUpdateRequest;
+import com.javajober.templateBlock.service.TemplateBlockService;
 
 @RequestMapping("/api/wall/templateBlocks")
 @RestController

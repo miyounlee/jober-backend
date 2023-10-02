@@ -6,7 +6,7 @@ import java.util.Optional;
 import com.javajober.core.error.exception.Exception404;
 import com.javajober.core.message.ErrorMessage;
 import com.javajober.template.domain.TemplateAuth;
-import com.javajober.template.domain.TemplateBlock;
+import com.javajober.templateBlock.domain.TemplateBlock;
 
 import org.springframework.data.repository.Repository;
 

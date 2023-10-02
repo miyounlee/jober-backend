@@ -1,4 +1,4 @@
-package com.javajober.templateBlock.repository;
+package com.javajober.template.repository;
 
 
 import java.util.List;
@@ -8,7 +8,7 @@ import org.springframework.data.repository.Repository;
 import com.javajober.core.error.exception.Exception404;
 import com.javajober.core.message.ErrorMessage;
 import com.javajober.spaceWallCategory.domain.SpaceWallCategoryType;
-import com.javajober.templateBlock.domain.Template;
+import com.javajober.template.domain.Template;
 
 public interface TemplateRepository extends Repository<Template, Long> {
 

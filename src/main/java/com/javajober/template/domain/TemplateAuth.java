@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 import com.javajober.memberGroup.domain.MemberGroup;
+import com.javajober.templateBlock.domain.TemplateBlock;
 
 @Getter
 @Table(name = "template_auth")

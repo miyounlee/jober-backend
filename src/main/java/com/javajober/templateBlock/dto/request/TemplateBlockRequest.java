@@ -1,11 +1,11 @@
-package com.javajober.template.dto.request;
+package com.javajober.templateBlock.dto.request;
 
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.javajober.template.domain.TemplateBlock;
+import com.javajober.templateBlock.domain.TemplateBlock;
 
 import lombok.Getter;
 

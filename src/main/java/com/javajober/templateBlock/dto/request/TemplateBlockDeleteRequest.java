@@ -1,4 +1,4 @@
-package com.javajober.template.dto.request;
+package com.javajober.templateBlock.dto.request;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.javajober.template.domain;
+package com.javajober.templateBlock.domain;
 
 import lombok.Builder;
 import lombok.Getter;

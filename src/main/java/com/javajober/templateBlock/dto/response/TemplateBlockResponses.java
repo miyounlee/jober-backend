@@ -1,4 +1,4 @@
-package com.javajober.template.dto.response;
+package com.javajober.templateBlock.dto.response;
 
 import java.util.List;
 

@@ -80,9 +80,7 @@ public class TemplateService {
 	@Transactional
 	public TemplateResponse getTemplateRecommend(SpaceWallCategoryType spaceWallCategoryType) {
 
-		SpaceWallCategory spaceWallCategory = spaceWallCategoryRepository.getBySpaceWallCategory(spaceWallCategoryType);
-
-		List<Template> templates = templateRepository.getBySpaceWallCategoryId(spaceWallCategory.getId());
+		List<Template> templates = templateRepository.getBySpaceWallCategory(spaceWallCategoryType);
 
 		List<TemplateResponse.TemplateInfo> templateInfos = new ArrayList<>();
 

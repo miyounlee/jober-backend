@@ -7,14 +7,15 @@ import org.springframework.data.repository.Repository;
 
 import com.javajober.core.error.exception.Exception404;
 import com.javajober.core.message.ErrorMessage;
+import com.javajober.spaceWallCategory.domain.SpaceWallCategoryType;
 import com.javajober.templateBlock.domain.Template;
 
 public interface TemplateRepository extends Repository<Template, Long> {
 
-	List<Template> findBySpaceWallCategoryId(Long templateCategoryId);
+	List<Template> findBySpaceWallCategory(SpaceWallCategoryType categoryType);
 
-	default List<Template> getBySpaceWallCategoryId(final Long templateCategoryId){
-		List<Template> templates = findBySpaceWallCategoryId(templateCategoryId);
+	default List<Template> getBySpaceWallCategory(final SpaceWallCategoryType categoryType){
+		List<Template> templates = findBySpaceWallCategory(categoryType);
 
 		if(templates == null || templates.isEmpty()){
 			throw new Exception404(ErrorMessage.TEMPLATE_RECOMMEND_NOT_FOUND);

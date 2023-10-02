@@ -7,22 +7,22 @@ import lombok.Getter;
 @Getter
 public class WallInfoBlockRequest {
 
-	private String wallInfoTitle;
-	private String wallInfoDescription;
+    private String wallInfoTitle;
+    private String wallInfoDescription;
 
-	private WallInfoBlockRequest() {
+    private WallInfoBlockRequest() {
 
-	}
+    }
 
-	public WallInfoBlockRequest(final String wallInfoTitle, final String wallInfoDescription) {
-		this.wallInfoTitle = wallInfoTitle;
-		this.wallInfoDescription = wallInfoDescription;
-	}
+    public WallInfoBlockRequest(final String wallInfoTitle, final String wallInfoDescription) {
+        this.wallInfoTitle = wallInfoTitle;
+        this.wallInfoDescription = wallInfoDescription;
+    }
 
-	public static WallInfoBlock toEntity(final WallInfoBlockRequest wallInfoBlock) {
-		return WallInfoBlock.builder()
-				.wallInfoTitle(wallInfoBlock.getWallInfoTitle())
-				.wallInfoDescription(wallInfoBlock.getWallInfoDescription())
-				.build();
-	}
+    public static WallInfoBlock toEntity(final WallInfoBlockRequest wallInfoBlock) {
+        return WallInfoBlock.builder()
+                .wallInfoTitle(wallInfoBlock.getWallInfoTitle())
+                .wallInfoDescription(wallInfoBlock.getWallInfoDescription())
+                .build();
+    }
 }

@@ -22,4 +22,12 @@ public class BlockResponse<T extends CommonResponse> {
         this.subData = subData;
     }
 
+    public static BlockResponse<CommonResponse> from(final String blockUUID, final String blockType, final List<CommonResponse> subData) {
+        return BlockResponse.builder()
+                .blockUUID(blockUUID)
+                .blockType(blockType)
+                .subData(subData)
+                .build();
+    }
+
 }

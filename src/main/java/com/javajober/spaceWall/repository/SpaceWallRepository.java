@@ -1,5 +1,6 @@
 package com.javajober.spaceWall.repository;
 
+import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.domain.SpaceWall;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
@@ -39,5 +40,12 @@ public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
     Optional<SpaceWall> findById(Long spaceWallId);
 
     SpaceWall deleteById(Long spaceWallId);
+
+    Optional<SpaceWall> findByIdAndAddSpaceIdAndMemberIdAndFlag(Long id, Long addSpaceId, Long memberId, FlagType flag);
+
+    default SpaceWall findSpaceWall(Long id, Long addSpaceId, Long memberId, FlagType flag) {
+        return findByIdAndAddSpaceIdAndMemberIdAndFlag(id, addSpaceId, memberId, flag)
+                .orElseThrow(() -> new Exception404(ErrorMessage.SPACE_WALL_NOT_FOUND));
+    }
 
 }

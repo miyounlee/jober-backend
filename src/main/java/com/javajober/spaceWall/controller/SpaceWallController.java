@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javajober.core.message.SuccessMessage;
 import com.javajober.core.util.ApiUtils;
 import com.javajober.spaceWall.domain.FlagType;
+import com.javajober.spaceWall.dto.request.DeleteTemporaryRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallRequest;
 import com.javajober.spaceWall.dto.response.SpaceWallResponse;
 import com.javajober.spaceWall.dto.response.SpaceWallTemporaryResponse;
@@ -63,10 +64,10 @@ public class SpaceWallController {
     }
 
     @PutMapping("/wall-temporary")
-    public ResponseEntity<ApiUtils.ApiResponse> deleteTemporary(@RequestBody final SpaceWallRequest spaceWallRequest) {
+    public ResponseEntity<ApiUtils.ApiResponse> deleteTemporary(@RequestBody DeleteTemporaryRequest deleteTemporaryRequest) {
 
-        Long memberId = spaceWallRequest.getData().getMemberId();
-        Long addSpaceId = spaceWallRequest.getData().getAddSpaceId();
+        Long memberId = deleteTemporaryRequest.getMemberId();
+        Long addSpaceId = deleteTemporaryRequest.getAddSpaceId();
 
         spaceWallTemporaryService.deleteTemporary(memberId, addSpaceId);
 

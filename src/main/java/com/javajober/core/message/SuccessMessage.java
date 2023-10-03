@@ -7,7 +7,8 @@ public enum SuccessMessage {
 
 
 	HOME_SUCCESS("홈 조회를 성공했습니다."),
-	SPACE_WALL_TEMPORARY_QUERY_SUCCESS("임시 저장 조회를 성공했습니다."),
+	SPACE_WALL_TEMPORARY_READ_SUCCESS("임시 저장 조회를 성공했습니다."),
+	SPACE_WALL_READ_SUCCESS("공유페이지 조회를 성공했습니다."),
 
 	PERSONAL_SPACE_QUERY_SUCCESS("개인스페이스 조회를 성공했습니다."),
 	ORGANIZATION_SPACE_QUERY_SUCCESS("단체스페이스 조회를 성공했습니다."),

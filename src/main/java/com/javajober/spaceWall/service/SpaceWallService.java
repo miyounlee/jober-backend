@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.javajober.fileBlock.dto.request.FileBlockUpdateRequest;
 import com.javajober.freeBlock.dto.request.FreeBlockUpdateRequest;
 import com.javajober.listBlock.dto.request.ListBlockUpdateRequest;
-import com.javajober.memberGroup.domain.MemberGroup;
 import com.javajober.snsBlock.domain.SNSType;
 import com.javajober.snsBlock.dto.request.SNSBlockUpdateRequest;
 import com.javajober.space.repository.AddSpaceRepository;
@@ -34,7 +33,6 @@ import com.javajober.backgroundSetting.domain.BackgroundSetting;
 import com.javajober.blockSetting.domain.BlockSetting;
 import com.javajober.spaceWall.dto.request.SpaceWallUpdateRequest;
 import com.javajober.styleSetting.domain.StyleSetting;
-import com.javajober.template.domain.TemplateAuth;
 import com.javajober.templateBlock.dto.request.TemplateBlockUpdateRequest;
 import com.javajober.themeSetting.domain.ThemeSetting;
 import com.javajober.backgroundSetting.dto.request.BackgroundSettingSaveRequest;
@@ -150,6 +148,7 @@ public class SpaceWallService {
 		AtomicLong blocksPositionCounter = new AtomicLong(blocksPosition);
 		ObjectMapper jsonMapper = new ObjectMapper();
 		ArrayNode blockInfoArray = jsonMapper.createArrayNode();
+		AtomicInteger i = new AtomicInteger();
 
 		WallInfoBlockRequest wallInfoBlockRequest = spaceWallRequest.getData().getWallInfoBlock();
 		Long wallInfoBlock = saveWallInfoBlock(wallInfoBlockRequest);
@@ -358,7 +357,7 @@ public class SpaceWallService {
 	private List<Long> updateFreeBlocks(List<FreeBlockUpdateRequest> subData) {
 		List<Long> updatedFreeBlockIds = new ArrayList<>();
 		for (FreeBlockUpdateRequest updateRequest : subData) {
-			FreeBlock freeBlockPS = freeBlockRepository.getById(updateRequest.getFreeId());
+			FreeBlock freeBlockPS = freeBlockRepository.findFreeBlock(updateRequest.getFreeId());
 			FreeBlock freeBlock = FreeBlockUpdateRequest.toEntity(updateRequest);
 			freeBlockPS.update(freeBlock);
 			updatedFreeBlockIds.add(freeBlockRepository.save(freeBlockPS).getId());
@@ -386,7 +385,7 @@ public class SpaceWallService {
 		List<Long> updateTemplateBlockIds = new ArrayList<>();
 		for(TemplateBlockUpdateRequest templateBlockRequest : subData){
 
-			TemplateBlock templateBlock = templateBlockRepository.getById(templateBlockRequest.getId());
+			TemplateBlock templateBlock = templateBlockRepository.findTemplateBlock(templateBlockRequest.getId());
 			templateBlock.update(templateBlockRequest.getTemplateUUID(), templateBlockRequest.getTemplateTitle(), templateBlockRequest.getTemplateDescription());
 
 			updateTemplateBlockIds.add(templateBlockRepository.save(templateBlock).getId());
@@ -397,11 +396,11 @@ public class SpaceWallService {
 	private List<Long> updateFileBlocks(List<FileBlockUpdateRequest> subData) {
 		List<Long> updateFileBlockIds = new ArrayList<>();
 		for (FileBlockUpdateRequest fileBlockUpdateRequest : subData) {
-			FileBlock fileBlockPS = fileBlockRepository.getById(fileBlockUpdateRequest.getFileId());
+			FileBlock fileBlockPS = fileBlockRepository.findFileBlock(fileBlockUpdateRequest.getFileId());
 			//String fileNamePS = fileBlockPS.getFileName();
 			//deleteFile(fileNamePS);
 			//String fileName = uploadFile(file);
-			FileBlock fileBlock = FileBlockUpdateRequest.toEntity(fileBlockUpdateRequest);
+			FileBlock fileBlock = FileBlockUpdateRequest.toEntity(fileBlockUpdateRequest, fileBlockPS.getFileName());
 			fileBlockPS.update(fileBlock);
 
 			fileBlockRepository.save(fileBlockPS);

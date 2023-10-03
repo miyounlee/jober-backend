@@ -9,6 +9,7 @@ import com.javajober.spaceWall.dto.response.SpaceWallResponse;
 import com.javajober.spaceWall.dto.response.SpaceWallTemporaryResponse;
 import com.javajober.spaceWall.service.SpaceWallFindService;
 import com.javajober.spaceWall.service.SpaceWallService;
+import com.javajober.spaceWall.service.SpaceWallTemporaryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +21,12 @@ public class SpaceWallController {
 
     private final SpaceWallService spaceWallService;
     private final SpaceWallFindService spaceWallFindService;
+    private final SpaceWallTemporaryService spaceWallTemporaryService;
 
-    public SpaceWallController(final SpaceWallService spaceWallService, final SpaceWallFindService spaceWallFindService) {
+    public SpaceWallController(final SpaceWallService spaceWallService, final SpaceWallFindService spaceWallFindService, final SpaceWallTemporaryService spaceWallTemporaryService) {
         this.spaceWallService = spaceWallService;
         this.spaceWallFindService = spaceWallFindService;
+        this.spaceWallTemporaryService = spaceWallTemporaryService;
     }
 
     @GetMapping("/wall-temporary/storage/{memberId}/{addSpaceId}")
@@ -59,4 +62,14 @@ public class SpaceWallController {
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_READ_SUCCESS, data));
     }
 
+    @PutMapping("/wall-temporary")
+    public ResponseEntity<ApiUtils.ApiResponse> deleteTemporary(@RequestBody final SpaceWallRequest spaceWallRequest) {
+
+        Long memberId = spaceWallRequest.getData().getMemberId();
+        Long addSpaceId = spaceWallRequest.getData().getAddSpaceId();
+
+        spaceWallTemporaryService.deleteTemporary(memberId, addSpaceId);
+
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_TEMPORARY_DELETE_SUCCESS, null));
+    }
 }

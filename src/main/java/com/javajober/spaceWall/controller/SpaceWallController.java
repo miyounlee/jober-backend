@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javajober.core.message.SuccessMessage;
 import com.javajober.core.util.ApiUtils;
 import com.javajober.spaceWall.domain.FlagType;
+import com.javajober.spaceWall.dto.request.DeleteTemporaryRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallUpdateRequest;
 import com.javajober.spaceWall.dto.response.SpaceWallResponse;
@@ -33,7 +34,7 @@ public class SpaceWallController {
     @GetMapping("/wall-temporary/storage/{memberId}/{addSpaceId}")
     public ResponseEntity<ApiUtils.ApiResponse<SpaceWallTemporaryResponse>> checkSpaceWallTemporary(@PathVariable Long memberId, @PathVariable Long addSpaceId) {
 
-        SpaceWallTemporaryResponse response = spaceWallService.checkSpaceWallTemporary(memberId, addSpaceId);
+        SpaceWallTemporaryResponse response = spaceWallTemporaryService.checkSpaceWallTemporary(memberId, addSpaceId);
 
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_TEMPORARY_READ_SUCCESS, response));
     }
@@ -80,10 +81,10 @@ public class SpaceWallController {
     }
 
     @PutMapping("/wall-temporary")
-    public ResponseEntity<ApiUtils.ApiResponse> deleteTemporary(@RequestBody final SpaceWallRequest spaceWallRequest) {
+    public ResponseEntity<ApiUtils.ApiResponse> deleteTemporary(@RequestBody final DeleteTemporaryRequest deleteTemporaryRequest) {
 
-        Long memberId = spaceWallRequest.getData().getMemberId();
-        Long addSpaceId = spaceWallRequest.getData().getAddSpaceId();
+        Long memberId = deleteTemporaryRequest.getMemberId();
+        Long addSpaceId = deleteTemporaryRequest.getAddSpaceId();
 
         spaceWallTemporaryService.deleteTemporary(memberId, addSpaceId);
 

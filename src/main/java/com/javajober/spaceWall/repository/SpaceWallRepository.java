@@ -26,7 +26,7 @@ public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
     default List<SpaceWall> findSpaceWallsOrThrow(final Long memberId, final Long addSpaceId) {
         List<SpaceWall> spaceWalls = findSpaceWalls(memberId, addSpaceId);
         if (spaceWalls.isEmpty()) {
-            throw new Exception404(ErrorMessage.NOT_FOUND);
+            throw new Exception404(ErrorMessage.SPACE_WALL_TEMPORARY_NOT_FOUND);
         }
         return spaceWalls;
     }

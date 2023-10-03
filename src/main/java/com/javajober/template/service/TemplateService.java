@@ -56,7 +56,7 @@ public class TemplateService {
 
 		List<MemberGroup> memberGroups = memberGroupRepository.getByAddSpaceId(addSpace.getId());
 
-		TemplateBlock templateBlock = templateBlockRepository.getById(templateBlockID);
+		TemplateBlock templateBlock = templateBlockRepository.findTemplateBlock(templateBlockID);
 
 		List<MemberAuthResponse.MemberInfo> memberInfos = new ArrayList<>();
 

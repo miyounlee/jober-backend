@@ -19,7 +19,7 @@ public interface TemplateBlockRepository extends Repository<TemplateBlock, Long>
 
 	Optional<TemplateBlock> findById(Long id);
 
-	default TemplateBlock getById(final Long id){
+	default TemplateBlock findTemplateBlock(final Long id){
 		return findById(id)
 			.orElseThrow(() -> new Exception404(ErrorMessage.TEMPLATE_BLOCK_NOT_FOUND));
 	}

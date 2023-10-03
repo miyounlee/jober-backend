@@ -13,7 +13,7 @@ public interface FreeBlockRepository extends Repository<FreeBlock, Long> {
 
     Optional<FreeBlock> findByIdAndDeletedAtIsNull(Long freeId);
 
-    default FreeBlock getById(final Long freeId) {
+    default FreeBlock findFreeBlock(final Long freeId) {
         return findByIdAndDeletedAtIsNull(freeId)
                 .orElseThrow(() -> new Exception404(ErrorMessage.FREE_BLOCK_NOT_FOUND));
     }

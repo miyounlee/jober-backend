@@ -64,7 +64,7 @@ public class SpaceWallController {
     }
 
     @PutMapping("/wall-temporary")
-    public ResponseEntity<ApiUtils.ApiResponse> deleteTemporary(@RequestBody DeleteTemporaryRequest deleteTemporaryRequest) {
+    public ResponseEntity<ApiUtils.ApiResponse> deleteTemporary(@RequestBody final DeleteTemporaryRequest deleteTemporaryRequest) {
 
         Long memberId = deleteTemporaryRequest.getMemberId();
         Long addSpaceId = deleteTemporaryRequest.getAddSpaceId();

@@ -48,7 +48,7 @@ public class FileBlockService {
 
         List<FileBlockResponse> fileBlockResponses = new ArrayList<>();
         for (Long fileId : fileIds) {
-            FileBlock fileBlock = fileBlockRepository.getById(fileId);
+            FileBlock fileBlock = fileBlockRepository.findFileBlock(fileId);
             FileBlockResponse response = FileBlockResponse.from(fileBlock);
             fileBlockResponses.add(response);
         }
@@ -63,12 +63,12 @@ public class FileBlockService {
 
         for (FileBlockUpdateRequest updateRequest : subData) {
 
-            FileBlock fileBlockPS = fileBlockRepository.getById(updateRequest.getFileId());
+            FileBlock fileBlockPS = fileBlockRepository.findFileBlock(updateRequest.getFileId());
             String fileNamePS = fileBlockPS.getFileName();
             deleteFile(fileNamePS);
 
             String fileName = uploadFile(file);
-            FileBlock fileBlock = FileBlockUpdateRequest.toEntity(updateRequest);
+            FileBlock fileBlock = FileBlockUpdateRequest.toEntity(updateRequest, fileName);
             fileBlockPS.update(fileBlock);
 
             fileBlockRepository.save(fileBlockPS);

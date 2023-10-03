@@ -36,7 +36,7 @@ public class FreeBlockService {
 
         List<FreeBlockResponse> freeBlockResponses = new ArrayList<>();
         for (Long freeId : freeIds) {
-            FreeBlock freeBlock = freeBlockRepository.getById(freeId);
+            FreeBlock freeBlock = freeBlockRepository.findFreeBlock(freeId);
             FreeBlockResponse response = FreeBlockResponse.from(freeBlock);
             freeBlockResponses.add(response);
 
@@ -49,7 +49,7 @@ public class FreeBlockService {
     public void update(FreeBlockUpdateRequests updateRequests) {
 
         for (FreeBlockUpdateRequest updateRequest : updateRequests.getSubData()) {
-            FreeBlock freeBlockPS = freeBlockRepository.getById(updateRequest.getFreeId());
+            FreeBlock freeBlockPS = freeBlockRepository.findFreeBlock(updateRequest.getFreeId());
             FreeBlock freeBlock = FreeBlockUpdateRequest.toEntity(updateRequest);
             freeBlockPS.update(freeBlock);
             freeBlockRepository.save(freeBlockPS);

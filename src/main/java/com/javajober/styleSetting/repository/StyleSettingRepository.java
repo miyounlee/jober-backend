@@ -14,7 +14,7 @@ public interface StyleSettingRepository extends Repository<StyleSetting, Long> {
 
 	Optional<StyleSetting> findByIdAndDeletedAtIsNull(Long id);
 
-	default StyleSetting getById(final Long id) {
+	default StyleSetting findStyleBlock(final Long id) {
 		return findByIdAndDeletedAtIsNull(id)
 				.orElseThrow(() -> new Exception404(ErrorMessage.STYLE_SETTING_BLOCK_NOT_FOUND));
 	}

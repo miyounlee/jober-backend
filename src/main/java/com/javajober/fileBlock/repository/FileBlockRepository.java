@@ -13,7 +13,7 @@ public interface FileBlockRepository extends Repository<FileBlock, Long> {
 
     Optional<FileBlock> findByIdAndDeletedAtIsNull(Long id);
 
-    default FileBlock getById(final Long id) {
+    default FileBlock findFileBlock(final Long id) {
         return findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new Exception404(ErrorMessage.FILE_BLOCK_NOT_FOUND));
     }

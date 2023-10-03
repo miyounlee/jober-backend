@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javajober.core.message.SuccessMessage;
 import com.javajober.core.util.ApiUtils;
 import com.javajober.spaceWall.domain.FlagType;
-import com.javajober.spaceWall.dto.request.DeleteTemporaryRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallUpdateRequest;
 import com.javajober.spaceWall.dto.response.SpaceWallResponse;
@@ -62,5 +61,32 @@ public class SpaceWallController {
         spaceWallService.update(spaceWallUpdateRequest, FlagType.SAVED);
 
         return  ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.CREATE_SUCCESS, null));
+    }
+
+    @GetMapping("/wall/{memberId}/{addSpaceId}/{spaceWallId}")
+    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallResponse>> findSaved (
+            @PathVariable Long memberId, @PathVariable Long addSpaceId, @PathVariable Long spaceWallId) throws JsonProcessingException {
+
+        SpaceWallResponse data = spaceWallFindService.find(memberId, addSpaceId, spaceWallId, FlagType.SAVED);
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_READ_SUCCESS, data));
+    }
+
+    @GetMapping("/wall-temporary/{memberId}/{addSpaceId}/{spaceWallId}")
+    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallResponse>> findPending(
+            @PathVariable Long memberId, @PathVariable Long addSpaceId, @PathVariable Long spaceWallId) throws JsonProcessingException {
+
+        SpaceWallResponse data = spaceWallFindService.find(memberId, addSpaceId, spaceWallId, FlagType.PENDING);
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_TEMPORARY_READ_SUCCESS, data));
+    }
+
+    @PutMapping("/wall-temporary")
+    public ResponseEntity<ApiUtils.ApiResponse> deleteTemporary(@RequestBody final SpaceWallRequest spaceWallRequest) {
+
+        Long memberId = spaceWallRequest.getData().getMemberId();
+        Long addSpaceId = spaceWallRequest.getData().getAddSpaceId();
+
+        spaceWallTemporaryService.deleteTemporary(memberId, addSpaceId);
+
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_TEMPORARY_DELETE_SUCCESS, null));
     }
 }

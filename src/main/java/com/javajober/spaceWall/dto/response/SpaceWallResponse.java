@@ -15,7 +15,7 @@ public class SpaceWallResponse {
     private Long memberId;
     private Long addSpaceId;
     private String shareURL;
-    private WallInfoBlockResponse wallInfoBlockResponse;
+    private WallInfoBlockResponse wallInfoBlock;
     private List<BlockResponse<CommonResponse>> blocks;
     private StyleSettingResponse styleSetting;
 
@@ -23,26 +23,26 @@ public class SpaceWallResponse {
 
     @Builder
     public SpaceWallResponse(final String category, final Long memberId, final Long addSpaceId,
-                             final String shareURL, final WallInfoBlockResponse wallInfoBlockResponse, final List<BlockResponse<CommonResponse>> blocks,
+                             final String shareURL, final WallInfoBlockResponse wallInfoBlock, final List<BlockResponse<CommonResponse>> blocks,
                              final StyleSettingResponse styleSetting) {
         this.category = category;
         this.memberId = memberId;
         this.addSpaceId = addSpaceId;
         this.shareURL = shareURL;
-        this.wallInfoBlockResponse = wallInfoBlockResponse;
+        this.wallInfoBlock = wallInfoBlock;
         this.blocks = blocks;
         this.styleSetting = styleSetting;
     }
 
     public static SpaceWallResponse from(final String category, final Long memberId, final Long addSpaceId,
-                                         final String shareURL, final WallInfoBlockResponse wallInfoBlockResponse, final List<BlockResponse<CommonResponse>> blocks,
+                                         final String shareURL, final WallInfoBlockResponse wallInfoBlock, final List<BlockResponse<CommonResponse>> blocks,
                                          final StyleSettingResponse styleSetting) {
         return SpaceWallResponse.builder()
                 .category(category)
                 .memberId(memberId)
                 .addSpaceId(addSpaceId)
                 .shareURL(shareURL)
-                .wallInfoBlockResponse(wallInfoBlockResponse)
+                .wallInfoBlock(wallInfoBlock)
                 .blocks(blocks)
                 .styleSetting(styleSetting)
                 .build();

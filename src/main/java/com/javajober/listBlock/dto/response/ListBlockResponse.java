@@ -12,13 +12,13 @@ public class ListBlockResponse implements CommonResponse {
     private String listLabel;
     private String listTitle;
     private String listDescription;
-    private boolean isLink;
+    private Boolean isLink;
 
     private ListBlockResponse(){}
 
     @Builder
     public ListBlockResponse(final Long listBlockId, final String listLabel, final String listTitle,
-                             final String listDescription, final boolean isLink) {
+                             final String listDescription, final Boolean isLink) {
         this.listBlockId = listBlockId;
         this.listLabel = listLabel;
         this.listTitle = listTitle;

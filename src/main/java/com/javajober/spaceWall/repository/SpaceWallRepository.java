@@ -36,12 +36,8 @@ public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
                 .orElseThrow(() -> new Exception404(ErrorMessage.ADD_SPACE_NOT_FOUND));
     }
 
-    Optional<SpaceWall> findByIdAndAddSpace_IdAndMember_Id(Long id, Long addSpaceId, Long memberId);
+    Optional<SpaceWall> findById(Long spaceWallId);
 
-    default SpaceWall findSpaceWall(Long id, Long addSpaceId, Long memberId) {
-        return findByIdAndAddSpace_IdAndMember_Id(id, addSpaceId, memberId)
-                .orElseThrow(() -> new Exception404(ErrorMessage.SPACE_WALL_NOT_FOUND));
-    }
-
+    SpaceWall deleteById(Long spaceWallId);
 
 }

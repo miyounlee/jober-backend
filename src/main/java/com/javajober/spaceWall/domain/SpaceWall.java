@@ -71,7 +71,11 @@ public class SpaceWall {
         this.flag = flag;
     }
 
-    public void markAsDeleted() {
-        this.deletedAt = LocalDateTime.now();
+    public void update(SpaceWall spaceWall){
+        this.blocks = blocks;
+        this.shareURL = shareURL;
+        this.addSpace = addSpace;
+        this.flag = flag;
+
     }
 }

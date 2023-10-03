@@ -117,26 +117,6 @@ public class SpaceWallService {
 		this.addSpaceRepository = addSpaceRepository;
 	}
 
-	public SpaceWallTemporaryResponse checkSpaceWallTemporary(Long memberId, Long addSpaceId) {
-
-		List<SpaceWall> spaceWalls = spaceWallRepository.findSpaceWalls(memberId, addSpaceId);
-
-		if (spaceWalls == null || spaceWalls.isEmpty()) {
-			return new SpaceWallTemporaryResponse(null, false);
-		}
-
-		for (SpaceWall spaceWall : spaceWalls) {
-			if (spaceWall.getFlag().equals(FlagType.PENDING) && spaceWall.getDeletedAt() == null) {
-				return new SpaceWallTemporaryResponse(spaceWall.getId(), true);
-			}
-			if (spaceWall.getFlag().equals(FlagType.SAVED) && spaceWall.getDeletedAt() == null) {
-				throw new Exception404(ErrorMessage.SAVED_SPACE_WALL_ALREADY_EXISTS);
-			}
-		}
-
-		return new SpaceWallTemporaryResponse(null, false);
-	}
-
 	@Transactional
 	public void save(final SpaceWallRequest spaceWallRequest, FlagType flagType) {
 

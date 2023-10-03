@@ -9,26 +9,26 @@ import lombok.Getter;
 @Getter
 public class StyleSettingResponse {
 
-    private BackgroundSettingResponse backgroundSettingResponse;
-    private BlockSettingResponse blockSettingResponse;
-    private ThemeSettingResponse themeSettingResponse;
+    private BackgroundSettingResponse backgroundSetting;
+    private BlockSettingResponse blockSetting;
+    private ThemeSettingResponse themeSetting;
 
     public StyleSettingResponse() {}
 
     @Builder
-    public StyleSettingResponse(final BackgroundSettingResponse backgroundSettingResponse, final BlockSettingResponse blockSettingResponse, final ThemeSettingResponse themeSettingResponse) {
-        this.backgroundSettingResponse = backgroundSettingResponse;
-        this.blockSettingResponse = blockSettingResponse;
-        this.themeSettingResponse = themeSettingResponse;
+    public StyleSettingResponse(final BackgroundSettingResponse backgroundSetting, final BlockSettingResponse blockSetting, final ThemeSettingResponse themeSetting) {
+        this.backgroundSetting = backgroundSetting;
+        this.blockSetting = blockSetting;
+        this.themeSetting = themeSetting;
     }
 
     public static StyleSettingResponse from(final BackgroundSettingResponse backgroundSettingResponse,
                                             final BlockSettingResponse blockSettingResponse,
                                             final ThemeSettingResponse themeSettingResponse) {
         return StyleSettingResponse.builder()
-                .backgroundSettingResponse(backgroundSettingResponse)
-                .blockSettingResponse(blockSettingResponse)
-                .themeSettingResponse(themeSettingResponse)
+                .backgroundSetting(backgroundSettingResponse)
+                .blockSetting(blockSettingResponse)
+                .themeSetting(themeSettingResponse)
                 .build();
     }
 }

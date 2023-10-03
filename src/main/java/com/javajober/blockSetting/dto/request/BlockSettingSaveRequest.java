@@ -18,11 +18,11 @@ public class BlockSettingSaveRequest {
 
 	public BlockSetting toEntity() {
 		return BlockSetting.builder()
-			.shape(this.getShape())
-			.style(this.getStyle())
-			.styleColor(this.getStyleColor())
-			.gradation(this.isGradation())
-			.build();
+				.shape(this.getShape())
+				.style(this.getStyle())
+				.styleColor(this.getStyleColor())
+				.gradation(this.isGradation())
+				.build();
 	}
 
 }

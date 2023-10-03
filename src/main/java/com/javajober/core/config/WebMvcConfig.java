@@ -19,7 +19,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-                .addResourceHandler("/files/**")
+                .addResourceHandler("/files/**")    // url경로 ex) localhost:8080/files/filname.pdf
                 .addResourceLocations("file:" + fileDirectoryConfig.getDirectoryPath());
     }
 

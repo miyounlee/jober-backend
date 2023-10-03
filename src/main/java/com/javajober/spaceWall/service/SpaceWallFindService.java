@@ -37,10 +37,7 @@ import com.javajober.wallInfoBlock.repository.WallInfoBlockRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -75,23 +72,28 @@ public class SpaceWallFindService {
     @Transactional
     public SpaceWallResponse find(Long memberId, Long addSpaceId, Long spaceWallId, FlagType flag) throws JsonProcessingException {
 
+        // 1. 요청에 맞는 spaceWall 조회 후 blocks 컬럼만 get
         SpaceWall spaceWall = spaceWallRepository.findSpaceWall(spaceWallId, addSpaceId, memberId, flag);
         String blocksPS = spaceWall.getBlocks();
 
+        // 2. JSON을 JsonNode 오브젝트로 변환
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = mapper.readTree(blocksPS);
+        JsonNode rootNode = mapper.readTree(blocksPS);  // Json을 JsonNode로 변환
+
+        // 3. position 기준 오름 차순 정렬 + 그룹화
+        Map<Long, List<JsonNode>> groupedNodesByPosition = StreamSupport.stream(rootNode.spliterator(), false)  // Stream<JsonNode>
+                .sorted(Comparator.comparingInt(a -> a.get("position").asInt()))    // 오름차순 정렬
+                .collect(Collectors.groupingBy(node -> (long) node.get("position").asInt()));   // node는 List<JsonNode>의 개별 JsonNode
+
         List<BlockResponse<CommonResponse>> blocks = new ArrayList<>();
         WallInfoBlockResponse wallInfoBlockResponse = new WallInfoBlockResponse();
         StyleSettingResponse styleSettingResponse = new StyleSettingResponse();
-
-        Map<Long, List<JsonNode>> groupedNodesByPosition = StreamSupport.stream(rootNode.spliterator(), false)
-                .sorted((a, b) -> a.get("position").asInt() - b.get("position").asInt())
-                .collect(Collectors.groupingBy(node -> (long) node.get("position").asInt()));
 
         Long maxPosition = groupedNodesByPosition.keySet().stream()
                 .max(Long::compareTo)
                 .orElse(null);
 
+        // 4. Map을 돌며 같은 포지션 그룹 별(entry)로 작업 수행 - key
         for (Map.Entry<Long, List<JsonNode>> entry : groupedNodesByPosition.entrySet()) {
             // position 이 1(wallInfo)이거나 마지막 값(styleSetting)일 경우 continue
             Long currentPosition = entry.getKey();
@@ -109,17 +111,18 @@ public class SpaceWallFindService {
             List<JsonNode> nodesWithSamePosition = entry.getValue();
             List<CommonResponse> subData = new ArrayList<>();
 
+            // 5. 같은 포지션의 entry.getValue를 돌면서  subData에 담음 - value
             for (JsonNode node : nodesWithSamePosition) {
 
                 Long blockId = node.get("blockId").asLong();
                 blockUUID = node.get("blockUUID").asText();
-
                 blockTypeString = node.get("blockType").asText();
                 BlockType blockType = BlockType.findBlockTypeByString(blockTypeString);
 
                 subData.add(createBlockDTO(blockType, blockId));
             }
             BlockResponse<CommonResponse> blockResponse = BlockResponse.from(blockUUID, blockTypeString, subData);
+            // 6. 한 블록 끝
             blocks.add(blockResponse);
         }
 

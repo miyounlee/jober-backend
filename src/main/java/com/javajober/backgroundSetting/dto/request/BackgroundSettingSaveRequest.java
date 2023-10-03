@@ -6,16 +6,16 @@ import lombok.Getter;
 
 @Getter
 public class BackgroundSettingSaveRequest {
-	private String solidColor;
-	private boolean gradation;
+    private String solidColor;
+    private boolean gradation;
 
-	public BackgroundSettingSaveRequest(){
+    public BackgroundSettingSaveRequest(){
 
-	}
-	public BackgroundSetting toEntity() {
-		return BackgroundSetting.builder()
-			.solidColor(this.getSolidColor())
-			.gradation(this.isGradation())
-			.build();
-	}
+    }
+    public BackgroundSetting toEntity() {
+        return BackgroundSetting.builder()
+                .solidColor(this.getSolidColor())
+                .gradation(this.isGradation())
+                .build();
+    }
 }

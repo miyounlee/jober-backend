@@ -19,6 +19,7 @@ import com.javajober.snsBlock.domain.SNSBlock;
 import com.javajober.snsBlock.dto.response.SNSBlockResponse;
 import com.javajober.snsBlock.repository.SNSBlockRepository;
 import com.javajober.spaceWall.domain.BlockType;
+import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.domain.SpaceWall;
 import com.javajober.spaceWall.dto.response.BlockResponse;
 import com.javajober.spaceWall.dto.response.SpaceWallResponse;
@@ -35,9 +36,9 @@ import com.javajober.wallInfoBlock.dto.response.WallInfoBlockResponse;
 import com.javajober.wallInfoBlock.repository.WallInfoBlockRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -72,11 +73,9 @@ public class SpaceWallFindService {
     }
     
     @Transactional
-    public SpaceWallResponse find(@PathVariable Long memberId, @PathVariable Long addSpaceId,
-                                  @PathVariable Long spaceWallId) throws JsonProcessingException {
+    public SpaceWallResponse find(Long memberId, Long addSpaceId, Long spaceWallId, FlagType flag) throws JsonProcessingException {
 
-        // 1. 요청에 맞는 blocks 컬럼 조회
-        SpaceWall spaceWall = spaceWallRepository.findSpaceWall(spaceWallId, addSpaceId, memberId);
+        SpaceWall spaceWall = spaceWallRepository.findSpaceWall(spaceWallId, addSpaceId, memberId, flag);
         String blocksPS = spaceWall.getBlocks();
 
         ObjectMapper mapper = new ObjectMapper();
@@ -85,7 +84,6 @@ public class SpaceWallFindService {
         WallInfoBlockResponse wallInfoBlockResponse = new WallInfoBlockResponse();
         StyleSettingResponse styleSettingResponse = new StyleSettingResponse();
 
-        // 2. position 기준으로 오름차순 정렬 후 position이 같은 객체들 그룹화
         Map<Long, List<JsonNode>> groupedNodesByPosition = StreamSupport.stream(rootNode.spliterator(), false)
                 .sorted((a, b) -> a.get("position").asInt() - b.get("position").asInt())
                 .collect(Collectors.groupingBy(node -> (long) node.get("position").asInt()));
@@ -94,16 +92,15 @@ public class SpaceWallFindService {
                 .max(Long::compareTo)
                 .orElse(null);
 
-        // 3. blocks 리스트 형태로 저장
         for (Map.Entry<Long, List<JsonNode>> entry : groupedNodesByPosition.entrySet()) {
             // position 이 1(wallInfo)이거나 마지막 값(styleSetting)일 경우 continue
             Long currentPosition = entry.getKey();
             if (currentPosition.equals(1L)) {
-                wallInfoBlockResponse = getWallInfoBlockDTO(entry);
+                wallInfoBlockResponse = createWallInfoBlockDTO(entry);
                 continue;
             }
             if (currentPosition.equals(maxPosition)) {
-                styleSettingResponse = getStyleSettingDTO(entry);
+                styleSettingResponse = createStyleSettingDTO(entry);
                 continue;
             }
 
@@ -112,7 +109,6 @@ public class SpaceWallFindService {
             List<JsonNode> nodesWithSamePosition = entry.getValue();
             List<CommonResponse> subData = new ArrayList<>();
 
-            // 4. subData 로 저장 - 같은 포지션 별 블록 entity 조회
             for (JsonNode node : nodesWithSamePosition) {
 
                 Long blockId = node.get("blockId").asLong();
@@ -121,15 +117,9 @@ public class SpaceWallFindService {
                 blockTypeString = node.get("blockType").asText();
                 BlockType blockType = BlockType.findBlockTypeByString(blockTypeString);
 
-                // entity 조회 후 dto로 변환
-                subData.add(getBlockDTO(blockType, blockId));
+                subData.add(createBlockDTO(blockType, blockId));
             }
-            BlockResponse<CommonResponse> blockResponse = BlockResponse.builder()
-                    .blockUUID(blockUUID)
-                    .blockType(blockTypeString)
-                    .subData(subData)
-                    .build();
-
+            BlockResponse<CommonResponse> blockResponse = BlockResponse.from(blockUUID, blockTypeString, subData);
             blocks.add(blockResponse);
         }
 
@@ -138,36 +128,37 @@ public class SpaceWallFindService {
 
     }
 
-    private CommonResponse getBlockDTO(BlockType blockType, Long blockId) {
+    private CommonResponse createBlockDTO(BlockType blockType, Long blockId) {
         switch (blockType) {
             case FREE_BLOCK:
-                FreeBlock freeBlock = freeBlockRepository.getById(blockId);
+                FreeBlock freeBlock = freeBlockRepository.findFreeBlock(blockId);
                 return FreeBlockResponse.from(freeBlock);
             case SNS_BLOCK:
                 SNSBlock snsBlock = snsBlockRepository.findSNSBlock(blockId);
                 return SNSBlockResponse.from(snsBlock);
             case FILE_BLOCK:
-                FileBlock fileBlock = fileBlockRepository.getById(blockId);
+                FileBlock fileBlock = fileBlockRepository.findFileBlock(blockId);
                 return FileBlockResponse.from(fileBlock);
             case LIST_BLOCK:
-                ListBlock listBlock = listBlockRepository.getById(blockId);
+                ListBlock listBlock = listBlockRepository.findListBlock(blockId);
                 return ListBlockResponse.from(listBlock);
             case TEMPLATE_BLOCK:
-                TemplateBlock templateBlock = templateBlockRepository.getById(blockId);
-                return TemplateBlockResponse.from(templateBlock, new ArrayList<>(), new ArrayList<>()); // TODO : 권한 빈 리스트로 출력
+                TemplateBlock templateBlock = templateBlockRepository.findTemplateBlock(blockId);
+                return TemplateBlockResponse.from(templateBlock, Collections.emptyList(), Collections.emptyList());
         }
         return null;
     }
 
-    private WallInfoBlockResponse getWallInfoBlockDTO(Map.Entry<Long, List<JsonNode>> entry) {
+    private WallInfoBlockResponse createWallInfoBlockDTO(Map.Entry<Long, List<JsonNode>> entry) {
         Long blockId = entry.getValue().get(0).get("blockId").asLong();
-        WallInfoBlock wallInfoBlock = wallInfoBlockRepository.getById(blockId);
+        WallInfoBlock wallInfoBlock = wallInfoBlockRepository.findWallInfoBlock(blockId);
+
         return WallInfoBlockResponse.from(wallInfoBlock);
     }
 
-    private StyleSettingResponse getStyleSettingDTO(Map.Entry<Long, List<JsonNode>> entry) {
+    private StyleSettingResponse createStyleSettingDTO(Map.Entry<Long, List<JsonNode>> entry) {
         Long styleSettingId = entry.getValue().get(0).get("blockId").asLong();
-        StyleSetting styleSetting = styleSettingRepository.getById(styleSettingId);
+        StyleSetting styleSetting = styleSettingRepository.findStyleBlock(styleSettingId);
 
         BackgroundSettingResponse backgroundSettingResponse = BackgroundSettingResponse.from(styleSetting.getBackgroundSetting());
         BlockSettingResponse blockSettingResponse = BlockSettingResponse.from(styleSetting.getBlockSetting());

@@ -8,6 +8,7 @@ import com.javajober.spaceWall.dto.request.DeleteTemporaryRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallUpdateRequest;
 import com.javajober.spaceWall.dto.response.SpaceWallResponse;
+import com.javajober.spaceWall.dto.response.SpaceWallSaveResponse;
 import com.javajober.spaceWall.dto.response.SpaceWallTemporaryResponse;
 import com.javajober.spaceWall.service.SpaceWallFindService;
 import com.javajober.spaceWall.service.SpaceWallService;
@@ -40,20 +41,19 @@ public class SpaceWallController {
     }
 
     @PostMapping("/wall")
-    public ResponseEntity<?> save(@RequestBody final SpaceWallRequest spaceWallRequest) {
+    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallSaveResponse>> save(@RequestBody final SpaceWallRequest spaceWallRequest) {
 
-        spaceWallService.save(spaceWallRequest, FlagType.SAVED);
+        SpaceWallSaveResponse response = spaceWallService.save(spaceWallRequest, FlagType.SAVED);
 
-        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.CREATE_SUCCESS, null));
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_SAVE_SUCCESS, response));
     }
 
     @PostMapping(path = "/wall-temporary")
-    public ResponseEntity<?> savePending (@RequestBody final SpaceWallRequest spaceWallRequest)
-    {
+    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallSaveResponse>> savePending (@RequestBody final SpaceWallRequest spaceWallRequest) {
 
-        spaceWallService.save(spaceWallRequest, FlagType.PENDING);
+       SpaceWallSaveResponse response = spaceWallService.save(spaceWallRequest, FlagType.PENDING);
 
-        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.CREATE_SUCCESS, null));
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_TEMPORARY_SAVE_SUCCESS, response));
     }
 
     @PutMapping("/wall")

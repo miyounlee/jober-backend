@@ -32,6 +32,7 @@ import com.javajober.member.repository.MemberRepository;
 import com.javajober.backgroundSetting.domain.BackgroundSetting;
 import com.javajober.blockSetting.domain.BlockSetting;
 import com.javajober.spaceWall.dto.request.SpaceWallUpdateRequest;
+import com.javajober.spaceWall.dto.response.SpaceWallSaveResponse;
 import com.javajober.styleSetting.domain.StyleSetting;
 import com.javajober.templateBlock.dto.request.TemplateBlockUpdateRequest;
 import com.javajober.themeSetting.domain.ThemeSetting;
@@ -118,7 +119,7 @@ public class SpaceWallService {
 	}
 
 	@Transactional
-	public void save(final SpaceWallRequest spaceWallRequest, FlagType flagType) {
+	public SpaceWallSaveResponse save(final SpaceWallRequest spaceWallRequest, FlagType flagType) {
 
 		SpaceWallCategoryType spaceWallCategoryType = SpaceWallCategoryType.findSpaceWallCategoryTypeByString(spaceWallRequest.getData().getCategory());
 		AddSpace addSpace = addSpaceRepository.findAddSpace(spaceWallRequest.getData().getAddSpaceId());
@@ -186,7 +187,10 @@ public class SpaceWallService {
 		String blockInfoArrayAsString = blockInfoArray.toString();
 		String shareURL = spaceWallRequest.getData().getShareURL();
 		SpaceWall spaceWall = SpaceWallRequest.toEntity(spaceWallCategoryType, member, addSpace, shareURL, flagType, blockInfoArrayAsString);
-		spaceWallRepository.save(spaceWall);
+
+		Long spaceWallId = spaceWallRepository.save(spaceWall).getId();
+
+		return new SpaceWallSaveResponse(spaceWallId);
 	}
 
 	@Transactional

@@ -47,9 +47,9 @@ public class SpaceService {
 
         Long spaceWallId = null;
         if (hasWall) {
-            SpaceWall spaceWall = spaceWallRepository.findByAddSpaceId(addSpaceId);
-            if (spaceWall != null) {
-                spaceWallId = spaceWall.getId();
+            List<SpaceWall> foundSpaceWalls = spaceWallRepository.findByAddSpaceId(addSpaceId);
+            if (!foundSpaceWalls.isEmpty()) {
+                spaceWallId = foundSpaceWalls.get(0).getId();
             }
         }
 

@@ -21,7 +21,7 @@ public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
 
     SpaceWall save(SpaceWall spaceWall);
 
-    SpaceWall findByAddSpaceId(Long addSpaceId);
+    List<SpaceWall> findByAddSpaceId(Long addSpaceId);
 
     List<SpaceWall> saveAll(Iterable<SpaceWall> entities);
 

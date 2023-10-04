@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class ThemeSettingUpdateRequest {
-	private Long themeSettingId;
+	private Long themeSettingBlockId;
 	private String theme;
 
 	public ThemeSettingUpdateRequest(){

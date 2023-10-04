@@ -5,7 +5,7 @@ import com.javajober.core.message.SuccessMessage;
 import com.javajober.core.util.ApiUtils;
 import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.dto.request.DeleteTemporaryRequest;
-import com.javajober.spaceWall.dto.request.SpaceWallRequest;
+import com.javajober.spaceWall.dto.request.SpaceWallStringRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallUpdateRequest;
 import com.javajober.spaceWall.dto.response.SpaceWallResponse;
 import com.javajober.spaceWall.dto.response.SpaceWallSaveResponse;
@@ -41,7 +41,8 @@ public class SpaceWallController {
     }
 
     @PostMapping("/wall")
-    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallSaveResponse>> save(@RequestBody final SpaceWallRequest spaceWallRequest) {
+    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallSaveResponse>> save(
+            @RequestBody final SpaceWallStringRequest spaceWallRequest) {
 
         SpaceWallSaveResponse response = spaceWallService.save(spaceWallRequest, FlagType.SAVED);
 
@@ -49,7 +50,8 @@ public class SpaceWallController {
     }
 
     @PostMapping(path = "/wall-temporary")
-    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallSaveResponse>> savePending (@RequestBody final SpaceWallRequest spaceWallRequest) {
+    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallSaveResponse>> savePending (
+            @RequestBody final SpaceWallStringRequest spaceWallRequest) {
 
        SpaceWallSaveResponse response = spaceWallService.save(spaceWallRequest, FlagType.PENDING);
 
@@ -84,7 +86,7 @@ public class SpaceWallController {
     public ResponseEntity<ApiUtils.ApiResponse> deleteTemporary(@RequestBody final DeleteTemporaryRequest deleteTemporaryRequest) {
 
         Long memberId = deleteTemporaryRequest.getMemberId();
-        Long addSpaceId = deleteTemporaryRequest.getAddSpaceId();
+        Long addSpaceId = deleteTemporaryRequest.getSpaceId();
 
         spaceWallTemporaryService.deleteTemporary(memberId, addSpaceId);
 

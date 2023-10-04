@@ -25,11 +25,9 @@ public class BackgroundSettingController {
 
 	@PostMapping
 	public ResponseEntity<ApiUtils.ApiResponse> save(
-		@RequestPart(value = "backgroundRequest") final BackgroundSettingSaveRequest styleSetting,
-		@RequestPart(value = "styleImgURL", required = false) MultipartFile styleImgURL){
+		@RequestPart(value = "backgroundRequest") final BackgroundSettingSaveRequest styleSetting, String styleImgName){
 
-		backgroundSettingService.save(styleSetting);
-
+		backgroundSettingService.save(styleSetting, styleImgName);
 		return ResponseEntity.ok(ApiUtils.success(HttpStatus.CREATED, SuccessMessage.CREATE_SUCCESS, null));
 	}
 }

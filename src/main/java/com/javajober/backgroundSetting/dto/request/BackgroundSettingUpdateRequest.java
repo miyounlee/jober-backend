@@ -6,7 +6,8 @@ import lombok.Getter;
 
 @Getter
 public class BackgroundSettingUpdateRequest {
-	private Long backgroundSettingId;
+
+	private Long backgroundSettingBlockId;
 	private String solidColor;
 	private boolean gradation;
 

@@ -3,7 +3,6 @@ package com.javajober.backgroundSetting.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.javajober.core.config.FileDirectoryConfig;
 import com.javajober.backgroundSetting.domain.BackgroundSetting;
 import com.javajober.backgroundSetting.dto.request.BackgroundSettingSaveRequest;
 import com.javajober.backgroundSetting.repository.BackgroundSettingRepository;
@@ -13,21 +12,15 @@ public class BackgroundSettingService {
 
 	private final BackgroundSettingRepository backgroundSettingRepository;
 
-	private final FileDirectoryConfig fileDirectoryConfig;
 
-	public BackgroundSettingService(BackgroundSettingRepository backgroundSettingRepository,
-		FileDirectoryConfig fileDirectoryConfig) {
+	public BackgroundSettingService(final BackgroundSettingRepository backgroundSettingRepository) {
 		this.backgroundSettingRepository = backgroundSettingRepository;
-		this.fileDirectoryConfig = fileDirectoryConfig;
 	}
 
 	@Transactional
-	public BackgroundSetting save(final BackgroundSettingSaveRequest saveRequest){
+	public BackgroundSetting save(final BackgroundSettingSaveRequest saveRequest, String styleImgName){
 
-		//String styleImg = uploadImg(file);
-
-		BackgroundSetting backgroundSetting = saveRequest.toEntity();
-
+		BackgroundSetting backgroundSetting = saveRequest.toEntity(styleImgName);
 		return backgroundSettingRepository.save(backgroundSetting);
 	}
 }

@@ -3,6 +3,7 @@ package com.javajober.space.service;
 import com.javajober.member.domain.Member;
 import com.javajober.member.repository.MemberRepository;
 import com.javajober.memberGroup.domain.MemberGroup;
+import com.javajober.memberGroup.domain.MemberHashtagType;
 import com.javajober.memberGroup.repository.MemberGroupRepository;
 import com.javajober.space.domain.AddSpace;
 import com.javajober.space.repository.AddSpaceRepository;
@@ -55,6 +56,11 @@ public class SpaceService {
 
         List<MemberGroup> memberGroups = memberGroupRepository.findAllByAddSpaceId(addSpaceId);
         List<MemberGroupResponse> list = memberGroups.stream()
+                .sorted((mg1, mg2) -> {
+                    if (mg1.getMemberHashtagType() == MemberHashtagType.EMPTY) return -1;
+                    if (mg2.getMemberHashtagType() == MemberHashtagType.EMPTY) return 1;
+                    return mg1.getMemberHashtagType().compareTo(mg2.getMemberHashtagType());
+                })
                 .map(mg -> new MemberGroupResponse(
                         mg.getMember().getId(),
                         mg.getMember().getMemberName(),

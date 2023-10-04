@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class ListBlockUpdateRequest {
-	private Long listUpdateId;
+	private Long listBlockId;
 	private String listUUID;
 	private String listLabel;
 	private String listTitle;

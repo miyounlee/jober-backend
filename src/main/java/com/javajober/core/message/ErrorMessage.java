@@ -38,6 +38,7 @@ public enum ErrorMessage {
 	LIST_BLOCK_NOT_FOUND("존재하지 않는 리스트 블록입니다."),
 	STYLE_SETTING_BLOCK_NOT_FOUND("존재하지 않는 스타일 블록입니다."),
 	WALL_INFO_BLOCK_NOT_FOUND("존재하지 않는 소개 블록입니다."),
+	SHARE_URL_NOT_FOUND("존재하지 않는 URL입니다."),
 
 	NOT_FOUND("요청하신 데이터를 찾을 수 없습니다.");
 

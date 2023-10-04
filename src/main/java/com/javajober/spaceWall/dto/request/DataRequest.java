@@ -10,7 +10,7 @@ import lombok.Getter;
 public class DataRequest {
 	private String category;
 	private Long memberId;
-	private Long addSpaceId;
+	private Long spaceId;
 	private String shareURL;
 	private WallInfoBlockRequest wallInfoBlock;
 	private List<BlockRequest> blocks;
@@ -19,10 +19,10 @@ public class DataRequest {
 	private DataRequest() {
 	}
 
-	public DataRequest(final String category, final Long memberId, Long addSpaceId, final String shareURL, final WallInfoBlockRequest wallInfoBlock, final List<BlockRequest> blocks, final StyleSettingSaveRequest styleSetting) {
+	public DataRequest(final String category, final Long memberId, Long spaceId, final String shareURL, final WallInfoBlockRequest wallInfoBlock, final List<BlockRequest> blocks, final StyleSettingSaveRequest styleSetting) {
 		this.category = category;
 		this.memberId = memberId;
-		this.addSpaceId = addSpaceId;
+		this.spaceId = spaceId;
 		this.shareURL = shareURL;
 		this.wallInfoBlock = wallInfoBlock;
 		this.blocks = blocks;

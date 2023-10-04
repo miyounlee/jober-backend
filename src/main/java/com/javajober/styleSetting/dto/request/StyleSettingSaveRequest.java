@@ -1,8 +1,11 @@
 package com.javajober.styleSetting.dto.request;
  ;
+ import com.javajober.backgroundSetting.domain.BackgroundSetting;
  import com.javajober.backgroundSetting.dto.request.BackgroundSettingSaveRequest;
+ import com.javajober.blockSetting.domain.BlockSetting;
  import com.javajober.blockSetting.dto.request.BlockSettingSaveRequest;
  import com.javajober.styleSetting.domain.StyleSetting;
+ import com.javajober.themeSetting.domain.ThemeSetting;
  import com.javajober.themeSetting.dto.request.ThemeSettingSaveRequest;
 
  import lombok.Getter;
@@ -18,12 +21,11 @@ public class StyleSettingSaveRequest {
 
 	}
 
-
-	public StyleSetting toEntity() {
+	public StyleSetting toEntity(BackgroundSetting backgroundSetting, BlockSetting blockSetting, ThemeSetting themeSetting) {
 		return StyleSetting.builder()
-			.backgroundSetting(backgroundSetting.toEntity())
-			.blockSetting(blockSetting.toEntity())
-			.themeSetting(themeSetting.toEntity())
-			.build();
+				.backgroundSetting(backgroundSetting)
+				.blockSetting(blockSetting)
+				.themeSetting(themeSetting)
+				.build();
 	}
 }

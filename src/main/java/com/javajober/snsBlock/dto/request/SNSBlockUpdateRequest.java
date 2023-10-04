@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class SNSBlockUpdateRequest {
 
-	private Long snsId;
+	private Long snsBlockId;
 	private String snsUUID;
 	private String snsType;
 	private String snsURL;

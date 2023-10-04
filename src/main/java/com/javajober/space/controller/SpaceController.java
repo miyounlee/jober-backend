@@ -26,7 +26,7 @@ public class SpaceController {
             SuccessMessage successMessage;
             if ("PERSONAL".equalsIgnoreCase(spaceType)) {
                 successMessage = SuccessMessage.PERSONAL_SPACE_QUERY_SUCCESS;
-            } else if ("ORANIZATION".equalsIgnoreCase(spaceType)) {
+            } else if ("ORGANIZATION".equalsIgnoreCase(spaceType)) {
                 successMessage = SuccessMessage.ORGANIZATION_SPACE_QUERY_SUCCESS;
             } else {
                 throw new IllegalArgumentException(ErrorMessage.INVALID_SPACE_TYPE.getMessage());

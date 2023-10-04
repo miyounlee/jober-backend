@@ -22,9 +22,9 @@ public class StyleSettingController {
 		this.styleSettingService = styleSettingService;
 	}
 
-	@PostMapping
-	public ResponseEntity<ApiUtils.ApiResponse> save(@RequestBody StyleSettingSaveRequest styleSettingSaveRequest) {
-		styleSettingService.save(styleSettingSaveRequest);
-		return ResponseEntity.ok(ApiUtils.success(HttpStatus.CREATED, SuccessMessage.CREATE_SUCCESS, null));
-	}
+//	@PostMapping
+//	public ResponseEntity<ApiUtils.ApiResponse> save(@RequestBody StyleSettingSaveRequest styleSettingSaveRequest, String styleImgURL) {
+//		styleSettingService.save(styleSettingSaveRequest, styleImgURL);
+//		return ResponseEntity.ok(ApiUtils.success(HttpStatus.CREATED, SuccessMessage.CREATE_SUCCESS, null));
+//	}
 }

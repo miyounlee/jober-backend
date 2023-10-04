@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 public class StyleSettingUpdateRequest {
-	private Long styleSettingId;
+	private Long styleSettingBlockId;
 	private BackgroundSettingUpdateRequest backgroundSetting;
 	private BlockSettingUpdateRequest blockSetting;
 	private ThemeSettingUpdateRequest themeSetting;

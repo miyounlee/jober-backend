@@ -3,12 +3,10 @@ package com.javajober.fileBlock.dto.request;
 import com.javajober.fileBlock.domain.FileBlock;
 import lombok.Getter;
 
-import javax.validation.constraints.NotNull;
-
 @Getter
 public class FileBlockUpdateRequest {
 
-    private Long fileId;
+    private Long fileBlockId;
     private String fileTitle;
     private String fileDescription;
 

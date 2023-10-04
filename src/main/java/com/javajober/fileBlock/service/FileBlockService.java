@@ -39,7 +39,7 @@ public class FileBlockService {
 
         List<FileBlockSaveRequest> subData = saveRequests.getSubData();
         for (FileBlockSaveRequest saveRequest : subData) {
-            FileBlock fileBlock = FileBlockSaveRequest.toEntity(saveRequest);
+            FileBlock fileBlock = FileBlockSaveRequest.toEntity(saveRequest, fileName);
             fileBlockRepository.save(fileBlock);
         }
     }
@@ -63,7 +63,7 @@ public class FileBlockService {
 
         for (FileBlockUpdateRequest updateRequest : subData) {
 
-            FileBlock fileBlockPS = fileBlockRepository.findFileBlock(updateRequest.getFileId());
+            FileBlock fileBlockPS = fileBlockRepository.findFileBlock(updateRequest.getFileBlockId());
             String fileNamePS = fileBlockPS.getFileName();
             deleteFile(fileNamePS);
 

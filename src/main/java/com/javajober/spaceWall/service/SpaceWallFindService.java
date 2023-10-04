@@ -70,9 +70,19 @@ public class SpaceWallFindService {
     }
 
     @Transactional
-    public SpaceWallResponse find(Long memberId, Long addSpaceId, Long spaceWallId, FlagType flag) throws JsonProcessingException {
+    public SpaceWallResponse findByShareURL(String shareURL) throws JsonProcessingException {
+        SpaceWall spaceWall = spaceWallRepository.getByShareURL(shareURL);
+        Long memberId = spaceWall.getMember().getId();
+        Long spaceId = spaceWall.getAddSpace().getId();
+        Long spaceWallId = spaceWall.getId();
 
-        SpaceWall spaceWall = spaceWallRepository.findSpaceWall(spaceWallId, addSpaceId, memberId, flag);
+        return find(memberId, spaceId, spaceWallId, FlagType.SAVED);
+    }
+
+    @Transactional
+    public SpaceWallResponse find(Long memberId, Long spaceId, Long spaceWallId, FlagType flag) throws JsonProcessingException {
+
+        SpaceWall spaceWall = spaceWallRepository.findSpaceWall(spaceWallId, spaceId, memberId, flag);
         String blocksPS = spaceWall.getBlocks();
 
         ObjectMapper mapper = new ObjectMapper();
@@ -163,4 +173,5 @@ public class SpaceWallFindService {
 
         return StyleSettingResponse.from(backgroundSettingResponse, blockSettingResponse, themeSettingResponse);
     }
+
 }

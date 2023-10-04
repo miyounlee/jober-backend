@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class FreeBlockUpdateRequest {
 
-    private Long freeId;
+    private Long freeBlockId;
     private String freeTitle;
     private String freeContent;
 

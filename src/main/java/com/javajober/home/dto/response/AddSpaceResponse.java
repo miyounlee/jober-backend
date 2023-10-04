@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 public class AddSpaceResponse {
 
-	private Long addSpaceId;
+	private Long spaceId;
 	private SpaceType spaceType;
 	private String spaceTitle;
 
@@ -18,15 +18,15 @@ public class AddSpaceResponse {
 	}
 
 	@Builder
-	public AddSpaceResponse(final Long addSpaceId, final SpaceType spaceType, final String spaceTitle) {
-		this.addSpaceId = addSpaceId;
+	public AddSpaceResponse(final Long spaceId, final SpaceType spaceType, final String spaceTitle) {
+		this.spaceId = spaceId;
 		this.spaceType = spaceType;
 		this.spaceTitle = spaceTitle;
 	}
 
 	public static AddSpaceResponse from(final AddSpace addSpace) {
 		return AddSpaceResponse.builder()
-			.addSpaceId(addSpace.getId())
+			.spaceId(addSpace.getId())
 			.spaceType(addSpace.getSpaceType())
 			.spaceTitle(addSpace.getSpaceTitle())
 			.build();

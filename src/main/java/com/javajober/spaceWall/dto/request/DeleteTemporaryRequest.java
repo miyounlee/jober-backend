@@ -6,13 +6,13 @@ import lombok.Getter;
 public class DeleteTemporaryRequest {
 
     private Long memberId;
-    private Long addSpaceId;
+    private Long spaceId;
 
     private DeleteTemporaryRequest() {
     }
 
-    public DeleteTemporaryRequest(final Long memberId, final Long addSpaceId) {
+    public DeleteTemporaryRequest(final Long memberId, final Long spaceId) {
         this.memberId = memberId;
-        this.addSpaceId = addSpaceId;
+        this.spaceId = spaceId;
     }
 }

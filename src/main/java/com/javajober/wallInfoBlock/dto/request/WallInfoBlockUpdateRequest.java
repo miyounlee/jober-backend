@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class WallInfoBlockUpdateRequest {
 
-	private Long wallInfoId;
+	private Long wallInfoBlockId;
 	private String wallInfoTitle;
 	private String wallInfoDescription;
 

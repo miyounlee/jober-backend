@@ -88,7 +88,7 @@ public class TemplateBlockService {
 
 		for(TemplateBlockUpdateRequest templateBlockRequest : templateBlockRequests.getSubData()){
 
-			TemplateBlock templateBlock = templateBlockRepository.findTemplateBlock(templateBlockRequest.getTemplateId());
+			TemplateBlock templateBlock = templateBlockRepository.findTemplateBlock(templateBlockRequest.getTemplateBlockId());
 			templateBlock.update(templateBlockRequest.getTemplateUUID(), templateBlockRequest.getTemplateTitle(), templateBlockRequest.getTemplateDescription());
 
 			List<TemplateAuth> authIds = templateAuthRepository.findByTemplateBlockId(templateBlock.getId());

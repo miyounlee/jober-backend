@@ -7,20 +7,20 @@ import lombok.Getter;
 @Getter
 public class ThemeSettingResponse {
 
-    private Long themeSettingId;
+    private Long themeSettingBlockId;
     private String theme;
 
     private ThemeSettingResponse(){}
 
     @Builder
-    public ThemeSettingResponse(final Long themeSettingId, final String theme) {
-        this.themeSettingId = themeSettingId;
+    public ThemeSettingResponse(final Long themeSettingBlockId, final String theme) {
+        this.themeSettingBlockId = themeSettingBlockId;
         this.theme = theme;
     }
 
     public static ThemeSettingResponse from(ThemeSetting themeSetting) {
         return ThemeSettingResponse.builder()
-                .themeSettingId(themeSetting.getId())
+                .themeSettingBlockId(themeSetting.getId())
                 .theme(themeSetting.getTheme())
                 .build();
     }

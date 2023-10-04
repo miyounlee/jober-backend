@@ -7,7 +7,6 @@ import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.dto.request.DeleteTemporaryRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallStringRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallStringUpdateRequest;
-import com.javajober.spaceWall.filedto.SpaceWallUpdateRequest;
 import com.javajober.spaceWall.dto.response.SpaceWallResponse;
 import com.javajober.spaceWall.dto.response.SpaceWallSaveResponse;
 import com.javajober.spaceWall.dto.response.SpaceWallTemporaryResponse;
@@ -80,6 +79,12 @@ public class SpaceWallController {
             @PathVariable Long memberId, @PathVariable Long addSpaceId, @PathVariable Long spaceWallId) throws JsonProcessingException {
 
         SpaceWallResponse data = spaceWallFindService.find(memberId, addSpaceId, spaceWallId, FlagType.PENDING);
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_TEMPORARY_READ_SUCCESS, data));
+    }
+
+    @GetMapping("/wall/{shareURL}")
+    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallResponse>> findByShareURL(@PathVariable String shareURL) throws JsonProcessingException {
+        SpaceWallResponse data = spaceWallFindService.findByShareURL(shareURL);
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_TEMPORARY_READ_SUCCESS, data));
     }
 

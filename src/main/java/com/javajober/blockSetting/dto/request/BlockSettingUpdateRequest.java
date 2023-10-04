@@ -6,11 +6,11 @@ import lombok.Getter;
 
 @Getter
 public class BlockSettingUpdateRequest {
-	private Long blockSettingId;
+	private Long blockSettingBlockId;
 	private String shape;
 	private String style;
 	private String styleColor;
-	private boolean gradation;
+	private Boolean gradation;
 
 	public BlockSettingUpdateRequest(){
 
@@ -21,7 +21,7 @@ public class BlockSettingUpdateRequest {
 			.shape(updateRequest.getShape())
 			.style(updateRequest.getStyle())
 			.styleColor(updateRequest.getStyleColor())
-			.gradation(updateRequest.isGradation())
+			.gradation(updateRequest.getGradation())
 			.build();
 	}
 }

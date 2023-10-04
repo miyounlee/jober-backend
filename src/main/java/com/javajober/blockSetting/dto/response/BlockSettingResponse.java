@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class BlockSettingResponse {
 
-    private Long blockSettingId;
+    private Long blockSettingBlockId;
     private String shape;
     private String style;
     private String styleColor;
@@ -16,8 +16,8 @@ public class BlockSettingResponse {
     private BlockSettingResponse(){}
 
     @Builder
-    public BlockSettingResponse(final Long blockSettingId, final String shape, final String style, final String styleColor, final boolean gradation) {
-        this.blockSettingId = blockSettingId;
+    public BlockSettingResponse(final Long blockSettingBlockId, final String shape, final String style, final String styleColor, final boolean gradation) {
+        this.blockSettingBlockId = blockSettingBlockId;
         this.shape = shape;
         this.style = style;
         this.styleColor = styleColor;
@@ -26,7 +26,7 @@ public class BlockSettingResponse {
 
     public static BlockSettingResponse from(BlockSetting blockSetting) {
         return BlockSettingResponse.builder()
-                .blockSettingId(blockSetting.getId())
+                .blockSettingBlockId(blockSetting.getId())
                 .shape(blockSetting.getShape())
                 .style(blockSetting.getStyle())
                 .styleColor(blockSetting.getStyleColor())

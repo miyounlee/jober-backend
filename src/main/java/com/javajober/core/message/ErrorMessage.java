@@ -10,6 +10,8 @@ public enum ErrorMessage {
 
 	FCM_INITIALIZATION_FAILED("FCM 초기화에 실패하였습니다."),
 
+	INVALID_SPACE_TYPE("잘못된 spaceType 파라미터입니다."),
+
 	FREE_BLOCK_NOT_FOUND("존재하지 않는 자유 블록입니다."),
 	FILE_BLOCK_NOT_FOUND("존재하지 않는 파일 블록입니다."),
 	FAILED_DELETE_FILE("파일 삭제를 실패하였습니다."),

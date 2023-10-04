@@ -16,7 +16,7 @@ public class FileBlockUpdateRequest {
     public static FileBlock toEntity(FileBlockUpdateRequest fileBlockSaveRequest, String fileName) {
         return FileBlock.builder()
                 .fileTitle(fileBlockSaveRequest.getFileTitle())
-                .fileDescription(fileBlockSaveRequest.fileDescription)
+                .fileDescription(fileBlockSaveRequest.getFileDescription())
                 .fileName(fileName)
                 .build();
     }

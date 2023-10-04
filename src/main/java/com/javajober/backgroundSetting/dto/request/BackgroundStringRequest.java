@@ -1,23 +1,24 @@
 package com.javajober.backgroundSetting.dto.request;
 
 import com.javajober.backgroundSetting.domain.BackgroundSetting;
-
 import lombok.Getter;
 
 @Getter
-public class BackgroundSettingSaveRequest {
+public class BackgroundStringRequest {
+
     private String solidColor;
     private Boolean gradation;
+    private String styleImgURL;
 
-    public BackgroundSettingSaveRequest() {
+    public BackgroundStringRequest() {
 
     }
 
-    public BackgroundSetting toEntity(String styleImgName) {
+    public BackgroundSetting toEntity() {
         return BackgroundSetting.builder()
                 .solidColor(this.getSolidColor())
                 .gradation(this.getGradation())
-                .styleImageURL(styleImgName)
+                .styleImageURL(this.styleImgURL)
                 .build();
     }
 }

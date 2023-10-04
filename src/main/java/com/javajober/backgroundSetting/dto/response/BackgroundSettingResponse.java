@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class BackgroundSettingResponse {
 
-    private Long backgroundSettingId;
+    private Long backgroundSettingBlockId;
     private String solidColor;
     private boolean gradation;
     private String styleImgURL;
@@ -15,8 +15,8 @@ public class BackgroundSettingResponse {
     private BackgroundSettingResponse() {}
 
     @Builder
-    public BackgroundSettingResponse(final Long backgroundSettingId, final String solidColor, final boolean gradation, final String styleImgURL) {
-        this.backgroundSettingId = backgroundSettingId;
+    public BackgroundSettingResponse(final Long backgroundSettingBlockId, final String solidColor, final boolean gradation, final String styleImgURL) {
+        this.backgroundSettingBlockId = backgroundSettingBlockId;
         this.solidColor = solidColor;
         this.gradation = gradation;
         this.styleImgURL = styleImgURL;
@@ -24,7 +24,7 @@ public class BackgroundSettingResponse {
 
     public static BackgroundSettingResponse from(BackgroundSetting backgroundSetting) {
         return BackgroundSettingResponse.builder()
-                .backgroundSettingId(backgroundSetting.getId())
+                .backgroundSettingBlockId(backgroundSetting.getId())
                 .solidColor(backgroundSetting.getSolidColor())
                 .gradation(backgroundSetting.getGradation())
                 .styleImgURL(backgroundSetting.getStyleImageURL())

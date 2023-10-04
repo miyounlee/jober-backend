@@ -2,7 +2,8 @@ package com.javajober.spaceWall.domain;
 
 import com.javajober.space.domain.AddSpace;
 import com.javajober.member.domain.Member;
-import com.javajober.spaceWall.dto.request.DataUpdateRequest;
+import com.javajober.spaceWall.dto.request.DataStringUpdateRequest;
+import com.javajober.spaceWall.filedto.DataUpdateRequest;
 import com.javajober.spaceWallCategory.domain.SpaceWallCategoryType;
 
 import lombok.Builder;
@@ -72,7 +73,12 @@ public class SpaceWall {
         this.flag = flag;
     }
 
-    public void update(final DataUpdateRequest request, final FlagType flag, final String blockInfoArrayAsString){
+    public void update(final DataStringUpdateRequest request, final FlagType flag, final String blockInfoArrayAsString){
+        this.blocks = blockInfoArrayAsString;
+        this.shareURL = request.getShareURL();
+        this.flag = flag;
+    }
+    public void fileUpdate(final DataUpdateRequest request, final FlagType flag, final String blockInfoArrayAsString){
         this.blocks = blockInfoArrayAsString;
         this.shareURL = request.getShareURL();
         this.flag = flag;

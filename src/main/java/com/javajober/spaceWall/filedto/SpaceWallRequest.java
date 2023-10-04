@@ -1,9 +1,10 @@
-package com.javajober.spaceWall.dto.request;
+package com.javajober.spaceWall.filedto;
 
 import com.javajober.space.domain.AddSpace;
 import com.javajober.member.domain.Member;
 import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.domain.SpaceWall;
+import com.javajober.spaceWall.filedto.DataRequest;
 import com.javajober.spaceWallCategory.domain.SpaceWallCategoryType;
 
 import lombok.Getter;

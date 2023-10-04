@@ -10,7 +10,7 @@ public class BlockSettingSaveRequest {
 	private String shape;
 	private String style;
 	private String styleColor;
-	private boolean gradation;
+	private Boolean gradation;
 
 	public BlockSettingSaveRequest(){
 
@@ -18,11 +18,11 @@ public class BlockSettingSaveRequest {
 
 	public BlockSetting toEntity() {
 		return BlockSetting.builder()
-			.shape(this.getShape())
-			.style(this.getStyle())
-			.styleColor(this.getStyleColor())
-			.gradation(this.isGradation())
-			.build();
+				.shape(this.getShape())
+				.style(this.getStyle())
+				.styleColor(this.getStyleColor())
+				.gradation(this.getGradation())
+				.build();
 	}
 
 }

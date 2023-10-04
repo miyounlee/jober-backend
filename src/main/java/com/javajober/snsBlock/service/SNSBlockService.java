@@ -47,7 +47,7 @@ public class SNSBlockService {
 	public void update(@RequestBody final SNSBlockRequests<SNSBlockUpdateRequest> snsBlockRequests) {
 		snsBlockRequests.getSubData().forEach(snsBlockRequest -> {
 
-			SNSBlock snsBlock = snsBlockRepository.findSNSBlock(snsBlockRequest.getSnsId());
+			SNSBlock snsBlock = snsBlockRepository.findSNSBlock(snsBlockRequest.getSnsBlockId());
 
 			SNSType snsType = SNSType.findSNSTypeByString(snsBlockRequest.getSnsType());
 

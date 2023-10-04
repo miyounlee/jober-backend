@@ -50,4 +50,11 @@ public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
                 .orElseThrow(() -> new Exception404(ErrorMessage.SPACE_WALL_NOT_FOUND));
     }
 
+    Optional<SpaceWall> findByShareURL(String shareURL);
+
+    default SpaceWall getByShareURL(String shareURL) {
+        return findByShareURL(shareURL)
+                .orElseThrow(() -> new Exception404(ErrorMessage.SHARE_URL_NOT_FOUND));
+    }
+
 }

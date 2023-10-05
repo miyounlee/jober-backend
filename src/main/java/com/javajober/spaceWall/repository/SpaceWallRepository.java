@@ -27,6 +27,8 @@ public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
 
     List<SpaceWall> saveAll(final Iterable<SpaceWall> entities);
 
+    Optional<SpaceWall> findByMemberIdAndAddSpaceIdAndFlag(final Long memberId, final Long addSpaceId, final FlagType flag);
+
     Optional<SpaceWall> findByIdAndAddSpaceIdAndMemberIdAndFlag(final Long id, final Long addSpaceId, final Long memberId, final FlagType flag);
 
     Optional<SpaceWall> findByShareURL(final String shareURL);

@@ -106,7 +106,6 @@ public class SpaceWallFindService {
                 .orElse(null);
 
         for (Map.Entry<Long, List<JsonNode>> entry : groupedNodesByPosition.entrySet()) {
-            // position 이 1(wallInfo)이거나 마지막 값(styleSetting)일 경우 continue
             Long currentPosition = entry.getKey();
             if (currentPosition.equals(1L)) {
                 wallInfoBlockResponse = createWallInfoBlockDTO(entry);
@@ -177,7 +176,7 @@ public class SpaceWallFindService {
         BlockSettingResponse blockSettingResponse = BlockSettingResponse.from(styleSetting.getBlockSetting());
         ThemeSettingResponse themeSettingResponse = ThemeSettingResponse.from(styleSetting.getThemeSetting());
 
-        return StyleSettingResponse.from(backgroundSettingResponse, blockSettingResponse, themeSettingResponse);
+        return StyleSettingResponse.from(styleSetting, backgroundSettingResponse, blockSettingResponse, themeSettingResponse);
     }
 
 }

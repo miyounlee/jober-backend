@@ -39,9 +39,9 @@ public enum ErrorMessage {
 	STYLE_SETTING_BLOCK_NOT_FOUND("존재하지 않는 스타일 블록입니다."),
 	WALL_INFO_BLOCK_NOT_FOUND("존재하지 않는 소개 블록입니다."),
 	SHARE_URL_NOT_FOUND("존재하지 않는 URL입니다."),
+	JSON_PROCESSING_ERROR("Json을 변환 중 오류가 발생했습니다."),
 
 	NOT_FOUND("요청하신 데이터를 찾을 수 없습니다.");
-
 
 	private final String message;
 
@@ -50,4 +50,3 @@ public enum ErrorMessage {
 	}
 
 }
-

@@ -10,7 +10,7 @@ public enum AccountType {
 
     private final String description;
 
-    private AccountType(String description) {
+    private AccountType(final String description) {
         this.description = description;
     }
 }

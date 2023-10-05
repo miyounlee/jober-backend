@@ -9,11 +9,11 @@ import com.javajober.core.error.exception.Exception404;
 import com.javajober.core.message.ErrorMessage;
 import com.javajober.memberGroup.domain.MemberGroup;
 
-
 public interface MemberGroupRepository extends Repository<MemberGroup, Long> {
-	List<MemberGroup> findAllByAddSpaceId(Long addSpaceId);
 
-	List<MemberGroup> findByAddSpaceId(Long addSpaceId);
+	List<MemberGroup> findAllByAddSpaceId(final Long addSpaceId);
+
+	List<MemberGroup> findByAddSpaceId(final Long addSpaceId);
 
 	default List<MemberGroup> getByAddSpaceId(final Long addSpaceId) {
 		List<MemberGroup> memberGroups = findByAddSpaceId(addSpaceId);
@@ -25,7 +25,7 @@ public interface MemberGroupRepository extends Repository<MemberGroup, Long> {
 		return memberGroups;
 	}
 
-	Optional<MemberGroup> findById(Long Id);
+	Optional<MemberGroup> findById(final Long Id);
 
 	default MemberGroup getById(final Long Id){
 		return findById(Id)

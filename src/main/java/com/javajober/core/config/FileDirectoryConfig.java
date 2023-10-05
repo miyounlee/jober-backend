@@ -14,7 +14,7 @@ public class FileDirectoryConfig {
         String separator = File.separator;
         LocalDate today = LocalDate.now();
 
-        String directoryName = today.format(DateTimeFormatter.ofPattern("yyyyMMdd"));   // 20230928
+        String directoryName = today.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String directoryPath = System.getProperty("user.home") + separator + "JavaJober" + separator +
                 directoryName + separator;
 
@@ -22,7 +22,7 @@ public class FileDirectoryConfig {
         return directoryPath;
     }
 
-    public void createDirectory(String directoryPath) {
+    public void createDirectory(final String directoryPath) {
         File directory = new File(directoryPath);
         if (!directory.exists()) {
             directory.mkdirs();

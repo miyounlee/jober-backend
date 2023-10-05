@@ -23,7 +23,7 @@ public class FreeBlockResponse implements CommonResponse {
         this.freeContent = freeContent;
     }
 
-    public static FreeBlockResponse from(FreeBlock freeBlock) {
+    public static FreeBlockResponse from(final FreeBlock freeBlock) {
         return FreeBlockResponse.builder()
                 .freeBlockId(freeBlock.getId())
                 .freeTitle(freeBlock.getFreeTitle())

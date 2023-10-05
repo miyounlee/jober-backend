@@ -21,12 +21,12 @@ public class HomeService {
 	private final AddSpaceRepository addSpaceRepository;
 	private final MemberRepository memberRepository;
 
-	public HomeService(AddSpaceRepository addSpaceRepository, MemberRepository memberRepository) {
+	public HomeService(final AddSpaceRepository addSpaceRepository, final MemberRepository memberRepository) {
 		this.addSpaceRepository = addSpaceRepository;
 		this.memberRepository = memberRepository;
 	}
 
-	public HomeResponse getHomes(Long memberId) {
+	public HomeResponse find (final Long memberId) {
 
 		Member member = memberRepository.findMember(memberId);
 

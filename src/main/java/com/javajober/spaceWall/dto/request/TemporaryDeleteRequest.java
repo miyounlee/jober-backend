@@ -3,15 +3,15 @@ package com.javajober.spaceWall.dto.request;
 import lombok.Getter;
 
 @Getter
-public class DeleteTemporaryRequest {
+public class TemporaryDeleteRequest {
 
     private Long memberId;
     private Long spaceId;
 
-    private DeleteTemporaryRequest() {
+    private TemporaryDeleteRequest() {
     }
 
-    public DeleteTemporaryRequest(final Long memberId, final Long spaceId) {
+    public TemporaryDeleteRequest(final Long memberId, final Long spaceId) {
         this.memberId = memberId;
         this.spaceId = spaceId;
     }

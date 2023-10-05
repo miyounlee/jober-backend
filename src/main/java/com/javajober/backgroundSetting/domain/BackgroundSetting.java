@@ -9,7 +9,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-
 @Getter
 @Table(name = "background_setting")
 @EntityListeners(AuditingEntityListener.class)
@@ -40,7 +39,9 @@ public class BackgroundSetting {
     @Column(name="deleted_at")
     private LocalDateTime deletedAt;
 
-    protected BackgroundSetting() {};
+    protected BackgroundSetting() {
+
+    }
 
     @Builder
     public BackgroundSetting(final String solidColor, final Boolean gradation, final String styleImageURL) {
@@ -48,6 +49,7 @@ public class BackgroundSetting {
         this.gradation = gradation;
         this.styleImageURL = styleImageURL;
     }
+
     public void update(final String solidColor, final Boolean gradation, final String styleImageURL) {
         this.solidColor = solidColor;
         this.gradation = gradation;

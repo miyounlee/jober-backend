@@ -36,9 +36,9 @@ public class TemplateService {
 	private final TemplateRepository templateRepository;
 	private final TemplateBlockRepository templateBlockRepository;
 
-	public TemplateService(MemberGroupRepository memberGroupRepository, AddSpaceRepository addSpaceRepository,
-		TemplateAuthRepository templateAuthRepository, SpaceWallCategoryRepository spaceWallCategoryRepository,
-		TemplateRepository templateRepository, TemplateBlockRepository templateBlockRepository) {
+	public TemplateService(final MemberGroupRepository memberGroupRepository, final AddSpaceRepository addSpaceRepository,
+		final TemplateAuthRepository templateAuthRepository, final SpaceWallCategoryRepository spaceWallCategoryRepository,
+		final TemplateRepository templateRepository, final TemplateBlockRepository templateBlockRepository) {
 		this.memberGroupRepository = memberGroupRepository;
 		this.addSpaceRepository = addSpaceRepository;
 		this.templateAuthRepository = templateAuthRepository;
@@ -47,66 +47,48 @@ public class TemplateService {
 		this.templateBlockRepository = templateBlockRepository;
 	}
 
-
 	@Transactional
-	public MemberAuthResponse getTemplateAuthList(SpaceType spaceType, Long memberId, Long templateBlockID) {
-
+	public MemberAuthResponse findTemplateAuthList(final SpaceType spaceType, final Long memberId, final Long templateBlockID) {
 
 		AddSpace addSpace = addSpaceRepository.getBySpaceTypeAndId(spaceType, memberId);
-
 		List<MemberGroup> memberGroups = memberGroupRepository.getByAddSpaceId(addSpace.getId());
-
 		TemplateBlock templateBlock = templateBlockRepository.findTemplateBlock(templateBlockID);
-
 		List<MemberAuthResponse.MemberInfo> memberInfos = new ArrayList<>();
-
 		for (MemberGroup memberGroup : memberGroups) {
 			Member member = memberGroup.getMember();
-
 			if (member == null) {
 				throw new Exception404(ErrorMessage.MEMBER_NOT_FOUND);
 			}
-
 			TemplateAuth templateAuth = templateAuthRepository.getByAuthMemberIdAndTemplateBlockId(memberGroup.getId(),templateBlock.getId());
-
-			MemberAuthResponse.MemberInfo memberInfo = MemberAuthResponse.MemberInfo.from(memberGroup, member,
+			MemberAuthResponse.MemberInfo memberInfo = MemberAuthResponse.MemberInfo.of(memberGroup, member,
 				templateAuth);
 			memberInfos.add(memberInfo);
 		}
-
 		return new MemberAuthResponse(memberInfos);
 	}
 
 	@Transactional
-	public TemplateResponse getTemplateRecommend(SpaceWallCategoryType spaceWallCategoryType) {
+	public TemplateResponse findTemplateRecommend(final SpaceWallCategoryType spaceWallCategoryType) {
 
 		SpaceWallCategory spaceWallCategory = spaceWallCategoryRepository.getBySpaceWallCategory(spaceWallCategoryType);
-
 		List<Template> templates = templateRepository.getBySpaceWallCategoryId(spaceWallCategory.getId());
-
 		List<TemplateResponse.TemplateInfo> templateInfos = new ArrayList<>();
-
 		for (Template template : templates) {
 			TemplateResponse.TemplateInfo templateInfo = TemplateResponse.TemplateInfo.from(template);
 			templateInfos.add(templateInfo);
 		}
-
 		return new TemplateResponse(templateInfos);
-
 	}
 
 	@Transactional
-	public TemplateResponse getSearchTemplatesByTitle(String keyword) {
+	public TemplateResponse findSearchTemplatesByTitle(final String keyword) {
 
 		List<Template> templates = templateRepository.getTemplateTitle(keyword);
-
 		List<TemplateResponse.TemplateInfo> templateInfos = new ArrayList<>();
-
 		for (Template template : templates) {
 			TemplateResponse.TemplateInfo info = TemplateResponse.TemplateInfo.from(template);
 			templateInfos.add(info);
 		}
-
 		return new TemplateResponse(templateInfos);
 	}
 }

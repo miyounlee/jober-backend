@@ -8,6 +8,7 @@ import lombok.Getter;
 
 @Getter
 public class SNSBlockResponse implements CommonResponse {
+
 	private Long snsBlockId;
 	private String snsUUID;
 	private String snsType;

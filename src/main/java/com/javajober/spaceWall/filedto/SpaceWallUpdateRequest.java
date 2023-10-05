@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class SpaceWallUpdateRequest {
+
 	private DataUpdateRequest data;
 
 	private SpaceWallUpdateRequest() {

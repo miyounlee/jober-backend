@@ -21,15 +21,15 @@ public class FileImageService {
         this.fileDirectoryConfig = fileDirectoryConfig;
     }
 
-    public String uploadFile(MultipartFile file) {
-        // 파일 첨부 안할시 이름에 null로 저장
+    public String uploadFile(final MultipartFile file) {
+
         if (file.isEmpty()) {
             return null;
         }
         if (file.getOriginalFilename() == null) {
             throw new Exception404(ErrorMessage.INVALID_FILE_NAME);
         }
-        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename(); // TODO : 테스트용
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
         String fileUploadPath = getDirectoryPath() + fileName;
 
         try {
@@ -44,7 +44,7 @@ public class FileImageService {
         return fileDirectoryConfig.getDirectoryPath();
     }
 
-    public void validatePdfFile(List<MultipartFile> files) {
+    public void validatePdfFile(final List<MultipartFile> files) {
 
         for (MultipartFile file : files) {
             if (file == null || file.isEmpty()) {
@@ -60,5 +60,4 @@ public class FileImageService {
             }
         }
     }
-
 }

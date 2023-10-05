@@ -19,4 +19,3 @@ public class SpaceWallTemporaryResponse {
         this.hasWallTemporary = hasWallTemporary;
     }
 }
-

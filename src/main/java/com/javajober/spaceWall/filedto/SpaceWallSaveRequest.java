@@ -4,20 +4,20 @@ import com.javajober.space.domain.AddSpace;
 import com.javajober.member.domain.Member;
 import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.domain.SpaceWall;
-import com.javajober.spaceWall.filedto.DataRequest;
 import com.javajober.spaceWallCategory.domain.SpaceWallCategoryType;
 
 import lombok.Getter;
 
 @Getter
-public class SpaceWallRequest {
-    private DataRequest data;
+public class SpaceWallSaveRequest {
 
-    private SpaceWallRequest() {
+    private DataSaveRequest data;
+
+    private SpaceWallSaveRequest() {
 
     }
 
-    public SpaceWallRequest(final DataRequest data) {
+    public SpaceWallSaveRequest(final DataSaveRequest data) {
         this.data = data;
     }
 

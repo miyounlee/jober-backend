@@ -9,6 +9,7 @@ import lombok.Getter;
 
 @Getter
 public class MemberResponse {
+
 	private Long memberId;
 	private String memberName;
 	private String memberProfileImageUrl;
@@ -38,6 +39,7 @@ public class MemberResponse {
 	}
 
 	public String getMemberShip() {
+
 		if (this.memberShip == null) {
 			return null;
 		}
@@ -46,5 +48,4 @@ public class MemberResponse {
 
 		return Character.toUpperCase(name.charAt(0)) + name.substring(1);
 	}
-
 }

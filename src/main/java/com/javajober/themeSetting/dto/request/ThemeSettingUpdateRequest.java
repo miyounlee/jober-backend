@@ -6,16 +6,17 @@ import lombok.Getter;
 
 @Getter
 public class ThemeSettingUpdateRequest {
+
 	private Long themeSettingBlockId;
 	private String theme;
 
-	public ThemeSettingUpdateRequest(){
+	public ThemeSettingUpdateRequest() {
 
 	}
 
-	public ThemeSetting toEntity(ThemeSettingUpdateRequest updateRequest) {
+	public ThemeSetting toEntity(final ThemeSettingUpdateRequest updateRequest) {
 		return ThemeSetting.builder()
-			.theme(updateRequest.getTheme())
-			.build();
+				.theme(updateRequest.getTheme())
+				.build();
 	}
 }

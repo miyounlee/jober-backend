@@ -1,6 +1,5 @@
 package com.javajober.templateBlock.dto.response;
 
-
 import java.util.List;
 
 import com.javajober.core.util.CommonResponse;
@@ -35,8 +34,8 @@ public class TemplateBlockResponse implements CommonResponse {
 		this.hasDenyTemplateAuth = hasDenyTemplateAuth;
 	}
 
-	public static TemplateBlockResponse from(TemplateBlock templateBlock, List<Long> hasAccessTemplateAuth,
-											 List<Long> hasDenyTemplateAuth) {
+	public static TemplateBlockResponse of(final TemplateBlock templateBlock, final List<Long> hasAccessTemplateAuth,
+										   final List<Long> hasDenyTemplateAuth) {
 
 		return TemplateBlockResponse.builder()
 				.templateBlockId(templateBlock.getId())

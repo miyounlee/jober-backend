@@ -9,9 +9,11 @@ public class FreeBlockUpdateRequests {
 
     List<FreeBlockUpdateRequest> subData;
 
-    private FreeBlockUpdateRequests() {}
+    private FreeBlockUpdateRequests() {
 
-    public FreeBlockUpdateRequests(List<FreeBlockUpdateRequest> subData) {
+    }
+
+    public FreeBlockUpdateRequests(final List<FreeBlockUpdateRequest> subData) {
         this.subData = subData;
     }
 }

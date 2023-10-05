@@ -10,7 +10,7 @@ public enum FlagType {
 
     private final String description;
 
-    private FlagType(String description) {
+    private FlagType(final String description) {
         this.description = description;
     }
 }

@@ -12,7 +12,9 @@ public class BackgroundSettingResponse {
     private boolean gradation;
     private String styleImgURL;
 
-    private BackgroundSettingResponse() {}
+    private BackgroundSettingResponse() {
+
+    }
 
     @Builder
     public BackgroundSettingResponse(final Long backgroundSettingBlockId, final String solidColor, final boolean gradation, final String styleImgURL) {
@@ -22,7 +24,7 @@ public class BackgroundSettingResponse {
         this.styleImgURL = styleImgURL;
     }
 
-    public static BackgroundSettingResponse from(BackgroundSetting backgroundSetting) {
+    public static BackgroundSettingResponse from(final BackgroundSetting backgroundSetting) {
         return BackgroundSettingResponse.builder()
                 .backgroundSettingBlockId(backgroundSetting.getId())
                 .solidColor(backgroundSetting.getSolidColor())

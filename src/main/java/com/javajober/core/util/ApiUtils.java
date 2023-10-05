@@ -48,8 +48,6 @@ public class ApiUtils {
         }
     }
 
-
-
     @Getter
     public static class ApiError {
         private final String message;

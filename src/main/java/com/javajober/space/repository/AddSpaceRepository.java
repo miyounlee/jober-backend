@@ -12,21 +12,19 @@ import com.javajober.space.domain.SpaceType;
 
 public interface AddSpaceRepository extends Repository<AddSpace, Long> {
 
-	List<AddSpace> findByMemberIdAndSpaceType(Long memberId, SpaceType spaceType);
+	List<AddSpace> findByMemberIdAndSpaceType(final Long memberId, final SpaceType spaceType);
 
-	Optional<AddSpace> findById(Long id);
+	Optional<AddSpace> findById(final Long id);
 
+	Optional<AddSpace> findBySpaceTypeAndId(final SpaceType spaceType, final Long memberId);
 
 	default AddSpace findAddSpace (final Long id) {
 		return findById(id)
-			.orElseThrow(() -> new Exception404(ErrorMessage.ADD_SPACE_NOT_FOUND));
+				.orElseThrow(() -> new Exception404(ErrorMessage.ADD_SPACE_NOT_FOUND));
 	}
 
-	Optional<AddSpace> findBySpaceTypeAndId(SpaceType spaceType, Long memberId);
-
-	default AddSpace getBySpaceTypeAndId(final SpaceType spaceType, final Long memberId){
-		return findBySpaceTypeAndId(spaceType,memberId)
-			.orElseThrow(() -> new Exception404(ErrorMessage.ADD_SPACE_NOT_FOUND));
+	default AddSpace getBySpaceTypeAndId(final SpaceType spaceType, final Long memberId) {
+		return findBySpaceTypeAndId(spaceType, memberId)
+				.orElseThrow(() -> new Exception404(ErrorMessage.ADD_SPACE_NOT_FOUND));
 	}
-
 }

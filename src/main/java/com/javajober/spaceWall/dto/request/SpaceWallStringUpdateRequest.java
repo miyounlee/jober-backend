@@ -6,6 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class SpaceWallStringUpdateRequest {
+
 	private DataStringUpdateRequest data;
 
 	private SpaceWallStringUpdateRequest() {
@@ -15,4 +16,3 @@ public class SpaceWallStringUpdateRequest {
 		this.data = data;
 	}
 }
-

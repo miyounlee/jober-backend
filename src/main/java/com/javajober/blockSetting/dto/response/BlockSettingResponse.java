@@ -13,7 +13,9 @@ public class BlockSettingResponse {
     private String styleColor;
     private boolean gradation;
 
-    private BlockSettingResponse(){}
+    private BlockSettingResponse(){
+
+    }
 
     @Builder
     public BlockSettingResponse(final Long blockSettingBlockId, final String shape, final String style, final String styleColor, final boolean gradation) {
@@ -24,7 +26,7 @@ public class BlockSettingResponse {
         this.gradation = gradation;
     }
 
-    public static BlockSettingResponse from(BlockSetting blockSetting) {
+    public static BlockSettingResponse from(final BlockSetting blockSetting) {
         return BlockSettingResponse.builder()
                 .blockSettingBlockId(blockSetting.getId())
                 .shape(blockSetting.getShape())

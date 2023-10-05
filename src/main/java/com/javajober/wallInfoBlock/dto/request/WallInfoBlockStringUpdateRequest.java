@@ -25,5 +25,4 @@ public class WallInfoBlockStringUpdateRequest {
 		this.backgroundImgURL = backgroundImgURL;
 		this.wallInfoImgURL = wallInfoImgURL;
 	}
-
 }

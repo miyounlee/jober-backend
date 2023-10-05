@@ -1,6 +1,5 @@
 package com.javajober.fileBlock.domain;
 
-
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -77,4 +76,3 @@ public class FileBlock {
         this.deletedAt = LocalDateTime.now();
     }
 }
-

@@ -27,13 +27,13 @@ public class FileBlockService {
     private final FileBlockRepository fileBlockRepository;
     private final FileDirectoryConfig fileDirectoryConfig;
 
-    public FileBlockService(FileBlockRepository fileBlockRepository, FileDirectoryConfig fileDirectoryConfig) {
+    public FileBlockService(final FileBlockRepository fileBlockRepository, final FileDirectoryConfig fileDirectoryConfig) {
         this.fileBlockRepository = fileBlockRepository;
         this.fileDirectoryConfig = fileDirectoryConfig;
     }
 
     @Transactional
-    public void save(FileBlockSaveRequests saveRequests, MultipartFile file) {
+    public void save(final FileBlockSaveRequests saveRequests, final MultipartFile file) {
 
         String fileName = uploadFile(file);
 
@@ -44,7 +44,7 @@ public class FileBlockService {
         }
     }
 
-    public FileBlockResponses find(List<Long> fileIds) {
+    public FileBlockResponses find(final List<Long> fileIds) {
 
         List<FileBlockResponse> fileBlockResponses = new ArrayList<>();
         for (Long fileId : fileIds) {
@@ -57,7 +57,7 @@ public class FileBlockService {
     }
 
     @Transactional
-    public void update(FileBlockUpdateRequests updateRequests, MultipartFile file) {
+    public void update(final FileBlockUpdateRequests updateRequests, final MultipartFile file) {
 
         List<FileBlockUpdateRequest> subData = updateRequests.getSubData();
 
@@ -74,7 +74,7 @@ public class FileBlockService {
         }
     }
 
-    private void deleteFile(String fileName) {
+    private void deleteFile(final String fileName) {
 
         File directory = new File(getDirectoryPath() + fileName);
         if (directory.exists()) {
@@ -85,7 +85,7 @@ public class FileBlockService {
         }
     }
 
-    private String uploadFile(MultipartFile file) {
+    private String uploadFile(final MultipartFile file) {
 
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename(); // 테스트용
         String fileUploadPth = getDirectoryPath() + fileName;

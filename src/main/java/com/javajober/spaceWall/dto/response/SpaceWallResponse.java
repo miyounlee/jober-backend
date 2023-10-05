@@ -34,17 +34,4 @@ public class SpaceWallResponse {
         this.styleSetting = styleSetting;
     }
 
-    public static SpaceWallResponse from(final String category, final Long memberId, final Long spaceId,
-                                         final String shareURL, final WallInfoBlockResponse wallInfoBlock, final List<BlockResponse<CommonResponse>> blocks,
-                                         final StyleSettingResponse styleSetting) {
-        return SpaceWallResponse.builder()
-                .category(category)
-                .memberId(memberId)
-                .spaceId(spaceId)
-                .shareURL(shareURL)
-                .wallInfoBlock(wallInfoBlock)
-                .blocks(blocks)
-                .styleSetting(styleSetting)
-                .build();
-    }
 }

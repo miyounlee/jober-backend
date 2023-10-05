@@ -10,9 +10,9 @@ import com.javajober.themeSetting.domain.ThemeSetting;
 
 public interface ThemeSettingRepository extends Repository<ThemeSetting, Long> {
 
-	ThemeSetting save(ThemeSetting themeSetting);
+	ThemeSetting save(final ThemeSetting themeSetting);
 
-	Optional<ThemeSetting> findById(Long id);
+	Optional<ThemeSetting> findById(final Long id);
 
 	default ThemeSetting getById (final Long id) {
 		return findById(id)

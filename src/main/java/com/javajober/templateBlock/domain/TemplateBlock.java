@@ -9,7 +9,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-
 @Getter
 @Table(name = "template_block")
 @EntityListeners(AuditingEntityListener.class)

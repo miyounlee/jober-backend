@@ -6,9 +6,10 @@ import lombok.Getter;
 
 @Getter
 public class FileBlockStringUpdateRequests {
+
 	List<FileBlockStringUpdateRequest> subData;
 
 	private FileBlockStringUpdateRequests() {
-	}
 
+	}
 }

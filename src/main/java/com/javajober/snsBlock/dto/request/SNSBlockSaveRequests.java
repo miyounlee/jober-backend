@@ -5,15 +5,15 @@ import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class SNSBlockRequests<T> {
+public class SNSBlockSaveRequests<T> {
 
 	List<T> subData;
 
-	private SNSBlockRequests() {
+	private SNSBlockSaveRequests() {
 
 	}
 
-	public SNSBlockRequests(List<T> subData) {
+	public SNSBlockSaveRequests(final List<T> subData) {
 		this.subData = subData;
 	}
 }

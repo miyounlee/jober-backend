@@ -10,7 +10,9 @@ public class ThemeSettingResponse {
     private Long themeSettingBlockId;
     private String theme;
 
-    private ThemeSettingResponse(){}
+    private ThemeSettingResponse(){
+
+    }
 
     @Builder
     public ThemeSettingResponse(final Long themeSettingBlockId, final String theme) {
@@ -18,7 +20,7 @@ public class ThemeSettingResponse {
         this.theme = theme;
     }
 
-    public static ThemeSettingResponse from(ThemeSetting themeSetting) {
+    public static ThemeSettingResponse from(final ThemeSetting themeSetting) {
         return ThemeSettingResponse.builder()
                 .themeSettingBlockId(themeSetting.getId())
                 .theme(themeSetting.getTheme())

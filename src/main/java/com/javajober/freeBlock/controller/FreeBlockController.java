@@ -19,12 +19,12 @@ public class FreeBlockController {
 
     private final FreeBlockService freeBlockService;
 
-    public FreeBlockController(FreeBlockService freeBlockService) {
+    public FreeBlockController(final FreeBlockService freeBlockService) {
         this.freeBlockService = freeBlockService;
     }
 
     @PostMapping("/freeBlock")
-    public ResponseEntity<ApiUtils.ApiResponse<FreeBlockResponse>> save(@RequestBody FreeBlockSaveRequests saveRequests) {
+    public ResponseEntity<ApiUtils.ApiResponse<FreeBlockResponse>> save(@RequestBody final FreeBlockSaveRequests saveRequests) {
 
         freeBlockService.save(saveRequests);
 
@@ -32,19 +32,18 @@ public class FreeBlockController {
     }
 
     @GetMapping("/freeBlock")
-    public ResponseEntity<ApiUtils.ApiResponse<FreeBlockResponses>> find(@RequestParam List<Long> freeIds) {
+    public ResponseEntity<ApiUtils.ApiResponse<FreeBlockResponses>> find(@RequestParam final List<Long> freeIds) {
 
-        FreeBlockResponses freeBlockResponses = freeBlockService.find(freeIds);
+        FreeBlockResponses data = freeBlockService.find(freeIds);
 
-        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.READ_SUCCESS, freeBlockResponses));
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.READ_SUCCESS, data));
     }
 
     @PutMapping("/freeBlock")
-    public ResponseEntity<ApiUtils.ApiResponse<FreeBlockResponse>> update(@RequestBody FreeBlockUpdateRequests updateRequests) {
+    public ResponseEntity<ApiUtils.ApiResponse<FreeBlockResponse>> update(@RequestBody final FreeBlockUpdateRequests updateRequests) {
 
         freeBlockService.update(updateRequests);
 
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.UPDATE_SUCCESS, null));
     }
-
 }

@@ -21,7 +21,8 @@ public class SpaceWallTemporaryService {
     }
 
     @Transactional
-    public void deleteTemporary(final Long memberId, final Long addSpaceId) {
+    public void delete(final Long memberId, final Long addSpaceId) {
+
         List<SpaceWall> spaceWalls = spaceWallRepository.findSpaceWallsOrThrow(memberId, addSpaceId);
 
         spaceWalls.forEach(spaceWall -> {
@@ -33,7 +34,7 @@ public class SpaceWallTemporaryService {
         spaceWallRepository.saveAll(spaceWalls);
     }
 
-    public SpaceWallTemporaryResponse checkSpaceWallTemporary(Long memberId, Long addSpaceId) {
+    public SpaceWallTemporaryResponse hasSpaceWallTemporary(final Long memberId, final Long addSpaceId) {
 
         List<SpaceWall> spaceWalls = spaceWallRepository.findSpaceWalls(memberId, addSpaceId);
 

@@ -27,7 +27,7 @@ public class FileBlockResponse implements CommonResponse {
         this.file = file;
     }
 
-    public static FileBlockResponse from(FileBlock fileBlock) {
+    public static FileBlockResponse from(final FileBlock fileBlock) {
         return FileBlockResponse.builder()
                 .fileBlockId(fileBlock.getId())
                 .fileTitle(fileBlock.getFileTitle())

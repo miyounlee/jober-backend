@@ -1,6 +1,5 @@
 package com.javajober.freeBlock.domain;
 
-
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,7 +8,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-
 
 @Getter
 @Table(name = "free_block")

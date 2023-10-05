@@ -6,16 +6,16 @@ import com.javajober.spaceWall.domain.SpaceWall;
 import lombok.Getter;
 
 @Getter
-public class SubscriptionRequest {
+public class SubscriptionSaveRequest {
 
     private Long memberId;
     private Long subscriberMemberId;
     private Long spaceWallId;
 
-    public SubscriptionRequest() {
+    public SubscriptionSaveRequest() {
     }
 
-    public static Subscription toEntity(SubscriptionRequest request, Member subscriber, SpaceWall spaceWall) {
+    public static Subscription toEntity(final Member subscriber, final SpaceWall spaceWall) {
         return new Subscription(subscriber, spaceWall);
     }
 }

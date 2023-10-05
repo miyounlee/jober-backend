@@ -22,14 +22,14 @@ public class FileBlockController {
 
     private final FileBlockService fileBlockService;
 
-    public FileBlockController(FileBlockService fileBlockService) {
+    public FileBlockController(final FileBlockService fileBlockService) {
         this.fileBlockService = fileBlockService;
     }
 
     @PostMapping("/fileBlock")
     public ResponseEntity<ApiUtils.ApiResponse<FileBlockResponse>> save(
-            @RequestPart(value = "fileName", required = false)MultipartFile file,
-            @RequestPart(value = "fileBlockRequest") FileBlockSaveRequests saveRequests)  {
+            @RequestPart(value = "fileName", required = false) final MultipartFile file,
+            @RequestPart(value = "fileBlockRequest") final FileBlockSaveRequests saveRequests)  {
 
         validationMultipartFile(file);
         fileBlockService.save(saveRequests, file);
@@ -38,7 +38,7 @@ public class FileBlockController {
     }
 
     @GetMapping("/fileBlock")
-    public ResponseEntity<ApiUtils.ApiResponse<FileBlockResponses>> find(@RequestParam List<Long> fileIds) {
+    public ResponseEntity<ApiUtils.ApiResponse<FileBlockResponses>> find(@RequestParam final List<Long> fileIds) {
 
         FileBlockResponses responses = fileBlockService.find(fileIds);
 
@@ -47,8 +47,8 @@ public class FileBlockController {
 
     @PutMapping("/fileBlock")
     public ResponseEntity<ApiUtils.ApiResponse<FileBlockResponse>> update(
-            @RequestPart(value = "fileName", required = false) MultipartFile file,
-            @RequestPart(value = "data") FileBlockUpdateRequests updateRequests){
+            @RequestPart(value = "fileName", required = false) final MultipartFile file,
+            @RequestPart(value = "data") final FileBlockUpdateRequests updateRequests){
 
         validationMultipartFile(file);
         fileBlockService.update(updateRequests, file);
@@ -56,7 +56,7 @@ public class FileBlockController {
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.UPDATE_SUCCESS, null));
     }
 
-    private void validationMultipartFile(MultipartFile file) {
+    private void validationMultipartFile(final MultipartFile file) {
 
         if (file == null || file.isEmpty()) {
             throw new Exception404(ErrorMessage.FILE_IS_EMPTY);

@@ -16,23 +16,12 @@ public class StyleSettingService {
 	private final ThemeSettingRepository themeSettingRepository;
 
 
-	public StyleSettingService(StyleSettingRepository styleSettingRepository,
-							   BackgroundSettingRepository backgroundSettingRepository, BlockSettingRepository blockSettingRepository,
-							   ThemeSettingRepository themeSettingRepository) {
+	public StyleSettingService(final StyleSettingRepository styleSettingRepository,
+							   final BackgroundSettingRepository backgroundSettingRepository, final BlockSettingRepository blockSettingRepository,
+							   final ThemeSettingRepository themeSettingRepository) {
 		this.styleSettingRepository = styleSettingRepository;
 		this.backgroundSettingRepository = backgroundSettingRepository;
 		this.blockSettingRepository = blockSettingRepository;
 		this.themeSettingRepository = themeSettingRepository;
 	}
-
-//	@Transactional
-//	public StyleSetting save(StyleSettingSaveRequest styleSettingSaveRequest, String styleImgURL) {
-//		StyleSetting styleSetting = styleSettingSaveRequest.toEntity(styleImgURL);
-//
-//		backgroundSettingRepository.save(styleSettingSaveRequest.getBackgroundSetting().toEntity(styleImgURL));
-//		blockSettingRepository.save(styleSetting.getBlockSetting());
-//		themeSettingRepository.save(styleSetting.getThemeSetting());
-//
-//		return styleSettingRepository.save(styleSetting);
-//	}
 }

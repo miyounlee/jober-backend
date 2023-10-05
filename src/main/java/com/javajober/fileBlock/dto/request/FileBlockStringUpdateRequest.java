@@ -1,6 +1,5 @@
 package com.javajober.fileBlock.dto.request;
 
-
 import com.javajober.fileBlock.domain.FileBlock;
 
 import lombok.Getter;
@@ -15,9 +14,10 @@ public class FileBlockStringUpdateRequest {
 	private String file;
 
 	public FileBlockStringUpdateRequest() {
+
 	}
 
-	public static FileBlock toEntity(FileBlockStringUpdateRequest fileBlockSaveRequest) {
+	public static FileBlock toEntity(final FileBlockStringUpdateRequest fileBlockSaveRequest) {
 		return FileBlock.builder()
 			.fileTitle(fileBlockSaveRequest.getFileTitle())
 			.fileDescription(fileBlockSaveRequest.getFileDescription())

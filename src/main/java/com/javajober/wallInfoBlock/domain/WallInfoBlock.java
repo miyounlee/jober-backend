@@ -1,6 +1,5 @@
 package com.javajober.wallInfoBlock.domain;
 
-
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,7 +8,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-
 
 @Getter
 @Table(name="wall_info_block")
@@ -44,7 +42,9 @@ public class WallInfoBlock {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    protected WallInfoBlock() {}
+    protected WallInfoBlock() {
+
+    }
 
     @Builder
     public WallInfoBlock(final String wallInfoBackgroundImageUrl, final String wallInfoProfileImageUrl, final String wallInfoTitle, final String wallInfoDescription){

@@ -10,9 +10,9 @@ import com.javajober.wallInfoBlock.domain.WallInfoBlock;
 
 public interface WallInfoBlockRepository extends Repository<WallInfoBlock, Long> {
 
-	WallInfoBlock save(WallInfoBlock wallInfoBlock);
+	WallInfoBlock save(final WallInfoBlock wallInfoBlock);
 
-	Optional<WallInfoBlock> findByIdAndDeletedAtIsNull(Long id);
+	Optional<WallInfoBlock> findByIdAndDeletedAtIsNull(final Long id);
 
 	default WallInfoBlock findWallInfoBlock(final Long id) {
 		return findByIdAndDeletedAtIsNull(id)

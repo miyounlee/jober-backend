@@ -14,6 +14,7 @@ public class WallInfoBlockResponse {
     private String backgroundImgURL;
 
     public WallInfoBlockResponse() {
+
     }
 
     @Builder

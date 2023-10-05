@@ -18,7 +18,7 @@ public enum MemberShipType {
 	private final String monthlyPay;
 	private final String yearlyPay;
 
-	MemberShipType(String title, String monthlyPay, String yearlyPay) {
+	MemberShipType(final String title, final String monthlyPay, final String yearlyPay) {
 		this.title = title;
 		this.monthlyPay = monthlyPay;
 		this.yearlyPay = yearlyPay;

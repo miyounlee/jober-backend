@@ -15,9 +15,8 @@ public class WallInfoBlockUpdateRequest {
 
 	}
 
-	public WallInfoBlockUpdateRequest(final String wallInfoTitle, final String wallInfoDescription, String backgroundImgName, String wallInfoImgName) {
+	public WallInfoBlockUpdateRequest(final String wallInfoTitle, final String wallInfoDescription, final String backgroundImgName, final String wallInfoImgName) {
 		this.wallInfoTitle = wallInfoTitle;
 		this.wallInfoDescription = wallInfoDescription;
 	}
-
 }

@@ -20,12 +20,12 @@ public enum SpaceWallCategoryType {
     private final String engTitle;
     private final String korTitle;
 
-    SpaceWallCategoryType(String engTitle, String korTitle) {
+    SpaceWallCategoryType(final String engTitle, final String korTitle) {
         this.engTitle = engTitle;
         this.korTitle = korTitle;
     }
 
-    public static SpaceWallCategoryType findSpaceWallCategoryTypeByString(String type) {
+    public static SpaceWallCategoryType findSpaceWallCategoryTypeByString(final String type) {
         return Arrays.stream(values())
             .filter(spaceWallCategoryType -> spaceWallCategoryType.getEngTitle().equals(type))
             .findAny()

@@ -1,6 +1,5 @@
 package com.javajober.spaceWallCategory.repository;
 
-
 import java.util.Optional;
 
 import org.springframework.data.repository.Repository;
@@ -11,7 +10,8 @@ import com.javajober.spaceWallCategory.domain.SpaceWallCategory;
 import com.javajober.spaceWallCategory.domain.SpaceWallCategoryType;
 
 public interface SpaceWallCategoryRepository extends Repository<SpaceWallCategory, Long> {
-	Optional<SpaceWallCategory> findBySpaceWallCategory(SpaceWallCategoryType categoryType);
+
+	Optional<SpaceWallCategory> findBySpaceWallCategory(final SpaceWallCategoryType categoryType);
 
 	default SpaceWallCategory getBySpaceWallCategory(final SpaceWallCategoryType categoryType){
 		return findBySpaceWallCategory(categoryType)

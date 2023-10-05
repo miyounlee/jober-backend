@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class MemberGroupResponse {
+
     private Long memberId;
     private String memberName;
     private String memberHashtag;

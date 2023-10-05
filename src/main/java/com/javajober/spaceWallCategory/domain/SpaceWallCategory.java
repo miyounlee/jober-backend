@@ -19,7 +19,9 @@ public class SpaceWallCategory {
     @Column(name = "space_wall_category", nullable = false)
     private SpaceWallCategoryType spaceWallCategory;
 
-    protected SpaceWallCategory() {}
+    protected SpaceWallCategory() {
+
+    }
 
     public SpaceWallCategory(final SpaceWallCategoryType spaceWallCategory) {
         this.spaceWallCategory = spaceWallCategory;

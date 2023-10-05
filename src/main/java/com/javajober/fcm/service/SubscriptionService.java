@@ -1,7 +1,7 @@
 package com.javajober.fcm.service;
 
 import com.javajober.fcm.domain.Subscription;
-import com.javajober.fcm.dto.request.SubscriptionRequest;
+import com.javajober.fcm.dto.request.SubscriptionSaveRequest;
 import com.javajober.fcm.repository.SubscriptionRepository;
 import com.javajober.member.domain.Member;
 import com.javajober.member.repository.MemberRepository;
@@ -18,21 +18,23 @@ public class SubscriptionService {
     private final MemberRepository memberRepository;
     private final SpaceWallRepository spaceWallRepository;
 
-    public SubscriptionService(SubscriptionRepository subscriptionRepository, MemberRepository memberRepository, SpaceWallRepository spaceWallRepository) {
+    public SubscriptionService(final SubscriptionRepository subscriptionRepository, final MemberRepository memberRepository, final SpaceWallRepository spaceWallRepository) {
         this.subscriptionRepository = subscriptionRepository;
         this.memberRepository = memberRepository;
         this.spaceWallRepository = spaceWallRepository;
     }
 
-    public void subscribe(SubscriptionRequest request) {
+    public void subscribe(final SubscriptionSaveRequest request) {
+
         Member subscriber = memberRepository.findMember(request.getSubscriberMemberId());
         SpaceWall spaceWall = spaceWallRepository.getById(request.getMemberId(), request.getSpaceWallId());
 
-        Subscription subscription = SubscriptionRequest.toEntity(request, subscriber, spaceWall);
+        Subscription subscription = SubscriptionSaveRequest.toEntity(subscriber, spaceWall);
         subscriptionRepository.save(subscription);
     }
 
-    public void unsubscribe(SubscriptionRequest request) {
+    public void unsubscribe(final SubscriptionSaveRequest request) {
+
         Member subscriber = memberRepository.findMember(request.getSubscriberMemberId());
         SpaceWall spaceWall = spaceWallRepository.getById(request.getMemberId(), request.getSpaceWallId());
 

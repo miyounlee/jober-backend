@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javajober.backgroundSetting.dto.response.BackgroundSettingResponse;
 import com.javajober.blockSetting.dto.response.BlockSettingResponse;
+import com.javajober.core.error.exception.Exception500;
+import com.javajober.core.message.ErrorMessage;
 import com.javajober.core.util.CommonResponse;
 import com.javajober.fileBlock.domain.FileBlock;
 import com.javajober.fileBlock.dto.response.FileBlockResponse;
@@ -70,13 +72,14 @@ public class SpaceWallFindService {
         this.styleSettingRepository = styleSettingRepository;
     }
 
-    public DuplicateURLResponse hasDuplicateShareURL(String shareURL) {
+    public DuplicateURLResponse hasDuplicateShareURL(final String shareURL) {
         boolean hasDuplicateURL = spaceWallRepository.existsByShareURL(shareURL);
-        return DuplicateURLResponse.from(hasDuplicateURL);
+        return new DuplicateURLResponse(hasDuplicateURL);
     }
 
     @Transactional
-    public SpaceWallResponse findByShareURL(String shareURL) throws JsonProcessingException {
+    public SpaceWallResponse findByShareURL(final String shareURL){
+
         SpaceWall spaceWall = spaceWallRepository.getByShareURL(shareURL);
         Long memberId = spaceWall.getMember().getId();
         Long spaceId = spaceWall.getAddSpace().getId();
@@ -86,13 +89,18 @@ public class SpaceWallFindService {
     }
 
     @Transactional
-    public SpaceWallResponse find(Long memberId, Long spaceId, Long spaceWallId, FlagType flag) throws JsonProcessingException {
+    public SpaceWallResponse find(final Long memberId, final Long spaceId, final Long spaceWallId, final FlagType flag) {
 
         SpaceWall spaceWall = spaceWallRepository.findSpaceWall(spaceWallId, spaceId, memberId, flag);
         String blocksPS = spaceWall.getBlocks();
 
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = mapper.readTree(blocksPS);
+        JsonNode rootNode = null;
+        try {
+            rootNode = mapper.readTree(blocksPS);
+        } catch (JsonProcessingException e) {
+            throw new Exception500(ErrorMessage.JSON_PROCESSING_ERROR);
+        }
         List<BlockResponse<CommonResponse>> blocks = new ArrayList<>();
         WallInfoBlockResponse wallInfoBlockResponse = new WallInfoBlockResponse();
         StyleSettingResponse styleSettingResponse = new StyleSettingResponse();
@@ -134,13 +142,14 @@ public class SpaceWallFindService {
             BlockResponse<CommonResponse> blockResponse = BlockResponse.from(blockUUID, blockTypeString, subData);
             blocks.add(blockResponse);
         }
+        String category = spaceWall.getSpaceWallCategoryType().getEngTitle();
+        String shareURL = spaceWall.getShareURL();
 
-        return SpaceWallResponse.from(spaceWall.getSpaceWallCategoryType().getEngTitle(), spaceWall.getMember().getId(),
-                spaceWall.getAddSpace().getId(), spaceWall.getShareURL(), wallInfoBlockResponse, blocks, styleSettingResponse);
-
+        return new SpaceWallResponse(category, memberId, spaceId, shareURL, wallInfoBlockResponse, blocks, styleSettingResponse);
     }
 
-    private CommonResponse createBlockDTO(BlockType blockType, Long blockId) {
+    private CommonResponse createBlockDTO(final BlockType blockType, final Long blockId) {
+
         switch (blockType) {
             case FREE_BLOCK:
                 FreeBlock freeBlock = freeBlockRepository.findFreeBlock(blockId);
@@ -156,27 +165,29 @@ public class SpaceWallFindService {
                 return ListBlockResponse.from(listBlock);
             case TEMPLATE_BLOCK:
                 TemplateBlock templateBlock = templateBlockRepository.findTemplateBlock(blockId);
-                return TemplateBlockResponse.from(templateBlock, Collections.emptyList(), Collections.emptyList());
+                return TemplateBlockResponse.of(templateBlock, Collections.emptyList(), Collections.emptyList());
         }
         return null;
     }
 
-    private WallInfoBlockResponse createWallInfoBlockDTO(Map.Entry<Long, List<JsonNode>> entry) {
+    private WallInfoBlockResponse createWallInfoBlockDTO(final Map.Entry<Long, List<JsonNode>> entry) {
+
         Long blockId = entry.getValue().get(0).get("blockId").asLong();
         WallInfoBlock wallInfoBlock = wallInfoBlockRepository.findWallInfoBlock(blockId);
 
         return WallInfoBlockResponse.from(wallInfoBlock);
     }
 
-    private StyleSettingResponse createStyleSettingDTO(Map.Entry<Long, List<JsonNode>> entry) {
-        Long styleSettingId = entry.getValue().get(0).get("blockId").asLong();
-        StyleSetting styleSetting = styleSettingRepository.findStyleBlock(styleSettingId);
+    private StyleSettingResponse createStyleSettingDTO(final Map.Entry<Long, List<JsonNode>> entry) {
+
+        Long styleSettingBlockId = entry.getValue().get(0).get("blockId").asLong();
+        StyleSetting styleSetting = styleSettingRepository.findStyleBlock(styleSettingBlockId);
 
         BackgroundSettingResponse backgroundSettingResponse = BackgroundSettingResponse.from(styleSetting.getBackgroundSetting());
         BlockSettingResponse blockSettingResponse = BlockSettingResponse.from(styleSetting.getBlockSetting());
         ThemeSettingResponse themeSettingResponse = ThemeSettingResponse.from(styleSetting.getThemeSetting());
 
-        return StyleSettingResponse.from(styleSetting, backgroundSettingResponse, blockSettingResponse, themeSettingResponse);
-    }
+        return new StyleSettingResponse(styleSettingBlockId, backgroundSettingResponse, blockSettingResponse, themeSettingResponse);
 
+    }
 }

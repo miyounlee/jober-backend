@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface FileBlockRepository extends Repository<FileBlock, Long> {
 
-    FileBlock save(FileBlock fileBlock);
+    FileBlock save(final FileBlock fileBlock);
 
-    Optional<FileBlock> findByIdAndDeletedAtIsNull(Long id);
+    Optional<FileBlock> findByIdAndDeletedAtIsNull(final Long id);
 
     default FileBlock findFileBlock(final Long id) {
         return findByIdAndDeletedAtIsNull(id)

@@ -1,5 +1,6 @@
 package com.javajober.spaceWall.dto.response;
 
+import com.javajober.spaceWall.domain.SpaceWall;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,4 +18,10 @@ public class SpaceWallSaveResponse {
 		this.spaceWallId = spaceWallId;
 	}
 
+
+	public static SpaceWallSaveResponse from(final SpaceWall spaceWall) {
+		return SpaceWallSaveResponse.builder()
+				.spaceWallId(spaceWall.getId())
+				.build();
+	}
 }

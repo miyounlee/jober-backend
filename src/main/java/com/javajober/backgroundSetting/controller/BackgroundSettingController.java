@@ -18,15 +18,16 @@ public class BackgroundSettingController {
 
 	private final BackgroundSettingService backgroundSettingService;
 
-	public BackgroundSettingController(BackgroundSettingService backgroundSettingService) {
+	public BackgroundSettingController(final BackgroundSettingService backgroundSettingService) {
 		this.backgroundSettingService = backgroundSettingService;
 	}
 
 	@PostMapping
-	public ResponseEntity<ApiUtils.ApiResponse> save(
-		@RequestPart(value = "backgroundRequest") final BackgroundSettingSaveRequest styleSetting, String styleImgName){
+	public ResponseEntity<ApiUtils.ApiResponse<Object>> save(
+		@RequestPart(value = "backgroundRequest") final BackgroundSettingSaveRequest styleSetting, final String styleImgName){
 
 		backgroundSettingService.save(styleSetting, styleImgName);
+
 		return ResponseEntity.ok(ApiUtils.success(HttpStatus.CREATED, SuccessMessage.CREATE_SUCCESS, null));
 	}
 }

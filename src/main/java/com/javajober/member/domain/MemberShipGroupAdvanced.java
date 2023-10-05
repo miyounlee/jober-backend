@@ -17,19 +17,19 @@ public enum MemberShipGroupAdvanced {
 	private final String title;
 	private final List<MemberShipType> memberShipTypes;
 
-	MemberShipGroupAdvanced(String title, List<MemberShipType> memberShipTypes) {
+	MemberShipGroupAdvanced(final String title, final List<MemberShipType> memberShipTypes) {
 		this.title = title;
 		this.memberShipTypes = memberShipTypes;
 	}
 
-	public static MemberShipGroupAdvanced findByMemberShipType(MemberShipType memberShipType) {
+	public static MemberShipGroupAdvanced findByMemberShipType(final MemberShipType memberShipType) {
 		return Arrays.stream(MemberShipGroupAdvanced.values())
 			.filter(memberShip -> memberShip.hasPayCode(memberShipType))
 			.findAny()
 			.orElse(EMPTY);
 	}
 
-	public boolean hasPayCode(MemberShipType memberShipType) {
+	public boolean hasPayCode(final MemberShipType memberShipType) {
 		return memberShipTypes.stream()
 			.anyMatch(memberShip -> memberShip == memberShipType);
 	}

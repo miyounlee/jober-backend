@@ -1,6 +1,5 @@
 package com.javajober.styleSetting.domain;
 
-
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -57,7 +56,7 @@ public class StyleSetting {
         this.blockSetting = blockSetting;
         this.themeSetting = themeSetting;
     }
-    public void update(StyleSetting styleSetting){
+    public void update(final StyleSetting styleSetting){
         this.backgroundSetting = styleSetting.backgroundSetting;
         this.blockSetting = styleSetting.blockSetting;
         this.themeSetting = styleSetting.themeSetting;

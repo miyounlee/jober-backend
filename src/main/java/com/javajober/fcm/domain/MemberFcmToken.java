@@ -1,6 +1,5 @@
 package com.javajober.fcm.domain;
 
-
 import com.javajober.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,7 +49,7 @@ public class MemberFcmToken {
         this.deviceId = deviceId;
     }
 
-    public void updateFcmToken(String newFcmToken) {
+    public void updateFcmToken(final String newFcmToken) {
         this.fcmToken = newFcmToken;
     }
 }

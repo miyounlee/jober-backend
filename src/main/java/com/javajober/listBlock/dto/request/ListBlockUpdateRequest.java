@@ -6,6 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class ListBlockUpdateRequest {
+
 	private Long listBlockId;
 	private String listUUID;
 	private String listLabel;
@@ -17,7 +18,7 @@ public class ListBlockUpdateRequest {
 
 	}
 
-	public static ListBlock toEntity(ListBlockUpdateRequest listBlockRequest) {
+	public static ListBlock toEntity(final ListBlockUpdateRequest listBlockRequest) {
 		return ListBlock.builder()
 			.listUUID(listBlockRequest.getListUUID())
 			.listLabel(listBlockRequest.getListLabel())

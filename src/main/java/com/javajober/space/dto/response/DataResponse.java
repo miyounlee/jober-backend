@@ -7,6 +7,7 @@ import java.util.List;
 
 @Getter
 public class DataResponse {
+
     private boolean hasWall;
     private Long spaceWallId;
     private List<MemberGroupResponse> list;

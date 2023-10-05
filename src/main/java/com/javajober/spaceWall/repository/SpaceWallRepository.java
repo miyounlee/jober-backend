@@ -13,19 +13,23 @@ import java.util.Optional;
 
 public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
 
-    boolean existsByShareURL(String shareURL);
+    boolean existsByShareURL(final String shareURL);
 
     @Query("SELECT s FROM SpaceWall s LEFT JOIN s.addSpace a LEFT JOIN s.member m " +
             "WHERE a.id = :addSpaceId AND m.id = :memberId")
-    List<SpaceWall> findSpaceWalls(@Param("memberId") Long memberId, @Param("addSpaceId") Long addSpaceId);
+    List<SpaceWall> findSpaceWalls(@Param("memberId") final Long memberId, @Param("addSpaceId") final Long addSpaceId);
 
-    boolean existsByAddSpaceId(Long addSpaceId);
+    boolean existsByAddSpaceId(final Long addSpaceId);
 
-    SpaceWall save(SpaceWall spaceWall);
+    SpaceWall save(final SpaceWall spaceWall);
 
-    List<SpaceWall> findByAddSpaceId(Long addSpaceId);
+    List<SpaceWall> findByAddSpaceId(final Long addSpaceId);
 
-    List<SpaceWall> saveAll(Iterable<SpaceWall> entities);
+    List<SpaceWall> saveAll(final Iterable<SpaceWall> entities);
+
+    Optional<SpaceWall> findByIdAndAddSpaceIdAndMemberIdAndFlag(final Long id, final Long addSpaceId, final Long memberId, final FlagType flag);
+
+    Optional<SpaceWall> findByShareURL(final String shareURL);
 
     default List<SpaceWall> findSpaceWallsOrThrow(final Long memberId, final Long addSpaceId) {
         List<SpaceWall> spaceWalls = findSpaceWalls(memberId, addSpaceId);
@@ -41,22 +45,13 @@ public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
                 .orElseThrow(() -> new Exception404(ErrorMessage.ADD_SPACE_NOT_FOUND));
     }
 
-    Optional<SpaceWall> findById(Long spaceWallId);
-
-    SpaceWall deleteById(Long spaceWallId);
-
-    Optional<SpaceWall> findByIdAndAddSpaceIdAndMemberIdAndFlag(Long id, Long addSpaceId, Long memberId, FlagType flag);
-
     default SpaceWall findSpaceWall(Long id, Long addSpaceId, Long memberId, FlagType flag) {
         return findByIdAndAddSpaceIdAndMemberIdAndFlag(id, addSpaceId, memberId, flag)
                 .orElseThrow(() -> new Exception404(ErrorMessage.SPACE_WALL_NOT_FOUND));
     }
 
-    Optional<SpaceWall> findByShareURL(String shareURL);
-
-    default SpaceWall getByShareURL(String shareURL) {
+    default SpaceWall getByShareURL(final String shareURL) {
         return findByShareURL(shareURL)
                 .orElseThrow(() -> new Exception404(ErrorMessage.SHARE_URL_NOT_FOUND));
     }
-
 }

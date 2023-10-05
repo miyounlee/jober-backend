@@ -4,13 +4,13 @@ import com.javajober.backgroundSetting.domain.BackgroundSetting;
 import lombok.Getter;
 
 @Getter
-public class BackgroundStringRequest {
+public class BackgroundStringSaveRequest {
 
     private String solidColor;
     private Boolean gradation;
     private String styleImgURL;
 
-    public BackgroundStringRequest() {
+    public BackgroundStringSaveRequest() {
 
     }
 

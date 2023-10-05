@@ -5,16 +5,16 @@ import com.javajober.fcm.domain.MemberFcmToken;
 import lombok.Getter;
 
 @Getter
-public class MemberFcmTokenRequest {
+public class MemberFcmTokenSaveRequest {
 
     private Long memberId;
     private String fcmToken;
     private String deviceId;
 
-    public MemberFcmTokenRequest() {
+    public MemberFcmTokenSaveRequest() {
     }
 
-    public static MemberFcmToken toEntity(MemberFcmTokenRequest request, Member member) {
+    public static MemberFcmToken toEntity(final MemberFcmTokenSaveRequest request, final Member member) {
         return MemberFcmToken.builder()
                 .member(member)
                 .fcmToken(request.getFcmToken())

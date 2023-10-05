@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface FreeBlockRepository extends Repository<FreeBlock, Long> {
 
-    FreeBlock save(FreeBlock freeBlock);
+    FreeBlock save(final FreeBlock freeBlock);
 
-    Optional<FreeBlock> findByIdAndDeletedAtIsNull(Long freeId);
+    Optional<FreeBlock> findByIdAndDeletedAtIsNull(final Long freeId);
 
     default FreeBlock findFreeBlock(final Long freeId) {
         return findByIdAndDeletedAtIsNull(freeId)

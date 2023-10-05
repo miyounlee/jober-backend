@@ -18,13 +18,15 @@ public class BlockSettingController {
 
 	private final BlockSettingService blockSettingService;
 
-	public BlockSettingController(BlockSettingService blockSettingService) {
+	public BlockSettingController(final BlockSettingService blockSettingService) {
 		this.blockSettingService = blockSettingService;
 	}
 
 	@PostMapping
-	public ResponseEntity<ApiUtils.ApiResponse> save(@RequestBody final BlockSettingSaveRequest saveRequest){
+	public ResponseEntity<ApiUtils.ApiResponse<Object>> save(@RequestBody final BlockSettingSaveRequest saveRequest){
+
 		blockSettingService.save(saveRequest);
+
 		return ResponseEntity.ok(ApiUtils.success(HttpStatus.CREATED, SuccessMessage.CREATE_SUCCESS, null));
 	}
 }

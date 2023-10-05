@@ -1,7 +1,5 @@
 package com.javajober.templateBlock.dto.request;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,21 +8,23 @@ import com.javajober.templateBlock.domain.TemplateBlock;
 import lombok.Getter;
 
 @Getter
-public class TemplateBlockRequest {
+public class TemplateBlockSaveRequest {
+
 	private String templateUUID;
 	private String templateTitle;
 	private String templateDescription;
 	private List<Long> hasAccessTemplateAuth;
 	private List<Long> hasDenyTemplateAuth;
 
-	public TemplateBlockRequest(){
+	public TemplateBlockSaveRequest(){
+
 	}
 
-	public static TemplateBlock toEntity(TemplateBlockRequest templateBlockRequest){
+	public static TemplateBlock toEntity(final TemplateBlockSaveRequest templateBlockSaveRequest){
 		return TemplateBlock.builder()
-			.templateUUID(templateBlockRequest.getTemplateUUID())
-			.templateTitle(templateBlockRequest.getTemplateTitle())
-			.templateDescription(templateBlockRequest.getTemplateDescription())
+			.templateUUID(templateBlockSaveRequest.getTemplateUUID())
+			.templateTitle(templateBlockSaveRequest.getTemplateTitle())
+			.templateDescription(templateBlockSaveRequest.getTemplateDescription())
 			.build();
 	}
 	public List<Long> getAllAuthIds() {
@@ -34,4 +34,3 @@ public class TemplateBlockRequest {
 		return allAuthIds;
 	}
 }
-

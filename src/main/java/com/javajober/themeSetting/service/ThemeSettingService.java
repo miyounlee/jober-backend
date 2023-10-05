@@ -12,15 +12,13 @@ public class ThemeSettingService {
 
 	private final ThemeSettingRepository themeSettingRepository;
 
-	public ThemeSettingService(ThemeSettingRepository themeSettingRepository) {
+	public ThemeSettingService( final ThemeSettingRepository themeSettingRepository) {
 		this.themeSettingRepository = themeSettingRepository;
 	}
 
 	@Transactional
 	public ThemeSetting save(final ThemeSettingSaveRequest saveRequest){
-
 		ThemeSetting themeSetting = saveRequest.toEntity();
-
 		return themeSettingRepository.save(themeSetting);
 	}
 }

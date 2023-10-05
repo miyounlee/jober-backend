@@ -9,10 +9,9 @@ import com.javajober.core.message.ErrorMessage;
 
 import com.javajober.member.domain.Member;
 
-
 public interface MemberRepository extends Repository<Member, Long> {
 
-	Optional<Member> findById(Long id);
+	Optional<Member> findById(final Long id);
 
 	default Member findMember (final Long id) {
 		return findById(id)

@@ -1,5 +1,5 @@
 package com.javajober.styleSetting.filedto;
- ;
+
  import com.javajober.backgroundSetting.domain.BackgroundSetting;
  import com.javajober.backgroundSetting.filedto.BackgroundSettingSaveRequest;
  import com.javajober.blockSetting.domain.BlockSetting;
@@ -21,7 +21,7 @@ public class StyleSettingSaveRequest {
 
 	}
 
-	public StyleSetting toEntity(BackgroundSetting backgroundSetting, BlockSetting blockSetting, ThemeSetting themeSetting) {
+	public StyleSetting toEntity(final BackgroundSetting backgroundSetting, final BlockSetting blockSetting, final ThemeSetting themeSetting) {
 		return StyleSetting.builder()
 				.backgroundSetting(backgroundSetting)
 				.blockSetting(blockSetting)

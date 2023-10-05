@@ -28,7 +28,8 @@ public class ListBlockResponse implements CommonResponse {
         this.isLink = isLink;
     }
 
-    public static ListBlockResponse from(ListBlock listBlock) {
+    public static ListBlockResponse from(final ListBlock listBlock) {
+
         return ListBlockResponse.builder()
                 .listBlockId(listBlock.getId())
                 .listUUID(listBlock.getListUUID())

@@ -1,6 +1,5 @@
 package com.javajober.core.error;
 
-
 import com.javajober.core.error.exception.*;
 import com.javajober.core.util.ApiUtils;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(Exception400.class)
     public ResponseEntity<?> badRequest(Exception400 e){
         return new ResponseEntity<>(e.body(), e.status());

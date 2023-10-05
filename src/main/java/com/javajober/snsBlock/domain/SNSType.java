@@ -21,7 +21,7 @@ public enum SNSType {
 		this.korTitle = korTitle;
 	}
 
-    public static SNSType findSNSTypeByString(String type) {
+    public static SNSType findSNSTypeByString(final String type) {
         return Arrays.stream(values())
             .filter(snsType -> snsType.getEngTitle().equals(type))
             .findAny()

@@ -18,13 +18,15 @@ public class ThemeSettingController {
 
 	private final ThemeSettingService themeSettingService;
 
-	public ThemeSettingController(ThemeSettingService themeSettingService) {
+	public ThemeSettingController(final ThemeSettingService themeSettingService) {
 		this.themeSettingService = themeSettingService;
 	}
 
 	@PostMapping
 	public ResponseEntity<ApiUtils.ApiResponse> save(@RequestBody final ThemeSettingSaveRequest saveRequest){
+
 		themeSettingService.save(saveRequest);
+
 		return ResponseEntity.ok(ApiUtils.success(HttpStatus.CREATED, SuccessMessage.CREATE_SUCCESS, null));
 	}
 }

@@ -12,19 +12,19 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     private final FileDirectoryConfig fileDirectoryConfig;
 
-    public WebMvcConfig(FileDirectoryConfig fileDirectoryConfig) {
+    public WebMvcConfig(final FileDirectoryConfig fileDirectoryConfig) {
         this.fileDirectoryConfig = fileDirectoryConfig;
     }
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry
                 .addResourceHandler("/files/**")
                 .addResourceLocations("file:" + fileDirectoryConfig.getDirectoryPath());
     }
 
     @Override
-    public void addCorsMappings(CorsRegistry registry) {
+    public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("https://java-jober.netlify.app", "http://localhost:5173")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")

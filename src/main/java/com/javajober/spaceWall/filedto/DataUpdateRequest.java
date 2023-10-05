@@ -2,7 +2,7 @@ package com.javajober.spaceWall.filedto;
 
 import java.util.List;
 
-import com.javajober.spaceWall.dto.request.BlockRequest;
+import com.javajober.spaceWall.dto.request.BlockSaveRequest;
 import com.javajober.styleSetting.filedto.StyleSettingUpdateRequest;
 import com.javajober.wallInfoBlock.filedto.WallInfoBlockUpdateRequest;
 
@@ -17,13 +17,14 @@ public class DataUpdateRequest {
 	private Long spaceWallId;
 	private String shareURL;
 	private WallInfoBlockUpdateRequest wallInfoBlock;
-	private List<BlockRequest> blocks;
+	private List<BlockSaveRequest> blocks;
 	private StyleSettingUpdateRequest styleSetting;
 
 	private DataUpdateRequest(){
+
 	}
 
-	public DataUpdateRequest(final String category, final Long spaceWallId, final Long spaceId, final Long memberId, final String shareURL, final WallInfoBlockUpdateRequest wallInfoBlock, final List<BlockRequest> blocks, final StyleSettingUpdateRequest styleSetting) {
+	public DataUpdateRequest(final String category, final Long spaceWallId, final Long spaceId, final Long memberId, final String shareURL, final WallInfoBlockUpdateRequest wallInfoBlock, final List<BlockSaveRequest> blocks, final StyleSettingUpdateRequest styleSetting) {
 		this.category = category;
 		this.spaceWallId = spaceWallId;
 		this.spaceId = spaceId;

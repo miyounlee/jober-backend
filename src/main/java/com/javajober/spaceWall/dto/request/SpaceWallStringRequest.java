@@ -10,13 +10,13 @@ import lombok.Getter;
 @Getter
 public class SpaceWallStringRequest {
 
-    private DataStringRequest data;
+    private DataStringSaveRequest data;
 
     private SpaceWallStringRequest() {
 
     }
 
-    public SpaceWallStringRequest(final DataStringRequest data) {
+    public SpaceWallStringRequest(final DataStringSaveRequest data) {
         this.data = data;
     }
 

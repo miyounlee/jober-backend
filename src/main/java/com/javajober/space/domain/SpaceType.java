@@ -13,7 +13,7 @@ public enum SpaceType {
     private final String engTitle;
     private final String korTitle;
 
-    SpaceType(String engTitle, String korTitle) {
+    SpaceType(final String engTitle, final String korTitle) {
         this.engTitle = engTitle;
         this.korTitle = korTitle;
     }

@@ -1,6 +1,5 @@
 package com.javajober.template.dto.response;
 
-
 import java.util.List;
 
 import com.javajober.member.domain.Member;
@@ -12,9 +11,10 @@ import lombok.Getter;
 
 @Getter
 public class MemberAuthResponse {
+
 	private List<MemberInfo> list;
 
-	public MemberAuthResponse(List<MemberAuthResponse.MemberInfo> list){
+	public MemberAuthResponse(final List<MemberAuthResponse.MemberInfo> list){
 		this.list=list;
 	}
 
@@ -28,7 +28,7 @@ public class MemberAuthResponse {
 		private String phoneNumber;
 
 		@Builder
-		private MemberInfo(Long memberId, boolean hasAccess,String memberName,String memberHashtag, String memberType, String phoneNumber) {
+		private MemberInfo(final Long memberId, final boolean hasAccess, final String memberName, final String memberHashtag, final String memberType, final String phoneNumber) {
 			this.memberId = memberId;
 			this.hasAccess = hasAccess;
 			this.memberName = memberName;
@@ -37,7 +37,7 @@ public class MemberAuthResponse {
 			this.phoneNumber = phoneNumber;
 		}
 
-		public static MemberInfo from(MemberGroup memberGroup,Member member, TemplateAuth templateAuth){
+		public static MemberInfo of(final MemberGroup memberGroup, final Member member, final TemplateAuth templateAuth){
 			return MemberInfo.builder()
 				.memberId(member.getId())
 				.hasAccess(templateAuth.getHasAccess())
@@ -49,4 +49,3 @@ public class MemberAuthResponse {
 		}
 	}
 }
-

@@ -6,6 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class ThemeSettingSaveRequest {
+
 	private String theme;
 
 	public ThemeSettingSaveRequest(){

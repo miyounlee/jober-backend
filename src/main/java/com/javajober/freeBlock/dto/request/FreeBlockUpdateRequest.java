@@ -3,7 +3,6 @@ package com.javajober.freeBlock.dto.request;
 import com.javajober.freeBlock.domain.FreeBlock;
 import lombok.Getter;
 
-
 @Getter
 public class FreeBlockUpdateRequest {
 
@@ -12,9 +11,10 @@ public class FreeBlockUpdateRequest {
     private String freeContent;
 
     public FreeBlockUpdateRequest() {
+
     }
 
-    public static FreeBlock toEntity(FreeBlockUpdateRequest freeBlockUpdateRequest) {
+    public static FreeBlock toEntity(final FreeBlockUpdateRequest freeBlockUpdateRequest) {
         return FreeBlock.builder()
                 .freeTitle(freeBlockUpdateRequest.getFreeTitle())
                 .freeContent(freeBlockUpdateRequest.getFreeContent())

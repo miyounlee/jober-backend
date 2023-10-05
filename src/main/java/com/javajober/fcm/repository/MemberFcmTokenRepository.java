@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface MemberFcmTokenRepository extends Repository<MemberFcmToken, Long> {
 
-    MemberFcmToken save(MemberFcmToken token);
-    Optional<MemberFcmToken> findByMemberAndDeviceId(Member member, String deviceId);
+    MemberFcmToken save(final MemberFcmToken token);
+
+    Optional<MemberFcmToken> findByMemberAndDeviceId(final Member member, final String deviceId);
 }

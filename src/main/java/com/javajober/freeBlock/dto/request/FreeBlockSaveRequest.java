@@ -10,9 +10,10 @@ public class FreeBlockSaveRequest {
     private String freeContent;
 
     public FreeBlockSaveRequest() {
+
     }
 
-    public static FreeBlock toEntity(FreeBlockSaveRequest freeBlockSaveRequest) {
+    public static FreeBlock toEntity(final FreeBlockSaveRequest freeBlockSaveRequest) {
         return FreeBlock.builder()
                 .freeTitle(freeBlockSaveRequest.getFreeTitle())
                 .freeContent(freeBlockSaveRequest.getFreeContent())

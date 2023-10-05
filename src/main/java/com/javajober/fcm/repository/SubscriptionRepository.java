@@ -8,9 +8,10 @@ import org.springframework.data.repository.Repository;
 import java.util.Optional;
 
 public interface SubscriptionRepository extends Repository<Subscription, Long> {
-    Subscription save(Subscription subscription);
 
-    Optional<Subscription> findBySubscriberAndSpaceWall(Member subscriber, SpaceWall spaceWall);
+    Subscription save(final Subscription subscription);
 
-    void delete(Subscription subscription);
+    Optional<Subscription> findBySubscriberAndSpaceWall(final Member subscriber, final SpaceWall spaceWall);
+
+    void delete(final Subscription subscription);
 }

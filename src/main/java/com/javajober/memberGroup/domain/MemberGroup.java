@@ -1,4 +1,5 @@
 package com.javajober.memberGroup.domain;
+
 import com.javajober.member.domain.AccountType;
 import com.javajober.member.domain.Member;
 import com.javajober.space.domain.AddSpace;

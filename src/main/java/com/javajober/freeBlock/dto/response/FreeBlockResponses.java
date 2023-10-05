@@ -15,8 +15,7 @@ public class FreeBlockResponses {
     }
 
     @Builder
-    public FreeBlockResponses(List<FreeBlockResponse> subData) {
+    public FreeBlockResponses(final List<FreeBlockResponse> subData) {
         this.subData = subData;
     }
-
 }

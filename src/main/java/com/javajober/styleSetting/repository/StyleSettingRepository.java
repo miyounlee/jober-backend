@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface StyleSettingRepository extends Repository<StyleSetting, Long> {
 
-	StyleSetting save(StyleSetting styleSetting);
+	StyleSetting save(final StyleSetting styleSetting);
 
 	Optional<StyleSetting> findByIdAndDeletedAtIsNull(Long id);
 

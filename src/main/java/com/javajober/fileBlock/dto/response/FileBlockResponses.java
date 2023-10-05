@@ -10,7 +10,9 @@ public class FileBlockResponses {
 
     List<FileBlockResponse> subData;
 
-    private FileBlockResponses() {}
+    private FileBlockResponses() {
+
+    }
 
     @Builder
     public FileBlockResponses(final List<FileBlockResponse> subData) {

@@ -9,6 +9,7 @@ import lombok.Getter;
 
 @Getter
 public enum BlockType {
+
     WALL_INFO_BLOCK("wallInfoBlock", "공유페이지 소개 블록"),
     LIST_BLOCK("listBlock", "리스트 블록"),
     FREE_BLOCK("freeBlock", "자유 블록"),
@@ -21,12 +22,12 @@ public enum BlockType {
     private final String engTitle;
     private final String korTitle;
 
-    BlockType(String engTitle, String korTitle) {
+    BlockType(final String engTitle, final String korTitle) {
         this.engTitle = engTitle;
         this.korTitle = korTitle;
     }
 
-    public static BlockType findBlockTypeByString(String type) {
+    public static BlockType findBlockTypeByString(final String type) {
         return Arrays.stream(values())
                 .filter(blockType -> blockType.getEngTitle().equals(type))
                 .findAny()

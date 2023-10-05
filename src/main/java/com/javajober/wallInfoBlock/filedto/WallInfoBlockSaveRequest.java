@@ -5,21 +5,21 @@ import com.javajober.wallInfoBlock.domain.WallInfoBlock;
 import lombok.Getter;
 
 @Getter
-public class WallInfoBlockRequest {
+public class WallInfoBlockSaveRequest {
 
 	private String wallInfoTitle;
 	private String wallInfoDescription;
 
-	private WallInfoBlockRequest() {
+	private WallInfoBlockSaveRequest() {
 
 	}
 
-	public WallInfoBlockRequest(final String wallInfoTitle, final String wallInfoDescription) {
+	public WallInfoBlockSaveRequest(final String wallInfoTitle, final String wallInfoDescription) {
 		this.wallInfoTitle = wallInfoTitle;
 		this.wallInfoDescription = wallInfoDescription;
 	}
 
-	public static WallInfoBlock toEntity(final WallInfoBlockRequest wallInfoBlock, String backgroundImgName, String wallInfoImgName) {
+	public static WallInfoBlock toEntity(final WallInfoBlockSaveRequest wallInfoBlock, final String backgroundImgName, final String wallInfoImgName) {
 		return WallInfoBlock.builder()
 				.wallInfoTitle(wallInfoBlock.getWallInfoTitle())
 				.wallInfoDescription(wallInfoBlock.getWallInfoDescription())

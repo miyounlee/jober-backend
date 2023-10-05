@@ -19,20 +19,19 @@ public class FreeBlockService {
 
     private final FreeBlockRepository freeBlockRepository;
 
-    public FreeBlockService(FreeBlockRepository freeBlockRepository) {
+    public FreeBlockService(final FreeBlockRepository freeBlockRepository) {
         this.freeBlockRepository = freeBlockRepository;
     }
 
     @Transactional
-    public void save(FreeBlockSaveRequests saveRequests) {
+    public void save(final FreeBlockSaveRequests saveRequests) {
 
         saveRequests.getSubData().stream()
                 .map(FreeBlockSaveRequest::toEntity)
                 .forEach(freeBlockRepository::save);
-
     }
 
-    public FreeBlockResponses find(List<Long> freeIds) {
+    public FreeBlockResponses find(final List<Long> freeIds) {
 
         List<FreeBlockResponse> freeBlockResponses = new ArrayList<>();
         for (Long freeId : freeIds) {
@@ -46,7 +45,7 @@ public class FreeBlockService {
     }
 
     @Transactional
-    public void update(FreeBlockUpdateRequests updateRequests) {
+    public void update(final FreeBlockUpdateRequests updateRequests) {
 
         for (FreeBlockUpdateRequest updateRequest : updateRequests.getSubData()) {
             FreeBlock freeBlock = freeBlockRepository.findFreeBlock(updateRequest.getFreeBlockId());

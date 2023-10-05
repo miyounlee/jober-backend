@@ -24,5 +24,4 @@ public class BlockSettingSaveRequest {
 				.gradation(this.getGradation())
 				.build();
 	}
-
 }

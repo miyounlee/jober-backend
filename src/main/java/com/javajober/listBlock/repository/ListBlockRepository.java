@@ -10,13 +10,12 @@ import com.javajober.listBlock.domain.ListBlock;
 
 public interface ListBlockRepository extends Repository<ListBlock, Long> {
 
-	ListBlock save(ListBlock listBlock);
+	ListBlock save(final ListBlock listBlock);
 
-	Optional<ListBlock> findByIdAndDeletedAtIsNull(Long id);
+	Optional<ListBlock> findByIdAndDeletedAtIsNull(final Long id);
 
 	default ListBlock findListBlock(final Long id) {
 		return findByIdAndDeletedAtIsNull(id)
 				.orElseThrow(() -> new Exception404(ErrorMessage.LIST_BLOCK_NOT_FOUND));
 	}
-
 }

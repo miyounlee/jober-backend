@@ -19,15 +19,16 @@ import java.util.stream.Collectors;
 
 @Service
 public class SpaceService {
+
     private final MemberRepository memberRepository;
     private final MemberGroupRepository memberGroupRepository;
     private final AddSpaceRepository addSpaceRepository;
     private final SpaceWallRepository spaceWallRepository;
 
-    public SpaceService(MemberRepository memberRepository,
-                        MemberGroupRepository memberGroupRepository,
-                        AddSpaceRepository addSpaceRepository,
-                        SpaceWallRepository spaceWallRepository) {
+    public SpaceService(final MemberRepository memberRepository,
+                        final MemberGroupRepository memberGroupRepository,
+                        final AddSpaceRepository addSpaceRepository,
+                        final SpaceWallRepository spaceWallRepository) {
         this.memberRepository = memberRepository;
         this.memberGroupRepository = memberGroupRepository;
         this.addSpaceRepository = addSpaceRepository;
@@ -35,7 +36,8 @@ public class SpaceService {
     }
 
     @Transactional
-    public DataResponse getEmployeeData(Long memberId, Long addSpaceId, String spaceType) {
+    public DataResponse find (final Long memberId, final Long addSpaceId, final String spaceType) {
+
         AddSpace addSpace = addSpaceRepository.findAddSpace(addSpaceId);
         Member member = memberRepository.findMember(memberId);
 

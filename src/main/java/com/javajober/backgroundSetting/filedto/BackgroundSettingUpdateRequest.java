@@ -14,5 +14,4 @@ public class BackgroundSettingUpdateRequest {
 	public BackgroundSettingUpdateRequest(){
 
 	}
-
 }

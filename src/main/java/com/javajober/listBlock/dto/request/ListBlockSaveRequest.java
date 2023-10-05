@@ -6,6 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class ListBlockSaveRequest {
+
 	private String listUUID;
 	private String listLabel;
 	private String listTitle;

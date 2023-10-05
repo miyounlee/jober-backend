@@ -12,7 +12,6 @@ public class BackgroundSettingService {
 
 	private final BackgroundSettingRepository backgroundSettingRepository;
 
-
 	public BackgroundSettingService(final BackgroundSettingRepository backgroundSettingRepository) {
 		this.backgroundSettingRepository = backgroundSettingRepository;
 	}

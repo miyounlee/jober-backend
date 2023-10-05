@@ -13,7 +13,9 @@ public class BlockResponse<T extends CommonResponse> {
     private String blockType;
     private List<T> subData;
 
-    private BlockResponse() {}
+    private BlockResponse() {
+
+    }
 
     @Builder
     public BlockResponse(final String blockUUID, final String blockType, final List<T> subData) {
@@ -29,5 +31,4 @@ public class BlockResponse<T extends CommonResponse> {
                 .subData(subData)
                 .build();
     }
-
 }

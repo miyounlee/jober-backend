@@ -1,10 +1,9 @@
 package com.javajober.spaceWall.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javajober.core.message.SuccessMessage;
 import com.javajober.core.util.ApiUtils;
 import com.javajober.spaceWall.domain.FlagType;
-import com.javajober.spaceWall.dto.request.DeleteTemporaryRequest;
+import com.javajober.spaceWall.dto.request.TemporaryDeleteRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallStringRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallStringUpdateRequest;
 import com.javajober.spaceWall.dto.response.DuplicateURLResponse;
@@ -17,7 +16,6 @@ import com.javajober.spaceWall.service.SpaceWallTemporaryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 @RequestMapping("/api")
 @RestController
@@ -33,70 +31,78 @@ public class SpaceWallController {
         this.spaceWallTemporaryService = spaceWallTemporaryService;
     }
 
-    @GetMapping("/wall-temporary/storage/{memberId}/{addSpaceId}")
-    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallTemporaryResponse>> checkSpaceWallTemporary(@PathVariable Long memberId, @PathVariable Long addSpaceId) {
-        SpaceWallTemporaryResponse response = spaceWallTemporaryService.checkSpaceWallTemporary(memberId, addSpaceId);
-        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_TEMPORARY_READ_SUCCESS, response));
-    }
-
     @PostMapping("/wall")
     public ResponseEntity<ApiUtils.ApiResponse<SpaceWallSaveResponse>> save(
             @RequestBody final SpaceWallStringRequest spaceWallRequest) {
 
-        SpaceWallSaveResponse response = spaceWallService.save(spaceWallRequest, FlagType.SAVED);
-        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_SAVE_SUCCESS, response));
+        SpaceWallSaveResponse data = spaceWallService.save(spaceWallRequest, FlagType.SAVED);
+
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_SAVE_SUCCESS, data));
     }
 
     @PostMapping(path = "/wall-temporary")
     public ResponseEntity<ApiUtils.ApiResponse<SpaceWallSaveResponse>> savePending (
             @RequestBody final SpaceWallStringRequest spaceWallRequest) {
 
-       SpaceWallSaveResponse response = spaceWallService.save(spaceWallRequest, FlagType.PENDING);
-        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_TEMPORARY_SAVE_SUCCESS, response));
+       SpaceWallSaveResponse data = spaceWallService.save(spaceWallRequest, FlagType.PENDING);
+
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_TEMPORARY_SAVE_SUCCESS, data));
     }
 
-    @PutMapping("/wall")
-    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallSaveResponse>> update(@RequestBody final SpaceWallStringUpdateRequest spaceWallUpdateRequest){
+    @GetMapping("/wall-temporary/storage/{memberId}/{addSpaceId}")
+    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallTemporaryResponse>> hasSpaceWallTemporary(@PathVariable final Long memberId, @PathVariable final Long addSpaceId) {
 
-        SpaceWallSaveResponse response = spaceWallService.update(spaceWallUpdateRequest, FlagType.SAVED);
-        return  ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.CREATE_SUCCESS, response));
+        SpaceWallTemporaryResponse data = spaceWallTemporaryService.hasSpaceWallTemporary(memberId, addSpaceId);
+
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_TEMPORARY_READ_SUCCESS, data));
     }
 
     @GetMapping("/wall/{memberId}/{addSpaceId}/{spaceWallId}")
-    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallResponse>> findSaved (
-            @PathVariable Long memberId, @PathVariable Long addSpaceId, @PathVariable Long spaceWallId) throws JsonProcessingException {
+    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallResponse>> find (
+            @PathVariable final Long memberId, @PathVariable final Long addSpaceId, @PathVariable final Long spaceWallId){
 
         SpaceWallResponse data = spaceWallFindService.find(memberId, addSpaceId, spaceWallId, FlagType.SAVED);
+
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_READ_SUCCESS, data));
     }
 
     @GetMapping("/wall-temporary/{memberId}/{addSpaceId}/{spaceWallId}")
     public ResponseEntity<ApiUtils.ApiResponse<SpaceWallResponse>> findPending(
-            @PathVariable Long memberId, @PathVariable Long addSpaceId, @PathVariable Long spaceWallId) throws JsonProcessingException {
+            @PathVariable final Long memberId, @PathVariable final Long addSpaceId, @PathVariable final Long spaceWallId){
 
         SpaceWallResponse data = spaceWallFindService.find(memberId, addSpaceId, spaceWallId, FlagType.PENDING);
+
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_TEMPORARY_READ_SUCCESS, data));
     }
 
     @GetMapping("/wall/{shareURL}")
-    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallResponse>> findByShareURL(@PathVariable String shareURL) throws JsonProcessingException {
+    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallResponse>> findByShareURL(@PathVariable final String shareURL) {
+
         SpaceWallResponse data = spaceWallFindService.findByShareURL(shareURL);
+
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_READ_SUCCESS, data));
     }
 
-    @GetMapping("/has-duplicate/{shareURL}")
-    public ResponseEntity<ApiUtils.ApiResponse<DuplicateURLResponse>> hasDuplicateShareURL (@PathVariable String shareURL) {
-        DuplicateURLResponse response = spaceWallFindService.hasDuplicateShareURL(shareURL);
-        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SUCCESS, response));
+    @GetMapping("/wall/has-duplicate/{shareURL}")
+    public ResponseEntity<ApiUtils.ApiResponse<DuplicateURLResponse>> hasDuplicateShareURL (@PathVariable final String shareURL) {
+
+        DuplicateURLResponse data = spaceWallFindService.hasDuplicateShareURL(shareURL);
+
+        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SUCCESS, data));
+    }
+
+    @PutMapping("/wall")
+    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallSaveResponse>> update(@RequestBody final SpaceWallStringUpdateRequest spaceWallUpdateRequest){
+
+        SpaceWallSaveResponse data = spaceWallService.update(spaceWallUpdateRequest, FlagType.SAVED);
+
+        return  ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.CREATE_SUCCESS, data));
     }
 
     @PutMapping("/wall-temporary")
-    public ResponseEntity<ApiUtils.ApiResponse> deleteTemporary(@RequestBody final DeleteTemporaryRequest deleteTemporaryRequest) {
+    public ResponseEntity<ApiUtils.ApiResponse> deleteTemporary(@RequestBody final TemporaryDeleteRequest temporaryDeleteRequest) {
 
-        Long memberId = deleteTemporaryRequest.getMemberId();
-        Long addSpaceId = deleteTemporaryRequest.getSpaceId();
-
-        spaceWallTemporaryService.deleteTemporary(memberId, addSpaceId);
+        spaceWallTemporaryService.delete(temporaryDeleteRequest.getMemberId(), temporaryDeleteRequest.getSpaceId());
 
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_TEMPORARY_DELETE_SUCCESS, null));
     }

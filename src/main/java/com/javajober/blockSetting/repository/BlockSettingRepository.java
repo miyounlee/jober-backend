@@ -8,13 +8,11 @@ import com.javajober.core.error.exception.Exception404;
 import com.javajober.core.message.ErrorMessage;
 import com.javajober.blockSetting.domain.BlockSetting;
 
-
-
 public interface BlockSettingRepository extends Repository<BlockSetting, Long> {
 
-	BlockSetting save(BlockSetting blockSetting);
+	BlockSetting save(final BlockSetting blockSetting);
 
-	Optional<BlockSetting> findById(Long id);
+	Optional<BlockSetting> findById(final Long id);
 
 	default BlockSetting getById (final Long id) {
 		return findById(id)

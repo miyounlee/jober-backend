@@ -10,9 +10,10 @@ public class FileBlockSaveRequest {
     private String fileDescription;
 
     public FileBlockSaveRequest() {
+
     }
 
-    public static FileBlock toEntity(FileBlockSaveRequest fileBlockSaveRequest, String fileName) {
+    public static FileBlock toEntity(final FileBlockSaveRequest fileBlockSaveRequest, final String fileName) {
         return FileBlock.builder()
                 .fileTitle(fileBlockSaveRequest.getFileTitle())
                 .fileDescription(fileBlockSaveRequest.getFileDescription())

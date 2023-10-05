@@ -9,6 +9,7 @@ public class FileBlockUpdateRequests {
 
     List<FileBlockUpdateRequest> subData;
 
-    private FileBlockUpdateRequests() {}
+    private FileBlockUpdateRequests() {
 
+    }
 }

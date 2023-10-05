@@ -15,5 +15,4 @@ public class BackgroundStringUpdateRequest {
 	public BackgroundStringUpdateRequest(){
 
 	}
-
 }

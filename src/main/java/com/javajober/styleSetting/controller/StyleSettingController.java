@@ -11,13 +11,7 @@ public class StyleSettingController {
 
 	private final StyleSettingService styleSettingService;
 
-	public StyleSettingController(StyleSettingService styleSettingService) {
+	public StyleSettingController(final StyleSettingService styleSettingService) {
 		this.styleSettingService = styleSettingService;
 	}
-
-//	@PostMapping
-//	public ResponseEntity<ApiUtils.ApiResponse> save(@RequestBody StyleSettingSaveRequest styleSettingSaveRequest, String styleImgURL) {
-//		styleSettingService.save(styleSettingSaveRequest, styleImgURL);
-//		return ResponseEntity.ok(ApiUtils.success(HttpStatus.CREATED, SuccessMessage.CREATE_SUCCESS, null));
-//	}
 }

@@ -10,9 +10,10 @@ public class FreeBlockSaveRequests {
     List<FreeBlockSaveRequest> subData;
 
     private FreeBlockSaveRequests() {
+
     }
 
-    public FreeBlockSaveRequests(List<FreeBlockSaveRequest> subData) {
+    public FreeBlockSaveRequests(final List<FreeBlockSaveRequest> subData) {
         this.subData = subData;
     }
 }

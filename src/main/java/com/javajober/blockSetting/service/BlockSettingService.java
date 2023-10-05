@@ -12,7 +12,7 @@ public class BlockSettingService {
 
 	private final BlockSettingRepository blockSettingRepository;
 
-	public BlockSettingService(BlockSettingRepository blockSettingRepository) {
+	public BlockSettingService(final BlockSettingRepository blockSettingRepository) {
 		this.blockSettingRepository = blockSettingRepository;
 	}
 

@@ -14,7 +14,7 @@ public class TemplateBlockUpdateRequest {
 	private List<Long> hasAccessTemplateAuth;
 	private List<Long> hasDenyTemplateAuth;
 
-	private TemplateBlockUpdateRequest(){
+	private TemplateBlockUpdateRequest() {
 
 	}
 }

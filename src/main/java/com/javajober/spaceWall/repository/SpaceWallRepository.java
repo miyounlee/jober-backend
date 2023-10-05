@@ -13,6 +13,8 @@ import java.util.Optional;
 
 public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
 
+    boolean existsByShareURL(String shareURL);
+
     @Query("SELECT s FROM SpaceWall s LEFT JOIN s.addSpace a LEFT JOIN s.member m " +
             "WHERE a.id = :addSpaceId AND m.id = :memberId")
     List<SpaceWall> findSpaceWalls(@Param("memberId") Long memberId, @Param("addSpaceId") Long addSpaceId);

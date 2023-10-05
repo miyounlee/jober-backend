@@ -22,6 +22,7 @@ import com.javajober.spaceWall.domain.BlockType;
 import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.domain.SpaceWall;
 import com.javajober.spaceWall.dto.response.BlockResponse;
+import com.javajober.spaceWall.dto.response.DuplicateURLResponse;
 import com.javajober.spaceWall.dto.response.SpaceWallResponse;
 import com.javajober.spaceWall.repository.SpaceWallRepository;
 import com.javajober.styleSetting.domain.StyleSetting;
@@ -67,6 +68,11 @@ public class SpaceWallFindService {
         this.fileBlockRepository = fileBlockRepository;
         this.listBlockRepository = listBlockRepository;
         this.styleSettingRepository = styleSettingRepository;
+    }
+
+    public DuplicateURLResponse hasDuplicateShareURL(String shareURL) {
+        boolean hasDuplicateURL = spaceWallRepository.existsByShareURL(shareURL);
+        return DuplicateURLResponse.from(hasDuplicateURL);
     }
 
     @Transactional

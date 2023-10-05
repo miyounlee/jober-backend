@@ -30,7 +30,9 @@ public enum SuccessMessage {
 	TEMPLATE_BLOCK_SAVE_SUCCESS("템플릿 블록 저장에 성공했습니다."),
 	TEMPLATE_BLOCK_READ_SUCCESS("템플릿 블록 조회에 성공했습니다."),
 	TEMPLATE_BLOCK_UPDATE_SUCCESS("템플릿 블록 수정에 성공했습니다."),
-	TEMPLATE_BLOCK_DELETE_SUCCESS("템플릿 블록 삭제에 성공했습니다.");
+	TEMPLATE_BLOCK_DELETE_SUCCESS("템플릿 블록 삭제에 성공했습니다."),
+
+	SUCCESS("");
 
 
 	private final String message;

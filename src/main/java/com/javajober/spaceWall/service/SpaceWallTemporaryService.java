@@ -9,15 +9,18 @@ import com.javajober.spaceWall.repository.SpaceWallRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 @Service
 public class SpaceWallTemporaryService {
 
     private final SpaceWallRepository spaceWallRepository;
+    private final EntityManager entityManager;
 
-    public SpaceWallTemporaryService(final SpaceWallRepository spaceWallRepository){
+    public SpaceWallTemporaryService(final SpaceWallRepository spaceWallRepository, final EntityManager entityManager){
         this.spaceWallRepository = spaceWallRepository;
+        this.entityManager = entityManager;
     }
 
     @Transactional
@@ -27,11 +30,9 @@ public class SpaceWallTemporaryService {
 
         spaceWalls.forEach(spaceWall -> {
             if (spaceWall.getFlag().equals(FlagType.PENDING)) {
-                spaceWall.markAsDeleted();
+                entityManager.remove(spaceWall);
             }
         });
-
-        spaceWallRepository.saveAll(spaceWalls);
     }
 
     public SpaceWallTemporaryResponse hasSpaceWallTemporary(final Long memberId, final Long addSpaceId) {

@@ -83,8 +83,4 @@ public class SpaceWall {
         this.shareURL = request.getShareURL();
         this.flag = flag;
     }
-
-    public void markAsDeleted() {
-        this.deletedAt = LocalDateTime.now();
-    }
 }

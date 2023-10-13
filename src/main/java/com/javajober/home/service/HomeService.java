@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.javajober.member.domain.Member;
+import com.javajober.space.domain.AddSpace;
 import com.javajober.space.domain.SpaceType;
 
 import com.javajober.home.dto.response.AddSpaceResponse;
@@ -26,26 +28,36 @@ public class HomeService {
 		this.memberRepository = memberRepository;
 	}
 
-	public HomeResponse find (final Long memberId) {
+	@Transactional
+	public HomeResponse find(final Long memberId) {
 
 		Member member = memberRepository.findMember(memberId);
 
 		MemberResponse memberInfo = MemberResponse.from(member);
 
-		List<AddSpaceResponse> personalSpaces =
-			addSpaceRepository.findByMemberIdAndSpaceType(memberId, SpaceType.PERSONAL).stream()
+		List<AddSpace> findByMemberIdAndSpaceTypes = addSpaceRepository.findSpacesByMemberIdAndSpaceTypes(memberId,List.of(SpaceType.PERSONAL, SpaceType.ORGANIZATION));
+
+		List<AddSpaceResponse> personalSpaces = filterSpacesByType(findByMemberIdAndSpaceTypes, SpaceType.PERSONAL);
+
+		List<AddSpaceResponse> organizationSpaces = filterSpacesByType(findByMemberIdAndSpaceTypes, SpaceType.ORGANIZATION);
+
+		EnumMap<SpaceType, List<AddSpaceResponse>> spaces = generateSpaceTypeMap(personalSpaces, organizationSpaces);
+
+		return new HomeResponse(memberInfo, spaces);
+	}
+
+	private List<AddSpaceResponse> filterSpacesByType(final List<AddSpace> spaces, final SpaceType spaceType) {
+		return spaces
+				.stream()
+				.filter(space -> space.getSpaceType() == spaceType)
 				.map(AddSpaceResponse::from)
 				.collect(Collectors.toList());
+	}
 
-		List<AddSpaceResponse> organizationSpaces =
-			addSpaceRepository.findByMemberIdAndSpaceType(memberId, SpaceType.ORGANIZATION).stream()
-				.map(AddSpaceResponse::from)
-				.collect(Collectors.toList());
-
+	private EnumMap<SpaceType, List<AddSpaceResponse>> generateSpaceTypeMap(final List<AddSpaceResponse> personalSpaces, final List<AddSpaceResponse> organizationSpaces) {
 		EnumMap<SpaceType, List<AddSpaceResponse>> spaces = new EnumMap<>(SpaceType.class);
 		spaces.put(SpaceType.PERSONAL, personalSpaces);
 		spaces.put(SpaceType.ORGANIZATION, organizationSpaces);
-
-		return new HomeResponse(memberInfo, spaces);
+		return spaces;
 	}
 }

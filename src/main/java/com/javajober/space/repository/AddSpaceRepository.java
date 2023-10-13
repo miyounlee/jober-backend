@@ -3,6 +3,7 @@ package com.javajober.space.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 
 import com.javajober.core.error.exception.Exception404;
@@ -12,7 +13,8 @@ import com.javajober.space.domain.SpaceType;
 
 public interface AddSpaceRepository extends Repository<AddSpace, Long> {
 
-	List<AddSpace> findByMemberIdAndSpaceType(final Long memberId, final SpaceType spaceType);
+	@Query("SELECT a FROM AddSpace a JOIN FETCH a.member WHERE a.member.id = :memberId AND a.spaceType IN :spaceTypes")
+	List<AddSpace> findSpacesByMemberIdAndSpaceTypes(final Long memberId, final List<SpaceType> spaceTypes);
 
 	Optional<AddSpace> findById(final Long id);
 

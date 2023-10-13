@@ -27,7 +27,8 @@ public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
 
     List<SpaceWall> saveAll(final Iterable<SpaceWall> entities);
 
-    Optional<SpaceWall> findByMemberIdAndAddSpaceIdAndFlag(final Long memberId, final Long addSpaceId, final FlagType flag);
+    @Query("SELECT s.id FROM SpaceWall s WHERE s.member.id = :memberId AND s.addSpace.id = :addSpaceId AND s.flag = :flag")
+    Optional<Long> findSpaceWallId(@Param("memberId") final Long memberId, @Param("addSpaceId") final Long addSpaceId, @Param("flag") final FlagType flag);
 
     Optional<SpaceWall> findByIdAndAddSpaceIdAndMemberIdAndFlag(final Long id, final Long addSpaceId, final Long memberId, final FlagType flag);
 

@@ -1,7 +1,5 @@
 package com.javajober.spaceWall.service;
 
-import com.javajober.core.error.exception.Exception404;
-import com.javajober.core.message.ErrorMessage;
 import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.domain.SpaceWall;
 import com.javajober.spaceWall.dto.response.SpaceWallTemporaryResponse;
@@ -38,12 +36,8 @@ public class SpaceWallTemporaryService {
 
     public SpaceWallTemporaryResponse hasSpaceWallTemporary(final Long memberId, final Long addSpaceId) {
 
-        Optional<SpaceWall> spaceWall = spaceWallRepository.findByMemberIdAndAddSpaceIdAndFlag(memberId, addSpaceId, FlagType.PENDING);
-        if (spaceWall.isPresent()) {
-            Long spaceWallId = spaceWall.get().getId();
-            return new SpaceWallTemporaryResponse(spaceWallId, true);
-        }
-
-        return new SpaceWallTemporaryResponse(null, false);
+        return spaceWallRepository.findSpaceWallId(memberId, addSpaceId, FlagType.PENDING)
+                .map(spaceWallId -> new SpaceWallTemporaryResponse(spaceWallId, true))
+                .orElseGet(() -> new SpaceWallTemporaryResponse(null, false));
     }
 }

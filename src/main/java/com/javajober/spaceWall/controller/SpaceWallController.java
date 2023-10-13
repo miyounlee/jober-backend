@@ -1,7 +1,9 @@
 package com.javajober.spaceWall.controller;
 
 import com.javajober.core.message.SuccessMessage;
+import com.javajober.core.util.ApiResponse;
 import com.javajober.core.util.ApiUtils;
+import com.javajober.exception.ApiStatus;
 import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.dto.request.TemporaryDeleteRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallStringRequest;
@@ -50,11 +52,12 @@ public class SpaceWallController {
     }
 
     @GetMapping("/wall-temporary/storage/{memberId}/{addSpaceId}")
-    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallTemporaryResponse>> hasSpaceWallTemporary(@PathVariable final Long memberId, @PathVariable final Long addSpaceId) {
+    public ResponseEntity<ApiResponse.Response<SpaceWallTemporaryResponse>> hasSpaceWallTemporary(
+            @PathVariable final Long memberId, @PathVariable final Long addSpaceId) {
 
         SpaceWallTemporaryResponse data = spaceWallTemporaryService.hasSpaceWallTemporary(memberId, addSpaceId);
 
-        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_TEMPORARY_READ_SUCCESS, data));
+        return ApiResponse.response(ApiStatus.OK, "공유페이지 임시 저장 조회를 성공했습니다.", data);
     }
 
     @GetMapping("/wall/{memberId}/{addSpaceId}/{spaceWallId}")

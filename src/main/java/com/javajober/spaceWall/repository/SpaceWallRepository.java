@@ -19,13 +19,7 @@ public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
             "WHERE a.id = :addSpaceId AND m.id = :memberId")
     List<SpaceWall> findSpaceWalls(@Param("memberId") final Long memberId, @Param("addSpaceId") final Long addSpaceId);
 
-    boolean existsByAddSpaceId(final Long addSpaceId);
-
     SpaceWall save(final SpaceWall spaceWall);
-
-    List<SpaceWall> findByAddSpaceId(final Long addSpaceId);
-
-    List<SpaceWall> saveAll(final Iterable<SpaceWall> entities);
 
     @Query("SELECT s.id FROM SpaceWall s WHERE s.member.id = :memberId AND s.addSpace.id = :addSpaceId AND s.flag = :flag")
     Optional<Long> findSpaceWallId(@Param("memberId") final Long memberId, @Param("addSpaceId") final Long addSpaceId, @Param("flag") final FlagType flag);

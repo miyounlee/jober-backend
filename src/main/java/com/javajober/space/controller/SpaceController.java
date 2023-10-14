@@ -1,15 +1,15 @@
 package com.javajober.space.controller;
 
-import com.javajober.core.message.SuccessMessage;
-import com.javajober.core.util.ApiUtils;
+import com.javajober.core.util.ApiResponse;
+import com.javajober.exception.ApiStatus;
+import com.javajober.exception.ApplicationException;
 import com.javajober.space.service.SpaceService;
-import com.javajober.space.dto.response.DataResponse;
-import org.springframework.http.HttpStatus;
+import com.javajober.space.dto.response.SpaceResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
 @RequestMapping("/api/employee")
+@RestController
 public class SpaceController {
 
     private final SpaceService spaceService;
@@ -19,10 +19,14 @@ public class SpaceController {
     }
 
     @GetMapping("/{memberId}/{addSpaceId}")
-    public ResponseEntity<ApiUtils.ApiResponse<DataResponse>> find (@PathVariable final Long memberId, @PathVariable final Long addSpaceId, @RequestParam final String spaceType) {
+    public ResponseEntity<ApiResponse.Response<SpaceResponse>> find(
+            @PathVariable final Long memberId, @PathVariable final Long addSpaceId, @RequestParam final String spaceType) {
 
-        DataResponse data = spaceService.find(memberId, addSpaceId, spaceType);
+        if (spaceType.isEmpty()) {
+            throw new ApplicationException(ApiStatus.OBJECT_EMPTY, "spaceType 값이 요청되지 않았습니다.");
+        }
+        SpaceResponse data = spaceService.find(memberId, addSpaceId, spaceType);
 
-        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_READ_SUCCESS, data));
+        return ApiResponse.response(ApiStatus.OK, "스페이스 조회를 성공했습니다.", data);
     }
 }

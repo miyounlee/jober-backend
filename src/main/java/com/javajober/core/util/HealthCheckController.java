@@ -1,5 +1,6 @@
 package com.javajober.core.util;
 
+import com.javajober.exception.ApiStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,7 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthCheckController {
 
     @GetMapping("/healthCheck")
-    public ResponseEntity<?> healthCheck() {
-        return ResponseEntity.ok(ApiUtils.success(true));
+    public ResponseEntity<ApiResponse.Response<Boolean>> healthCheck() {
+
+        Boolean data = true;
+
+        return ApiResponse.response(ApiStatus.OK, "헬스 체크를 성공했습니다.", data);
     }
 }

@@ -23,7 +23,7 @@ import com.javajober.refreshToken.dto.RefreshTokenRequest;
 
 @RestController
 @Validated
-@RequestMapping("api/members")
+@RequestMapping("/api/members")
 public class MemberController {
 	private final MemberService memberService;
 	private final RefreshTokenService refreshTokenService;

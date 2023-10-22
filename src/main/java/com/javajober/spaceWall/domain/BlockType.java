@@ -14,7 +14,7 @@ public enum BlockType {
     FREE_BLOCK("freeBlock", "자유 블록", "FreeBlockStrategy"),
     LIST_BLOCK("listBlock", "리스트 블록", "ListBlockStrategy"),
     SNS_BLOCK("snsBlock", "소셜 블록", "SNSBlockStrategy"),
-    STYLE_SETTING("styleSetting","스타일 블록","StyleSettingBlockStrategy"),
+    STYLE_SETTING("styleSetting","스타일 블록","StyleSettingStrategy"),
     TEMPLATE_BLOCK("templateBlock", "템플릿 블록", "TemplateBlockStrategy"),
     WALL_INFO_BLOCK("wallInfoBlock", "공유페이지 소개 블록", "WallInfoBlockStrategy"),
     EMPTY("empty","없음","");
@@ -23,7 +23,7 @@ public enum BlockType {
     private final String korTitle;
     private final String strategyName;
 
-    BlockType(String engTitle, String korTitle, String strategyName) {
+    BlockType(final String engTitle, final String korTitle, final String strategyName) {
         this.engTitle = engTitle;
         this.korTitle = korTitle;
         this.strategyName = strategyName;

@@ -7,5 +7,5 @@ public enum BlockStrategyName {
 	TemplateBlockStrategy,
 	ListBlockStrategy,
 	WallInfoBlockStrategy,
-	StyleSettingBlockStrategy
+	StyleSettingStrategy
 }

@@ -3,6 +3,9 @@ package com.javajober.spaceWall.strategy.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.javajober.blocks.snsBlock.dto.response.SNSBlockResponse;
+import com.javajober.core.util.response.CommonResponse;
 import org.springframework.stereotype.Component;
 
 import com.javajober.blocks.snsBlock.domain.SNSBlock;
@@ -36,6 +39,17 @@ public class SNSBlockStrategy implements MoveBlockStrategy {
 			snsBlockIds.add(snsBlockRepository.save(snsBlock).getId());
 		});
 		return snsBlockIds;
+	}
+
+	@Override
+	public List<CommonResponse> createMoveBlockDTO(List<JsonNode> blocksWithSamePosition) {
+		List<CommonResponse> subData = new ArrayList<>();
+		for (JsonNode block : blocksWithSamePosition) {
+			long blockId = block.path("block_id").asLong();
+			SNSBlock snsBlock = snsBlockRepository.findSNSBlock(blockId);
+			subData.add(SNSBlockResponse.from(snsBlock));
+		}
+		return subData;
 	}
 
 	@Override

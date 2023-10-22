@@ -1,8 +1,12 @@
 package com.javajober.spaceWall.strategy.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.javajober.blocks.templateBlock.dto.response.TemplateBlockResponse;
+import com.javajober.core.util.response.CommonResponse;
 import org.springframework.stereotype.Component;
 
 import com.javajober.blocks.templateBlock.domain.TemplateBlock;
@@ -24,7 +28,6 @@ public class TemplateBlockStrategy implements MoveBlockStrategy {
 		this.templateBlockRepository = templateBlockRepository;
 	}
 
-
 	@Override
 	public List<Long> saveBlocks(final List<Object> subData) {
 		List<Long> templateBlockIds = new ArrayList<>();
@@ -36,6 +39,17 @@ public class TemplateBlockStrategy implements MoveBlockStrategy {
 		});
 
 		return templateBlockIds;
+	}
+
+	@Override
+	public List<CommonResponse> createMoveBlockDTO(List<JsonNode> blocksWithSamePosition) {
+		List<CommonResponse> subData = new ArrayList<>();
+		for (JsonNode block : blocksWithSamePosition) {
+			long blockId = block.path("block_id").asLong();
+			TemplateBlock templateBlock = templateBlockRepository.findTemplateBlock(blockId);
+			subData.add(TemplateBlockResponse.of(templateBlock, Collections.emptyList(), Collections.emptyList()));
+		}
+		return subData;
 	}
 
 	@Override

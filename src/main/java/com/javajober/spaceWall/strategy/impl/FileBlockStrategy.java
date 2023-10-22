@@ -3,6 +3,9 @@ package com.javajober.spaceWall.strategy.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.javajober.blocks.fileBlock.dto.response.FileBlockResponse;
+import com.javajober.core.util.response.CommonResponse;
 import org.springframework.stereotype.Component;
 
 import com.javajober.blocks.fileBlock.domain.FileBlock;
@@ -34,6 +37,17 @@ public class FileBlockStrategy implements MoveBlockStrategy {
 			fileBlockIds.add(fileBlockRepository.save(fileBlock).getId());
 		});
 		return fileBlockIds;
+	}
+
+	@Override
+	public List<CommonResponse> createMoveBlockDTO(List<JsonNode> blocksWithSamePosition) {
+		List<CommonResponse> subData = new ArrayList<>();
+		for (JsonNode block : blocksWithSamePosition) {
+			long blockId = block.path("block_id").asLong();
+			FileBlock fileBlock = fileBlockRepository.findFileBlock(blockId);
+			subData.add(FileBlockResponse.from(fileBlock));
+		}
+		return subData;
 	}
 
 	@Override

@@ -3,6 +3,9 @@ package com.javajober.spaceWall.strategy.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.javajober.blocks.freeBlock.dto.response.FreeBlockResponse;
+import com.javajober.core.util.response.CommonResponse;
 import org.springframework.stereotype.Component;
 
 import com.javajober.blocks.freeBlock.domain.FreeBlock;
@@ -34,6 +37,17 @@ public class FreeBlockStrategy implements MoveBlockStrategy {
 		});
 
 		return freeBlockIds;
+	}
+
+	@Override
+	public List<CommonResponse> createMoveBlockDTO(List<JsonNode> blocksWithSamePosition) {
+		List<CommonResponse> subData = new ArrayList<>();
+		for (JsonNode block : blocksWithSamePosition) {
+			long blockId = block.path("block_id").asLong();
+			FreeBlock freeBlock = freeBlockRepository.findFreeBlock(blockId);
+			subData.add(FreeBlockResponse.from(freeBlock));
+		}
+		return subData;
 	}
 
 	@Override

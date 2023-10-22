@@ -43,7 +43,7 @@ public class BlockJsonProcessor {
 		blockInfoObject.put("position", position);
 		blockInfoObject.put("block_type", currentBlockTypeTitle);
 		blockInfoObject.put("block_id", blockId);
-		blockInfoObject.put("block_UUID", blockUUID);
+		blockInfoObject.put("block_uuid", blockUUID);
 
 		blockInfoArray.add(blockInfoObject);
 	}
@@ -56,7 +56,7 @@ public class BlockJsonProcessor {
 		blockInfoObject.put("position", position);
 		blockInfoObject.put("block_type", blockType);
 		blockInfoObject.put("block_id", blockId);
-		blockInfoObject.put("block_UUID", "");
+		blockInfoObject.put("block_uuid", "");
 
 		blockInfoArray.add(blockInfoObject);
 	}

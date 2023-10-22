@@ -24,7 +24,7 @@ import java.util.*;
 @Service
 public class SpaceWallFindService {
 
-    private static final String BLOCK_UUID_KEY = "block_UUID";
+    private static final String BLOCK_UUID_KEY = "block_uuid";
     private static final String BLOCK_TYPE_KEY = "block_type";
     private static final Long INITIAL_POSITION = 1L;
 

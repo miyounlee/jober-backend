@@ -34,12 +34,11 @@ public class SpaceWallController {
     }
 
     @PostMapping("/wall")
-    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallSaveResponse>> save(
-            @RequestBody final SpaceWallStringRequest spaceWallRequest) {
+    public ResponseEntity<ApiResponse.Response<SpaceWallSaveResponse>> save(@RequestBody final SpaceWallStringRequest spaceWallRequest) {
 
         SpaceWallSaveResponse data = spaceWallService.save(spaceWallRequest, FlagType.SAVED);
 
-        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_SAVE_SUCCESS, data));
+        return ApiResponse.response(ApiStatus.OK, "공유페이지 저장이 완료되었습니다.", data);
     }
 
     @PostMapping(path = "/wall-temporary")
@@ -87,11 +86,11 @@ public class SpaceWallController {
     }
 
     @GetMapping("/wall/has-duplicate/{shareURL}")
-    public ResponseEntity<ApiUtils.ApiResponse<DuplicateURLResponse>> hasDuplicateShareURL (@PathVariable final String shareURL) {
+    public ResponseEntity<ApiResponse.Response<DuplicateURLResponse>> hasDuplicateShareURL (@PathVariable final String shareURL) {
 
         DuplicateURLResponse data = spaceWallFindService.hasDuplicateShareURL(shareURL);
 
-        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SUCCESS, data));
+        return ApiResponse.response(ApiStatus.OK, "", data);
     }
 
     @PutMapping("/wall")

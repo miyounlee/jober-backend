@@ -16,14 +16,14 @@ public class DataStringUpdateRequest {
 	private Long spaceWallId;
 	private String shareURL;
 	private WallInfoBlockStringUpdateRequest wallInfoBlock;
-	private List<BlockSaveRequest<CommonResponse>> blocks;
+	private List<BlockSaveRequest> blocks;
 	private StyleSettingStringUpdateRequest styleSetting;
 
 	private DataStringUpdateRequest(){
 	}
 
 	public DataStringUpdateRequest(final Long spaceWallId, final Long spaceId, final Long memberId, final String shareURL,
-								   final WallInfoBlockStringUpdateRequest wallInfoBlock, final List<BlockSaveRequest<CommonResponse>> blocks,
+								   final WallInfoBlockStringUpdateRequest wallInfoBlock, final List<BlockSaveRequest> blocks,
 								   final StyleSettingStringUpdateRequest styleSetting) {
 
 		this.spaceWallId = spaceWallId;

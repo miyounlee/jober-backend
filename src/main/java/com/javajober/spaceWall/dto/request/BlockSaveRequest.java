@@ -6,7 +6,7 @@ import com.javajober.core.util.response.CommonResponse;
 import lombok.Getter;
 
 @Getter
-public class BlockSaveRequest<T extends CommonResponse> {
+public class BlockSaveRequest<T> {
 
 	private String blockUUID;
 	private String blockType;

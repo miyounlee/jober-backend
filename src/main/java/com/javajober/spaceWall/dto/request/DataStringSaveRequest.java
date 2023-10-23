@@ -2,6 +2,7 @@ package com.javajober.spaceWall.dto.request;
 
 import com.javajober.blocks.styleSetting.dto.request.StyleSettingStringSaveRequest;
 import com.javajober.blocks.wallInfoBlock.dto.request.WallInfoBlockStringSaveRequest;
+import com.javajober.core.util.response.CommonResponse;
 import lombok.Getter;
 
 import java.util.List;
@@ -14,14 +15,14 @@ public class DataStringSaveRequest {
     private Long spaceId;
     private String shareURL;
     private WallInfoBlockStringSaveRequest wallInfoBlock;
-    private List<BlockSaveRequest> blocks;
+    private List<BlockSaveRequest<CommonResponse>> blocks;
     private StyleSettingStringSaveRequest styleSetting;
 
     private DataStringSaveRequest() {
     }
 
     public DataStringSaveRequest(final String category, final Long memberId, Long spaceId, final String shareURL,
-                                 final WallInfoBlockStringSaveRequest wallInfoBlock, final List<BlockSaveRequest> blocks,
+                                 final WallInfoBlockStringSaveRequest wallInfoBlock, final List<BlockSaveRequest<CommonResponse>> blocks,
                                  final StyleSettingStringSaveRequest styleSetting) {
         this.category = category;
         this.memberId = memberId;

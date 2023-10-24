@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.javajober.blocks.freeBlock.dto.request.FreeBlockSaveRequest;
 import com.javajober.blocks.styleSetting.backgroundSetting.domain.BackgroundSetting;
-import com.javajober.blocks.styleSetting.backgroundSetting.dto.request.BackgroundSettingStringSaveRequest;
 import com.javajober.blocks.styleSetting.backgroundSetting.filedto.BackgroundSettingSaveRequest;
 import com.javajober.blocks.styleSetting.backgroundSetting.filedto.BackgroundSettingUpdateRequest;
 import com.javajober.blocks.styleSetting.backgroundSetting.repository.BackgroundSettingRepository;
@@ -13,15 +13,12 @@ import com.javajober.blocks.styleSetting.blockSetting.domain.BlockSetting;
 import com.javajober.blocks.styleSetting.blockSetting.dto.request.BlockSettingSaveRequest;
 import com.javajober.blocks.styleSetting.blockSetting.dto.request.BlockSettingUpdateRequest;
 import com.javajober.blocks.styleSetting.blockSetting.repository.BlockSettingRepository;
-import com.javajober.blocks.styleSetting.dto.request.StyleSettingStringSaveRequest;
 import com.javajober.blocks.styleSetting.themeSetting.dto.request.ThemeSettingSaveRequest;
 import com.javajober.core.util.file.FileImageService;
 import com.javajober.blocks.fileBlock.domain.FileBlock;
 import com.javajober.blocks.fileBlock.filedto.FileBlockSaveRequest;
 import com.javajober.blocks.fileBlock.filedto.FileBlockUpdateRequest;
 import com.javajober.blocks.fileBlock.repository.FileBlockRepository;
-import com.javajober.blocks.freeBlock.domain.FreeBlock;
-import com.javajober.blocks.freeBlock.dto.request.FreeBlockSaveRequest;
 import com.javajober.blocks.freeBlock.dto.request.FreeBlockUpdateRequest;
 import com.javajober.blocks.freeBlock.repository.FreeBlockRepository;
 import com.javajober.blocks.listBlock.domain.ListBlock;
@@ -139,7 +136,7 @@ public class FileUploadService {
             Long position = blocksPositionCounter.getAndIncrement();
             switch (blockType) {
                 case FREE_BLOCK:
-                    List<FreeBlockSaveRequest> freeBlockRequests = jsonMapper.convertValue(block.getSubData(),
+                    List<com.javajober.blocks.freeBlock.dto.request.FreeBlockSaveRequest> freeBlockRequests = jsonMapper.convertValue(block.getSubData(),
                             new TypeReference<List<FreeBlockSaveRequest>>() {
                             });
                     List<Long> freeBlockIds = saveFreeBlocks(freeBlockRequests);
@@ -272,11 +269,11 @@ public class FileUploadService {
         return wallInfoBlockRepository.save(wallInfoBlock).getId();
     }
 
-    private List<Long> saveFreeBlocks(final List<FreeBlockSaveRequest> subData) {
+    private List<Long> saveFreeBlocks(final List<com.javajober.blocks.freeBlock.dto.request.FreeBlockSaveRequest> subData) {
 
         List<Long> freeBlockIds = new ArrayList<>();
         subData.forEach(block -> {
-            FreeBlock freeBlock = FreeBlockSaveRequest.toEntity(block);
+            com.javajober.blocks.freeBlock.domain.FreeBlock freeBlock = com.javajober.blocks.freeBlock.dto.request.FreeBlockSaveRequest.toEntity(block);
             freeBlockIds.add(freeBlockRepository.save(freeBlock).getId());
         });
         return freeBlockIds;
@@ -357,10 +354,10 @@ public class FileUploadService {
         List<Long> updatedFreeBlockIds = new ArrayList<>();
         for (FreeBlockUpdateRequest updateRequest : subData) {
             if(updateRequest.getFreeBlockId() == null ){
-                FreeBlock freeBlock = new FreeBlock(updateRequest.getFreeTitle(),updateRequest.getFreeContent());
+                com.javajober.blocks.freeBlock.domain.FreeBlock freeBlock = new com.javajober.blocks.freeBlock.domain.FreeBlock(updateRequest.getFreeTitle(),updateRequest.getFreeContent());
                 updatedFreeBlockIds.add(freeBlockRepository.save(freeBlock).getId());
             }else {
-                FreeBlock freeBlock = freeBlockRepository.findFreeBlock(updateRequest.getFreeBlockId());
+                com.javajober.blocks.freeBlock.domain.FreeBlock freeBlock = freeBlockRepository.findFreeBlock(updateRequest.getFreeBlockId());
                 freeBlock.update(updateRequest);
                 updatedFreeBlockIds.add(freeBlockRepository.save(freeBlock).getId());
             }

@@ -1,5 +1,6 @@
 package com.javajober.blocks.listBlock.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.javajober.blocks.listBlock.domain.ListBlock;
@@ -11,6 +12,8 @@ import com.javajober.core.exception.ApplicationException;
 public interface ListBlockRepository extends Repository<ListBlock, Long> {
 
 	ListBlock save(final ListBlock listBlock);
+
+	List<ListBlock> saveAll(final Iterable<ListBlock> listBlocks);
 
 	Optional<ListBlock> findByIdAndDeletedAtIsNull(final Long id);
 

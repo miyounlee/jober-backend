@@ -2,6 +2,7 @@ package com.javajober.spaceWall.strategy.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -32,20 +33,43 @@ public class ListBlockStrategy implements MoveBlockStrategy {
 	@Override
 	public void saveBlocks(final List<?> subData, final ArrayNode blockInfoArray, final Long position) {
 
-		subData.forEach(block -> {
-			ListBlockSaveRequest request = blockJsonProcessor.convertValue(block, ListBlockSaveRequest.class);
-			ListBlock listBlock = saveListBlock(request);
-			blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, LIST_BLOCK, listBlock.getId(), listBlock.getListUUID());
-		});
+		List<ListBlockSaveRequest> listBlockRequests = convertSubDataToListBlockSaveRequests(subData);
+
+		List<ListBlock> listBlocks = convertToListBlocks(listBlockRequests);
+
+		List<ListBlock> savedListBlocks = saveAllListBlock(listBlocks);
+
+		addToListBlockInfoArray(savedListBlocks, blockInfoArray, position);
 	}
 
-	private ListBlock saveListBlock(ListBlockSaveRequest request) {
-		ListBlock listBlock = ListBlockSaveRequest.toEntity(request);
-		return listBlockRepository.save(listBlock);
+	private List<ListBlockSaveRequest> convertSubDataToListBlockSaveRequests(final List<?> subData) {
+		List<ListBlockSaveRequest> listBlockRequests = new ArrayList<>();
+
+		subData.forEach(block -> {
+			ListBlockSaveRequest request = blockJsonProcessor.convertValue(block, ListBlockSaveRequest.class);
+			listBlockRequests.add(request);
+		});
+		return listBlockRequests;
+	}
+
+	private List<ListBlock> convertToListBlocks(final List<ListBlockSaveRequest> listBlockRequests) {
+		return listBlockRequests.stream()
+			.map(ListBlockSaveRequest::toEntity)
+			.collect(Collectors.toList());
+	}
+
+	private List<ListBlock> saveAllListBlock(final List<ListBlock> listBlocks) {
+		return listBlockRepository.saveAll(listBlocks);
+	}
+
+	private void addToListBlockInfoArray (final List<ListBlock> savedListBlocks, final ArrayNode blockInfoArray, final Long position) {
+		savedListBlocks.forEach(savedListBlock ->
+			blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, LIST_BLOCK, savedListBlock.getId(), savedListBlock.getListUUID())
+		);
 	}
 
 	@Override
-	public List<CommonResponse> createMoveBlockDTO(List<JsonNode> blocksWithSamePosition) {
+	public List<CommonResponse> createMoveBlockDTO(final List<JsonNode> blocksWithSamePosition) {
 		List<CommonResponse> subData = new ArrayList<>();
 		for (JsonNode block : blocksWithSamePosition) {
 			long blockId = block.path("block_id").asLong();

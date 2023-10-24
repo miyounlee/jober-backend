@@ -5,11 +5,14 @@ import com.javajober.core.exception.ApiStatus;
 import com.javajober.core.exception.ApplicationException;
 import org.springframework.data.repository.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface FileBlockRepository extends Repository<FileBlock, Long> {
 
     FileBlock save(final FileBlock fileBlock);
+
+    List<FileBlock> saveAll(final Iterable<FileBlock> fileBlocks);
 
     Optional<FileBlock> findByIdAndDeletedAtIsNull(final Long id);
 

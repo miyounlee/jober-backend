@@ -19,7 +19,6 @@ import com.javajober.space.repository.AddSpaceRepository;
 import com.javajober.space.domain.AddSpace;
 import com.javajober.blocks.fileBlock.domain.FileBlock;
 import com.javajober.blocks.fileBlock.repository.FileBlockRepository;
-import com.javajober.blocks.freeBlock.domain.FreeBlock;
 import com.javajober.blocks.freeBlock.repository.FreeBlockRepository;
 import com.javajober.blocks.listBlock.domain.ListBlock;
 import com.javajober.blocks.listBlock.repository.ListBlockRepository;
@@ -128,16 +127,7 @@ public class SpaceWallService {
 		processWallInfoBlock(data, blockInfoArray, blocksPositionCounter);
 
 		List<BlockSaveRequest<?>> blocks = data.getBlocks();
-		blocks.forEach(block -> {
-
-			BlockType blockType = BlockType.findBlockTypeByString(block.getBlockType());
-			Long position = blocksPositionCounter.getAndIncrement();
-
-			String strategyName = blockType.getStrategyName();
-			MoveBlockStrategy blockProcessingStrategy = blockStrategyFactory.findMoveBlockStrategy(strategyName);
-
-			blockProcessingStrategy.saveBlocks(block.getSubData(), blockInfoArray, position);
-		});
+		processBlocks(blocks, blockInfoArray, blocksPositionCounter);
 
 		processStyleSettingBlock(data, blockInfoArray, blocksPositionCounter);
 
@@ -147,7 +137,7 @@ public class SpaceWallService {
 		return new SpaceWallSaveResponse(spaceWallId);
 	}
 
-	private void validateSpaceOwnership(Member member, AddSpace addSpace) {
+	private void validateSpaceOwnership(final Member member, final AddSpace addSpace) {
 		Long memberId = member.getId();
 		Long spaceId = addSpace.getMember().getId();
 
@@ -169,6 +159,19 @@ public class SpaceWallService {
 
 		Long wallInfoBlockPosition = blocksPositionCounter.getAndIncrement();
 		wallInfoBlockStrategy.saveBlocks(data, blockInfoArray, wallInfoBlockPosition);
+	}
+
+	private void processBlocks(final List<BlockSaveRequest<?>> blocks, final ArrayNode blockInfoArray, final AtomicLong blocksPositionCounter) {
+		blocks.forEach(block -> {
+
+			BlockType blockType = BlockType.findBlockTypeByString(block.getBlockType());
+			Long position = blocksPositionCounter.getAndIncrement();
+
+			String strategyName = blockType.getStrategyName();
+			MoveBlockStrategy blockProcessingStrategy = blockStrategyFactory.findMoveBlockStrategy(strategyName);
+
+			blockProcessingStrategy.saveBlocks(block.getSubData(), blockInfoArray, position);
+		});
 	}
 
 	private void processStyleSettingBlock(final DataStringSaveRequest data, final ArrayNode blockInfoArray, final AtomicLong blocksPositionCounter) {
@@ -272,10 +275,10 @@ public class SpaceWallService {
 		List<Long> updatedFreeBlockIds = new ArrayList<>();
 		for (FreeBlockUpdateRequest updateRequest : subData) {
 			if(updateRequest.getFreeBlockId() == null ){
-				FreeBlock freeBlock = new FreeBlock(updateRequest.getFreeTitle(),updateRequest.getFreeContent());
+				com.javajober.blocks.freeBlock.domain.FreeBlock freeBlock = new com.javajober.blocks.freeBlock.domain.FreeBlock(updateRequest.getFreeTitle(),updateRequest.getFreeContent());
 				updatedFreeBlockIds.add(freeBlockRepository.save(freeBlock).getId());
 			}else {
-				FreeBlock freeBlock = freeBlockRepository.findFreeBlock(updateRequest.getFreeBlockId());
+				com.javajober.blocks.freeBlock.domain.FreeBlock freeBlock = freeBlockRepository.findFreeBlock(updateRequest.getFreeBlockId());
 				freeBlock.update(updateRequest);
 				updatedFreeBlockIds.add(freeBlockRepository.save(freeBlock).getId());
 			}

@@ -5,11 +5,14 @@ import com.javajober.core.exception.ApplicationException;
 import com.javajober.blocks.freeBlock.domain.FreeBlock;
 import org.springframework.data.repository.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface FreeBlockRepository extends Repository<FreeBlock, Long> {
 
     FreeBlock save(final FreeBlock freeBlock);
+
+    List<FreeBlock> saveAll(final Iterable<FreeBlock> freeBlocks);
 
     Optional<FreeBlock> findByIdAndDeletedAtIsNull(final Long freeId);
 

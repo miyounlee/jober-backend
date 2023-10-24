@@ -2,11 +2,13 @@ package com.javajober.spaceWall.strategy.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.javajober.blocks.snsBlock.dto.response.SNSBlockResponse;
 import com.javajober.core.util.response.CommonResponse;
+
 import org.springframework.stereotype.Component;
 
 import com.javajober.blocks.snsBlock.domain.SNSBlock;
@@ -34,22 +36,43 @@ public class SNSBlockStrategy implements MoveBlockStrategy {
 
 	@Override
 	public void saveBlocks(final List<?> subData, final ArrayNode blockInfoArray, final Long position) {
+		List<SNSBlockSaveRequest> snsBlockRequests = convertSubDataToSNSBlockSaveRequests(subData);
+
+		List<SNSBlock> snsBlocks = convertToSNSBlocks(snsBlockRequests);
+
+		List<SNSBlock> savedSNSBlocks = saveAllSNSBlock(snsBlocks);
+
+		addToSNSBlockInfoArray(savedSNSBlocks, blockInfoArray, position);
+	}
+
+	private List<SNSBlockSaveRequest> convertSubDataToSNSBlockSaveRequests(final List<?> subData) {
+		List<SNSBlockSaveRequest> snsBlockRequests = new ArrayList<>();
 
 		subData.forEach(block -> {
 			SNSBlockSaveRequest request = blockJsonProcessor.convertValue(block, SNSBlockSaveRequest.class);
-			SNSBlock snsBlock = saveSNSBlock(request);
-			blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, SNS_BLOCK, snsBlock.getId(), snsBlock.getSnsUUID());
+			snsBlockRequests.add(request);
 		});
+		return snsBlockRequests;
 	}
 
-	private SNSBlock saveSNSBlock(SNSBlockSaveRequest request) {
-		SNSBlock snsBlock = SNSBlockSaveRequest.toEntity(request);
-		snsBlockRepository.save(snsBlock);
-		return snsBlock;
+	private List<SNSBlock> convertToSNSBlocks(final List<SNSBlockSaveRequest> snsBlockSaveRequests) {
+		return snsBlockSaveRequests.stream()
+			.map(SNSBlockSaveRequest::toEntity)
+			.collect(Collectors.toList());
+	}
+
+	private List<SNSBlock> saveAllSNSBlock(final List<SNSBlock> snsBlocks) {
+		return snsBlockRepository.saveAll(snsBlocks);
+	}
+
+	private void addToSNSBlockInfoArray (final List<SNSBlock> savedSNSBlocks, final ArrayNode blockInfoArray, final Long position) {
+		savedSNSBlocks.forEach(savedSNSBlock ->
+			blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, SNS_BLOCK, savedSNSBlock.getId(), "")
+		);
 	}
 
 	@Override
-	public List<CommonResponse> createMoveBlockDTO(List<JsonNode> blocksWithSamePosition) {
+	public List<CommonResponse> createMoveBlockDTO(final List<JsonNode> blocksWithSamePosition) {
 		List<CommonResponse> subData = new ArrayList<>();
 		for (JsonNode block : blocksWithSamePosition) {
 			long blockId = block.path("block_id").asLong();

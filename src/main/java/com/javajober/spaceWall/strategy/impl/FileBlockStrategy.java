@@ -2,6 +2,7 @@ package com.javajober.spaceWall.strategy.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -24,7 +25,6 @@ public class FileBlockStrategy implements MoveBlockStrategy {
 	private final BlockJsonProcessor blockJsonProcessor;
 	private final FileBlockRepository fileBlockRepository;
 
-
 	public FileBlockStrategy(BlockJsonProcessor blockJsonProcessor, FileBlockRepository fileBlockRepository) {
 		this.blockJsonProcessor = blockJsonProcessor;
 		this.fileBlockRepository = fileBlockRepository;
@@ -33,21 +33,43 @@ public class FileBlockStrategy implements MoveBlockStrategy {
 	@Override
 	public void saveBlocks(final List<?> subData, final ArrayNode blockInfoArray, final Long position) {
 
+		List<FileBlockStringSaveRequest> fileBlockRequests = convertSubDataToFileBlockSaveRequests(subData);
+
+		List<FileBlock> fileBlocks = convertToFileBlocks(fileBlockRequests);
+
+		List<FileBlock> savedFileBlocks = saveAllFileBlock(fileBlocks);
+
+		addToFileBlockInfoArray(savedFileBlocks, blockInfoArray, position);
+	}
+
+	private List<FileBlockStringSaveRequest> convertSubDataToFileBlockSaveRequests(final List<?> subData) {
+		List<FileBlockStringSaveRequest> fileBlockRequests = new ArrayList<>();
+
 		subData.forEach(block -> {
 			FileBlockStringSaveRequest request = blockJsonProcessor.convertValue(block, FileBlockStringSaveRequest.class);
-			Long fileBlockId = saveFreeBlock(request);
-			blockJsonProcessor.addBlockInfoToArray(blockInfoArray, fileBlockId, FILE_BLOCK, fileBlockId, "");
+			fileBlockRequests.add(request);
 		});
+		return fileBlockRequests;
 	}
 
-	private Long saveFreeBlock(FileBlockStringSaveRequest request) {
-		FileBlock fileBlock = FileBlockStringSaveRequest.toEntity(request);
-		return fileBlockRepository.save(fileBlock).getId();
+	private List<FileBlock> convertToFileBlocks(final List<FileBlockStringSaveRequest> fileBlockSaveRequests) {
+		return fileBlockSaveRequests.stream()
+			.map(FileBlockStringSaveRequest::toEntity)
+			.collect(Collectors.toList());
 	}
 
+	private List<FileBlock> saveAllFileBlock(final List<FileBlock> fileBlocks) {
+		return fileBlockRepository.saveAll(fileBlocks);
+	}
+
+	private void addToFileBlockInfoArray (final List<FileBlock> savedFileBlocks, final ArrayNode blockInfoArray, final Long position) {
+		savedFileBlocks.forEach(savedFileBlock ->
+			blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, FILE_BLOCK, savedFileBlock.getId(), "")
+		);
+	}
 
 	@Override
-	public List<CommonResponse> createMoveBlockDTO(List<JsonNode> blocksWithSamePosition) {
+	public List<CommonResponse> createMoveBlockDTO(final List<JsonNode> blocksWithSamePosition) {
 		List<CommonResponse> subData = new ArrayList<>();
 		for (JsonNode block : blocksWithSamePosition) {
 			long blockId = block.path("block_id").asLong();

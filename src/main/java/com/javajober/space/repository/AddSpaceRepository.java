@@ -2,6 +2,7 @@ package com.javajober.space.repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import com.javajober.core.exception.ApiStatus;
 import com.javajober.core.exception.ApplicationException;
@@ -25,6 +26,8 @@ public interface AddSpaceRepository extends Repository<AddSpace, Long> {
 
 	@Query("SELECT s.id FROM AddSpace s WHERE s.spaceType = :spaceType AND s.member.id = :memberId")
 	List<Long> findAddSpaceIdBySpaceTypeAndMemberId(@Param("spaceType") final SpaceType spaceType, @Param("memberId") final Long memberId);
+
+	Set<AddSpace> saveAll(final Iterable<AddSpace> addSpaces);
 
 	default AddSpace findAddSpace (final Long id) {
 		return findById(id)

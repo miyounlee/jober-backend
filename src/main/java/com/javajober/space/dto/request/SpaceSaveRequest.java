@@ -3,6 +3,8 @@ package com.javajober.space.dto.request;
 import com.javajober.member.domain.Member;
 import com.javajober.space.domain.AddSpace;
 import com.javajober.space.domain.SpaceType;
+
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -13,7 +15,15 @@ public class SpaceSaveRequest {
     private String representativeName;
     private String spaceType;
 
-    public SpaceSaveRequest() {
+    private SpaceSaveRequest() {
+    }
+
+    @Builder
+    public SpaceSaveRequest(Long memberId, String spaceTitle, String representativeName, String spaceType) {
+        this.memberId = memberId;
+        this.spaceTitle = spaceTitle;
+        this.representativeName = representativeName;
+        this.spaceType = spaceType;
     }
 
     public static AddSpace toEntity(SpaceSaveRequest request, Member member) {

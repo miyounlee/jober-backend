@@ -14,11 +14,9 @@ import java.util.List;
 public class SpaceWallTemporaryService {
 
     private final SpaceWallRepository spaceWallRepository;
-    private final EntityManager entityManager;
 
-    public SpaceWallTemporaryService(final SpaceWallRepository spaceWallRepository, final EntityManager entityManager){
+    public SpaceWallTemporaryService(final SpaceWallRepository spaceWallRepository){
         this.spaceWallRepository = spaceWallRepository;
-        this.entityManager = entityManager;
     }
 
     @Transactional
@@ -26,11 +24,9 @@ public class SpaceWallTemporaryService {
 
         List<SpaceWall> spaceWalls = spaceWallRepository.findSpaceWallsOrThrow(memberId, addSpaceId);
 
-        spaceWalls.forEach(spaceWall -> {
-            if (spaceWall.getFlag().equals(FlagType.PENDING)) {
-                entityManager.remove(spaceWall);
-            }
-        });
+        spaceWalls.removeIf(spaceWall -> !spaceWall.getFlag().equals(FlagType.PENDING));
+
+        spaceWallRepository.deleteAll(spaceWalls);
     }
 
     public SpaceWallTemporaryResponse hasSpaceWallTemporary(final Long memberId, final Long addSpaceId) {

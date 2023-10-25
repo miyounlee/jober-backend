@@ -56,11 +56,11 @@ public class MemberController {
 	}
 
 	@DeleteMapping("/logout")
-	public ResponseEntity logout(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+	public ResponseEntity<ApiResponse.MessageResponse> logout(@RequestBody RefreshTokenRequest refreshTokenRequest) {
 
 		refreshTokenService.deleteRefreshToken(refreshTokenRequest.getRefreshToken());
 
-		return ApiResponse.response(ApiStatus.OK, "로그인아웃에 성공했습니다.", null);
+		return ApiResponse.messageResponse(ApiStatus.OK, "로그인아웃에 성공했습니다.");
 	}
 
 	@PostMapping("/refreshToken")

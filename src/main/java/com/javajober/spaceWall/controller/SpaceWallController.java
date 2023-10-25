@@ -6,7 +6,6 @@ import com.javajober.core.util.response.ApiResponse;
 import com.javajober.core.util.ApiUtils;
 import com.javajober.core.exception.ApiStatus;
 import com.javajober.spaceWall.domain.FlagType;
-import com.javajober.spaceWall.dto.request.TemporaryDeleteRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallStringRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallStringUpdateRequest;
 import com.javajober.spaceWall.dto.response.DuplicateURLResponse;
@@ -111,11 +110,12 @@ public class SpaceWallController {
         return  ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.CREATE_SUCCESS, data));
     }
 
-    @PutMapping("/wall-temporary")
-    public ResponseEntity<ApiUtils.ApiResponse> deleteTemporary(@RequestBody final TemporaryDeleteRequest temporaryDeleteRequest) {
+    @DeleteMapping("/wall-temporary/{spaceId}")
+    public ResponseEntity<ApiResponse.MessageResponse> deleteTemporary(@PathVariable Long spaceId, @RequestHeader("Authorization") String token) {
 
-        spaceWallTemporaryService.delete(temporaryDeleteRequest.getMemberId(), temporaryDeleteRequest.getSpaceId());
+        Long memberId = jwtTokenizer.getUserIdFromToken(token);
+        spaceWallTemporaryService.delete(memberId, spaceId);
 
-        return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_TEMPORARY_DELETE_SUCCESS, null));
+        return ApiResponse.messageResponse(ApiStatus.OK, "공유페이지 임시 저장 삭제를 성공했습니다.");
     }
 }

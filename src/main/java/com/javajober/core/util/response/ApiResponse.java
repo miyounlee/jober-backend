@@ -21,6 +21,10 @@ public class ApiResponse {
 		return ResponseEntity.ok().body(Response.of(status, message, data));
 	}
 
+	public static ResponseEntity<MessageResponse> messageResponse(final ApiStatus status, final String message) {
+		return ResponseEntity.ok(MessageResponse.of(status, message));
+	}
+
 	@Getter
 	public static class InvalidResponse {
 		private final ApiStatus status;
@@ -51,6 +55,21 @@ public class ApiResponse {
 
 		public static <T> Response<T> of(final ApiStatus status, final String message, final T data) {
 			return new Response<>(status, message, data);
+		}
+	}
+
+	@Getter
+	public static class MessageResponse {
+		private final ApiStatus status;
+		private final String message;
+
+		private MessageResponse(final ApiStatus status, final String message) {
+			this.status = status;
+			this.message = message;
+		}
+
+		public static MessageResponse of(final ApiStatus status, final String message) {
+			return new MessageResponse(status, message);
 		}
 	}
 }

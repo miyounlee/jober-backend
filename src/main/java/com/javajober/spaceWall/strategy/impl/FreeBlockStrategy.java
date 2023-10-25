@@ -30,8 +30,19 @@ public class FreeBlockStrategy implements MoveBlockStrategy {
 	}
 
 	@Override
-	public void saveBlocks(final BlockSaveRequest<?> block, final ArrayNode blockInfoArray, final Long position) {
+	public void saveStringBlocks(final BlockSaveRequest<?> block, final ArrayNode blockInfoArray, final Long position) {
 
+		List<FreeBlockSaveRequest> freeBlockRequests = convertSubDataToFreeBlockSaveRequests(block.getSubData());
+
+		List<FreeBlock> freeBlocks = convertToFreeBlocks(freeBlockRequests);
+
+		List<FreeBlock> savedFreeBlocks = saveAllFreeBlock(freeBlocks);
+
+		addToFreeBlockInfoArray(savedFreeBlocks, blockInfoArray, position, block.getBlockUUID());
+	}
+
+	@Override
+	public void saveBlocks(BlockSaveRequest<?> block, ArrayNode blockInfoArray, Long position) {
 		List<FreeBlockSaveRequest> freeBlockRequests = convertSubDataToFreeBlockSaveRequests(block.getSubData());
 
 		List<FreeBlock> freeBlocks = convertToFreeBlocks(freeBlockRequests);

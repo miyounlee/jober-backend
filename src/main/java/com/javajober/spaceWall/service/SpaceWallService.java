@@ -163,7 +163,7 @@ public class SpaceWallService {
 		FixBlockStrategy wallInfoBlockStrategy = blockStrategyFactory.findFixBlockStrategy(wallInfoBlockStrategyName);
 
 		Long wallInfoBlockPosition = blocksPositionCounter.getAndIncrement();
-		wallInfoBlockStrategy.saveBlocks(data, blockInfoArray, wallInfoBlockPosition);
+		wallInfoBlockStrategy.saveStringBlocks(data, blockInfoArray, wallInfoBlockPosition);
 	}
 
 	private void processBlocks(final List<BlockSaveRequest<?>> blocks, final ArrayNode blockInfoArray, final AtomicLong blocksPositionCounter) {
@@ -175,7 +175,7 @@ public class SpaceWallService {
 			String strategyName = blockType.getStrategyName();
 			MoveBlockStrategy blockProcessingStrategy = blockStrategyFactory.findMoveBlockStrategy(strategyName);
 
-			blockProcessingStrategy.saveBlocks(block, blockInfoArray, position);
+			blockProcessingStrategy.saveStringBlocks(block, blockInfoArray, position);
 		});
 	}
 
@@ -185,7 +185,7 @@ public class SpaceWallService {
 		FixBlockStrategy styleSettingBlockStrategy = blockStrategyFactory.findFixBlockStrategy(styleSettingBlockStrategyName);
 
 		Long styleSettingPosition = blocksPositionCounter.getAndIncrement();
-		styleSettingBlockStrategy.saveBlocks(data, blockInfoArray, styleSettingPosition);
+		styleSettingBlockStrategy.saveStringBlocks(data, blockInfoArray, styleSettingPosition);
 	}
 
 	private Long saveSpaceWall(final SpaceWallCategoryType spaceWallCategoryType, final Member member, final AddSpace addSpace, final String shareURL, final FlagType flagType, final ArrayNode blockInfoArray) {

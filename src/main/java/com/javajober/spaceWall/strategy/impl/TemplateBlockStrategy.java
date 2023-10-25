@@ -32,7 +32,18 @@ public class TemplateBlockStrategy implements MoveBlockStrategy {
 	}
 
 	@Override
-	public void saveBlocks(final BlockSaveRequest<?> block, final ArrayNode blockInfoArray, final Long position) {
+	public void saveStringBlocks(final BlockSaveRequest<?> block, final ArrayNode blockInfoArray, final Long position) {
+		List<TemplateBlockSaveRequest> templateBlockRequests = convertSubDataToTemplateBlockSaveRequests(block.getSubData());
+
+		List<TemplateBlock> templateBlocks = convertToTemplateBlocks(templateBlockRequests);
+
+		List<TemplateBlock> savedTemplateBlocks = saveAllTemplateBlock(templateBlocks);
+
+		addToTemplateBlockInfoArray(savedTemplateBlocks, blockInfoArray, position, block.getBlockUUID());
+	}
+
+	@Override
+	public void saveBlocks(BlockSaveRequest<?> block, ArrayNode blockInfoArray, Long position) {
 		List<TemplateBlockSaveRequest> templateBlockRequests = convertSubDataToTemplateBlockSaveRequests(block.getSubData());
 
 		List<TemplateBlock> templateBlocks = convertToTemplateBlocks(templateBlockRequests);

@@ -11,6 +11,7 @@ public enum ApiStatus {
 	FILE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "file upload fail"),
 	FILE_DELETE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "file delete fail"),
 	FILE_DOWNLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "file download fail"),
+	FILE_PROCESSING_NOT_SUPPORTED(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "file processing not supported"),
 	INVALID_DATA(HttpStatus.BAD_REQUEST, "invalid data"),
 	EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "exception"),
 	IO_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "io exception"),

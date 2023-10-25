@@ -3,11 +3,15 @@ package com.javajober.spaceWall.strategy.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.javajober.blocks.styleSetting.backgroundSetting.dto.response.BackgroundSettingResponse;
+import com.javajober.blocks.styleSetting.backgroundSetting.filedto.BackgroundSettingSaveRequest;
 import com.javajober.blocks.styleSetting.blockSetting.dto.response.BlockSettingResponse;
 import com.javajober.blocks.styleSetting.dto.response.StyleSettingResponse;
+import com.javajober.blocks.styleSetting.filedto.StyleSettingSaveRequest;
 import com.javajober.blocks.styleSetting.themeSetting.dto.response.ThemeSettingResponse;
+import com.javajober.core.util.file.FileImageService;
 import com.javajober.core.util.response.CommonResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.javajober.blocks.styleSetting.backgroundSetting.domain.BackgroundSetting;
 import com.javajober.blocks.styleSetting.backgroundSetting.dto.request.BackgroundSettingStringSaveRequest;
@@ -23,11 +27,13 @@ import com.javajober.blocks.styleSetting.themeSetting.dto.request.ThemeSettingSa
 import com.javajober.blocks.styleSetting.themeSetting.repository.ThemeSettingRepository;
 import com.javajober.spaceWall.domain.BlockType;
 import com.javajober.spaceWall.dto.request.DataStringSaveRequest;
+import com.javajober.spaceWall.filedto.DataSaveRequest;
 import com.javajober.spaceWall.strategy.BlockJsonProcessor;
 import com.javajober.spaceWall.strategy.BlockStrategyName;
 import com.javajober.spaceWall.strategy.FixBlockStrategy;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Component
 public class StyleSettingStrategy implements FixBlockStrategy {
@@ -37,26 +43,58 @@ public class StyleSettingStrategy implements FixBlockStrategy {
 	private final BackgroundSettingRepository backgroundSettingRepository;
 	private final BlockSettingRepository blockSettingRepository;
 	private final ThemeSettingRepository themeSettingRepository;
+	private final FileImageService fileImageService;
+	private final AtomicReference<String> uploadedStyleImageURL = new AtomicReference<>();
 
 	public StyleSettingStrategy(final BlockJsonProcessor blockJsonProcessor, final StyleSettingRepository styleSettingRepository,
 								final BackgroundSettingRepository backgroundSettingRepository, final BlockSettingRepository blockSettingRepository,
-								final ThemeSettingRepository themeSettingRepository) {
+								final ThemeSettingRepository themeSettingRepository, FileImageService fileImageService) {
 		this.blockJsonProcessor = blockJsonProcessor;
 		this.styleSettingRepository = styleSettingRepository;
 		this.backgroundSettingRepository = backgroundSettingRepository;
 		this.blockSettingRepository = blockSettingRepository;
 		this.themeSettingRepository = themeSettingRepository;
+		this.fileImageService = fileImageService;
 	}
 
 	@Override
-	public void saveBlocks(final DataStringSaveRequest data, ArrayNode blockInfoArray, Long position) {
-		StyleSettingStringSaveRequest request = data.getStyleSetting();
+	public void saveBlocks(final DataSaveRequest data, ArrayNode blockInfoArray, Long position) {
+		StyleSettingSaveRequest request = data.getStyleSetting();
 
 		Long styleSettingId = saveStyleSetting(request);
 		blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, BlockType.STYLE_SETTING, styleSettingId, "");
 	}
 
-	private Long saveStyleSetting(final StyleSettingStringSaveRequest request){
+	@Override
+	public void uploadSingleFile(final MultipartFile styleImgURL) {
+		uploadedStyleImageURL.set(fileImageService.uploadFile(styleImgURL));
+	}
+
+	private Long saveStyleSetting(final StyleSettingSaveRequest request){
+
+		BackgroundSettingSaveRequest backgroundRequest = request.getBackgroundSetting();
+		BackgroundSetting backgroundSetting = backgroundSettingRepository.save(BackgroundSettingSaveRequest.toEntity(backgroundRequest, uploadedStyleImageURL.get()));
+
+		BlockSettingSaveRequest blockSettingRequest = request.getBlockSetting();
+		BlockSetting blockSetting = blockSettingRepository.save(BlockSettingSaveRequest.toEntity(blockSettingRequest));
+
+		ThemeSettingSaveRequest themeSettingRequest = request.getThemeSetting();
+		ThemeSetting themeSetting = themeSettingRepository.save(ThemeSettingSaveRequest.toEntity(themeSettingRequest));
+
+		StyleSetting styleSetting = request.toEntity(backgroundSetting, blockSetting, themeSetting);
+
+		return styleSettingRepository.save(styleSetting).getId();
+	}
+
+	@Override
+	public void saveStringBlocks(DataStringSaveRequest data, ArrayNode blockInfoArray, Long position) {
+		StyleSettingStringSaveRequest request = data.getStyleSetting();
+
+		Long styleSettingId = saveStringStyleSetting(request);
+		blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, BlockType.STYLE_SETTING, styleSettingId, "");
+	}
+
+	private Long saveStringStyleSetting(final StyleSettingStringSaveRequest request){
 
 		BackgroundSettingStringSaveRequest backgroundRequest = request.getBackgroundSetting();
 		BackgroundSetting backgroundSetting = backgroundSettingRepository.save(BackgroundSettingStringSaveRequest.toEntity(backgroundRequest));

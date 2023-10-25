@@ -31,8 +31,19 @@ public class ListBlockStrategy implements MoveBlockStrategy {
 	}
 
 	@Override
-	public void saveBlocks(final BlockSaveRequest<?> block, final ArrayNode blockInfoArray, final Long position) {
+	public void saveStringBlocks(final BlockSaveRequest<?> block, final ArrayNode blockInfoArray, final Long position) {
 
+		List<ListBlockSaveRequest> listBlockRequests = convertSubDataToListBlockSaveRequests(block.getSubData());
+
+		List<ListBlock> listBlocks = convertToListBlocks(listBlockRequests);
+
+		List<ListBlock> savedListBlocks = saveAllListBlock(listBlocks);
+
+		addToListBlockInfoArray(savedListBlocks, blockInfoArray, position, block.getBlockUUID());
+	}
+
+	@Override
+	public void saveBlocks(BlockSaveRequest<?> block, ArrayNode blockInfoArray, Long position) {
 		List<ListBlockSaveRequest> listBlockRequests = convertSubDataToListBlockSaveRequests(block.getSubData());
 
 		List<ListBlock> listBlocks = convertToListBlocks(listBlockRequests);

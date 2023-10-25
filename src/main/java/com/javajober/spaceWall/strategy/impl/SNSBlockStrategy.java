@@ -35,7 +35,18 @@ public class SNSBlockStrategy implements MoveBlockStrategy {
 	}
 
 	@Override
-	public void saveBlocks(final BlockSaveRequest<?> block, final ArrayNode blockInfoArray, final Long position) {
+	public void saveStringBlocks(final BlockSaveRequest<?> block, final ArrayNode blockInfoArray, final Long position) {
+		List<SNSBlockSaveRequest> snsBlockRequests = convertSubDataToSNSBlockSaveRequests(block.getSubData());
+
+		List<SNSBlock> snsBlocks = convertToSNSBlocks(snsBlockRequests);
+
+		List<SNSBlock> savedSNSBlocks = saveAllSNSBlock(snsBlocks);
+
+		addToSNSBlockInfoArray(savedSNSBlocks, blockInfoArray, position, block.getBlockUUID());
+	}
+
+	@Override
+	public void saveBlocks(BlockSaveRequest<?> block, ArrayNode blockInfoArray, Long position) {
 		List<SNSBlockSaveRequest> snsBlockRequests = convertSubDataToSNSBlockSaveRequests(block.getSubData());
 
 		List<SNSBlock> snsBlocks = convertToSNSBlocks(snsBlockRequests);

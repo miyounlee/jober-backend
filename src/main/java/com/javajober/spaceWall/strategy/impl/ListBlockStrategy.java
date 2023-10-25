@@ -14,6 +14,7 @@ import com.javajober.blocks.listBlock.domain.ListBlock;
 import com.javajober.blocks.listBlock.dto.request.ListBlockSaveRequest;
 import com.javajober.blocks.listBlock.repository.ListBlockRepository;
 import com.javajober.spaceWall.domain.BlockType;
+import com.javajober.spaceWall.dto.request.BlockSaveRequest;
 import com.javajober.spaceWall.strategy.BlockJsonProcessor;
 import com.javajober.spaceWall.strategy.BlockStrategyName;
 import com.javajober.spaceWall.strategy.MoveBlockStrategy;
@@ -21,7 +22,6 @@ import com.javajober.spaceWall.strategy.MoveBlockStrategy;
 @Component
 public class ListBlockStrategy implements MoveBlockStrategy {
 
-	private static final String LIST_BLOCK = BlockType.LIST_BLOCK.getEngTitle();
 	private final BlockJsonProcessor blockJsonProcessor;
 	private final ListBlockRepository listBlockRepository;
 
@@ -31,15 +31,15 @@ public class ListBlockStrategy implements MoveBlockStrategy {
 	}
 
 	@Override
-	public void saveBlocks(final List<?> subData, final ArrayNode blockInfoArray, final Long position) {
+	public void saveBlocks(final BlockSaveRequest<?> block, final ArrayNode blockInfoArray, final Long position) {
 
-		List<ListBlockSaveRequest> listBlockRequests = convertSubDataToListBlockSaveRequests(subData);
+		List<ListBlockSaveRequest> listBlockRequests = convertSubDataToListBlockSaveRequests(block.getSubData());
 
 		List<ListBlock> listBlocks = convertToListBlocks(listBlockRequests);
 
 		List<ListBlock> savedListBlocks = saveAllListBlock(listBlocks);
 
-		addToListBlockInfoArray(savedListBlocks, blockInfoArray, position);
+		addToListBlockInfoArray(savedListBlocks, blockInfoArray, position, block.getBlockUUID());
 	}
 
 	private List<ListBlockSaveRequest> convertSubDataToListBlockSaveRequests(final List<?> subData) {
@@ -62,9 +62,9 @@ public class ListBlockStrategy implements MoveBlockStrategy {
 		return listBlockRepository.saveAll(listBlocks);
 	}
 
-	private void addToListBlockInfoArray (final List<ListBlock> savedListBlocks, final ArrayNode blockInfoArray, final Long position) {
+	private void addToListBlockInfoArray (final List<ListBlock> savedListBlocks, final ArrayNode blockInfoArray, final Long position, final String listBlockUUID) {
 		savedListBlocks.forEach(savedListBlock ->
-			blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, LIST_BLOCK, savedListBlock.getId(), savedListBlock.getListUUID())
+			blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, BlockType.LIST_BLOCK, savedListBlock.getId(), listBlockUUID)
 		);
 	}
 

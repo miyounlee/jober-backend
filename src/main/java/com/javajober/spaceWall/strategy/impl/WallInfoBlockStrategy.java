@@ -20,7 +20,6 @@ import java.util.List;
 
 @Component
 public class WallInfoBlockStrategy implements FixBlockStrategy {
-	private static final String WALL_INFO_BLOCK  = BlockType.WALL_INFO_BLOCK.getEngTitle();
 	private final BlockJsonProcessor blockJsonProcessor;
 	private final WallInfoBlockRepository wallInfoBlockRepository;
 
@@ -33,7 +32,7 @@ public class WallInfoBlockStrategy implements FixBlockStrategy {
 	public void saveBlocks(final DataStringSaveRequest data, ArrayNode blockInfoArray, Long position) {
 		WallInfoBlockStringSaveRequest request = data.getWallInfoBlock();
 		Long wallInfoBlockId = saveWallInfoBlock(request);
-		blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, WALL_INFO_BLOCK, wallInfoBlockId,"");
+		blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, BlockType.WALL_INFO_BLOCK, wallInfoBlockId,"");
 	}
 
 	private Long saveWallInfoBlock(WallInfoBlockStringSaveRequest request) {

@@ -15,6 +15,7 @@ import com.javajober.blocks.templateBlock.domain.TemplateBlock;
 import com.javajober.blocks.templateBlock.dto.request.TemplateBlockSaveRequest;
 import com.javajober.blocks.templateBlock.repository.TemplateBlockRepository;
 import com.javajober.spaceWall.domain.BlockType;
+import com.javajober.spaceWall.dto.request.BlockSaveRequest;
 import com.javajober.spaceWall.strategy.BlockJsonProcessor;
 import com.javajober.spaceWall.strategy.BlockStrategyName;
 import com.javajober.spaceWall.strategy.MoveBlockStrategy;
@@ -22,7 +23,6 @@ import com.javajober.spaceWall.strategy.MoveBlockStrategy;
 @Component
 public class TemplateBlockStrategy implements MoveBlockStrategy {
 
-	private static final String TEMPLATE_BLOCK = BlockType.TEMPLATE_BLOCK.getEngTitle();
 	private final BlockJsonProcessor blockJsonProcessor;
 	private final TemplateBlockRepository templateBlockRepository;
 
@@ -32,14 +32,14 @@ public class TemplateBlockStrategy implements MoveBlockStrategy {
 	}
 
 	@Override
-	public void saveBlocks(final List<?> subData, final ArrayNode blockInfoArray, final Long position) {
-		List<TemplateBlockSaveRequest> templateBlockRequests = convertSubDataToTemplateBlockSaveRequests(subData);
+	public void saveBlocks(final BlockSaveRequest<?> block, final ArrayNode blockInfoArray, final Long position) {
+		List<TemplateBlockSaveRequest> templateBlockRequests = convertSubDataToTemplateBlockSaveRequests(block.getSubData());
 
 		List<TemplateBlock> templateBlocks = convertToTemplateBlocks(templateBlockRequests);
 
 		List<TemplateBlock> savedTemplateBlocks = saveAllTemplateBlock(templateBlocks);
 
-		addToTemplateBlockInfoArray(savedTemplateBlocks, blockInfoArray, position);
+		addToTemplateBlockInfoArray(savedTemplateBlocks, blockInfoArray, position, block.getBlockUUID());
 	}
 
 	private List<TemplateBlockSaveRequest> convertSubDataToTemplateBlockSaveRequests(final List<?> subData) {
@@ -62,9 +62,9 @@ public class TemplateBlockStrategy implements MoveBlockStrategy {
 		return templateBlockRepository.saveAll(templateBlocks);
 	}
 
-	private void addToTemplateBlockInfoArray (final List<TemplateBlock> savedTemplateBlocks, final ArrayNode blockInfoArray, final Long position) {
+	private void addToTemplateBlockInfoArray (final List<TemplateBlock> savedTemplateBlocks, final ArrayNode blockInfoArray, final Long position, String templateBlockUUID) {
 		savedTemplateBlocks.forEach(savedTemplateBlock ->
-			blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, TEMPLATE_BLOCK, savedTemplateBlock.getId(), "")
+			blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, BlockType.TEMPLATE_BLOCK, savedTemplateBlock.getId(), templateBlockUUID)
 		);
 	}
 

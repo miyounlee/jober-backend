@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.javajober.spaceWall.domain.BlockType;
 
 import java.util.Comparator;
 import java.util.List;
@@ -41,12 +42,12 @@ public class BlockJsonProcessor {
 		}
 	}
 
-	public void addBlockInfoToArray(final ArrayNode blockInfoArray, final Long position, final String blockType, final Long blockId, final String blockUUID) {
+	public void addBlockInfoToArray(final ArrayNode blockInfoArray, final Long position, final BlockType blockType, final Long blockId, final String blockUUID) {
 
 		ObjectNode blockInfoObject = jsonMapper.createObjectNode();
 
 		blockInfoObject.put("position", position);
-		blockInfoObject.put("block_type", blockType);
+		blockInfoObject.put("block_type", blockType.name());
 		blockInfoObject.put("block_id", blockId);
 		blockInfoObject.put("block_uuid", blockUUID);
 

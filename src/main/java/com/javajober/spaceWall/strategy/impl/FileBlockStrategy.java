@@ -14,14 +14,13 @@ import com.javajober.blocks.fileBlock.domain.FileBlock;
 import com.javajober.blocks.fileBlock.dto.request.FileBlockStringSaveRequest;
 import com.javajober.blocks.fileBlock.repository.FileBlockRepository;
 import com.javajober.spaceWall.domain.BlockType;
+import com.javajober.spaceWall.dto.request.BlockSaveRequest;
 import com.javajober.spaceWall.strategy.BlockJsonProcessor;
 import com.javajober.spaceWall.strategy.BlockStrategyName;
 import com.javajober.spaceWall.strategy.MoveBlockStrategy;
 
 @Component
 public class FileBlockStrategy implements MoveBlockStrategy {
-
-	private static final String FILE_BLOCK = BlockType.FILE_BLOCK.getEngTitle();
 	private final BlockJsonProcessor blockJsonProcessor;
 	private final FileBlockRepository fileBlockRepository;
 
@@ -31,15 +30,15 @@ public class FileBlockStrategy implements MoveBlockStrategy {
 	}
 
 	@Override
-	public void saveBlocks(final List<?> subData, final ArrayNode blockInfoArray, final Long position) {
+	public void saveBlocks(final BlockSaveRequest<?> block, final ArrayNode blockInfoArray, final Long position) {
 
-		List<FileBlockStringSaveRequest> fileBlockRequests = convertSubDataToFileBlockSaveRequests(subData);
+		List<FileBlockStringSaveRequest> fileBlockRequests = convertSubDataToFileBlockSaveRequests(block.getSubData());
 
 		List<FileBlock> fileBlocks = convertToFileBlocks(fileBlockRequests);
 
 		List<FileBlock> savedFileBlocks = saveAllFileBlock(fileBlocks);
 
-		addToFileBlockInfoArray(savedFileBlocks, blockInfoArray, position);
+		addToFileBlockInfoArray(savedFileBlocks, blockInfoArray, position, block.getBlockType());
 	}
 
 	private List<FileBlockStringSaveRequest> convertSubDataToFileBlockSaveRequests(final List<?> subData) {
@@ -62,9 +61,9 @@ public class FileBlockStrategy implements MoveBlockStrategy {
 		return fileBlockRepository.saveAll(fileBlocks);
 	}
 
-	private void addToFileBlockInfoArray (final List<FileBlock> savedFileBlocks, final ArrayNode blockInfoArray, final Long position) {
+	private void addToFileBlockInfoArray (final List<FileBlock> savedFileBlocks, final ArrayNode blockInfoArray, final Long position, final String fileBlockUUID) {
 		savedFileBlocks.forEach(savedFileBlock ->
-			blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, FILE_BLOCK, savedFileBlock.getId(), "")
+			blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, BlockType.FILE_BLOCK, savedFileBlock.getId(), fileBlockUUID)
 		);
 	}
 

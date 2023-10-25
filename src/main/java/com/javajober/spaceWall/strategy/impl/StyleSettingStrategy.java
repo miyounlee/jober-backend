@@ -32,7 +32,6 @@ import java.util.List;
 @Component
 public class StyleSettingStrategy implements FixBlockStrategy {
 
-	private static final String STYLE_SETTING = BlockType.STYLE_SETTING.getEngTitle();
 	private final BlockJsonProcessor blockJsonProcessor;
 	private final StyleSettingRepository styleSettingRepository;
 	private final BackgroundSettingRepository backgroundSettingRepository;
@@ -54,7 +53,7 @@ public class StyleSettingStrategy implements FixBlockStrategy {
 		StyleSettingStringSaveRequest request = data.getStyleSetting();
 
 		Long styleSettingId = saveStyleSetting(request);
-		blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, STYLE_SETTING, styleSettingId, "");
+		blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, BlockType.STYLE_SETTING, styleSettingId, "");
 	}
 
 	private Long saveStyleSetting(final StyleSettingStringSaveRequest request){

@@ -15,6 +15,7 @@ import com.javajober.blocks.snsBlock.domain.SNSBlock;
 import com.javajober.blocks.snsBlock.dto.request.SNSBlockSaveRequest;
 import com.javajober.blocks.snsBlock.repository.SNSBlockRepository;
 import com.javajober.spaceWall.domain.BlockType;
+import com.javajober.spaceWall.dto.request.BlockSaveRequest;
 import com.javajober.spaceWall.strategy.BlockJsonProcessor;
 import com.javajober.spaceWall.strategy.BlockStrategyName;
 import com.javajober.spaceWall.strategy.MoveBlockStrategy;
@@ -25,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SNSBlockStrategy implements MoveBlockStrategy {
 
-	private static final String SNS_BLOCK = BlockType.SNS_BLOCK.getEngTitle();
 	private final BlockJsonProcessor blockJsonProcessor;
 	private final SNSBlockRepository snsBlockRepository;
 
@@ -35,14 +35,14 @@ public class SNSBlockStrategy implements MoveBlockStrategy {
 	}
 
 	@Override
-	public void saveBlocks(final List<?> subData, final ArrayNode blockInfoArray, final Long position) {
-		List<SNSBlockSaveRequest> snsBlockRequests = convertSubDataToSNSBlockSaveRequests(subData);
+	public void saveBlocks(final BlockSaveRequest<?> block, final ArrayNode blockInfoArray, final Long position) {
+		List<SNSBlockSaveRequest> snsBlockRequests = convertSubDataToSNSBlockSaveRequests(block.getSubData());
 
 		List<SNSBlock> snsBlocks = convertToSNSBlocks(snsBlockRequests);
 
 		List<SNSBlock> savedSNSBlocks = saveAllSNSBlock(snsBlocks);
 
-		addToSNSBlockInfoArray(savedSNSBlocks, blockInfoArray, position);
+		addToSNSBlockInfoArray(savedSNSBlocks, blockInfoArray, position, block.getBlockUUID());
 	}
 
 	private List<SNSBlockSaveRequest> convertSubDataToSNSBlockSaveRequests(final List<?> subData) {
@@ -65,9 +65,9 @@ public class SNSBlockStrategy implements MoveBlockStrategy {
 		return snsBlockRepository.saveAll(snsBlocks);
 	}
 
-	private void addToSNSBlockInfoArray (final List<SNSBlock> savedSNSBlocks, final ArrayNode blockInfoArray, final Long position) {
+	private void addToSNSBlockInfoArray (final List<SNSBlock> savedSNSBlocks, final ArrayNode blockInfoArray, final Long position, String snsBlockUUID) {
 		savedSNSBlocks.forEach(savedSNSBlock ->
-			blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, SNS_BLOCK, savedSNSBlock.getId(), "")
+			blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, BlockType.SNS_BLOCK, savedSNSBlock.getId(), snsBlockUUID)
 		);
 	}
 

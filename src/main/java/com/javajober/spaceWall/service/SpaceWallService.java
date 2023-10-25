@@ -114,9 +114,11 @@ public class SpaceWallService {
 		Member member = memberRepository.findMember(memberId);
 
 		DataStringSaveRequest data = spaceWallRequest.getData();
+
 		AddSpace addSpace = addSpaceRepository.findAddSpace(data.getSpaceId());
 
 		validateSpaceOwnership(member, addSpace);
+
 		validateAddSpaceId(addSpace.getId());
 
 		SpaceWallCategoryType spaceWallCategoryType = SpaceWallCategoryType.findSpaceWallCategoryTypeByString(data.getCategory());
@@ -124,14 +126,17 @@ public class SpaceWallService {
 		ArrayNode blockInfoArray = blockJsonProcessor.createArrayNode();
 
 		AtomicLong blocksPositionCounter = new AtomicLong(INITIAL_POSITION);
+
 		processWallInfoBlock(data, blockInfoArray, blocksPositionCounter);
 
 		List<BlockSaveRequest<?>> blocks = data.getBlocks();
+
 		processBlocks(blocks, blockInfoArray, blocksPositionCounter);
 
 		processStyleSettingBlock(data, blockInfoArray, blocksPositionCounter);
 
 		String shareURL = spaceWallRequest.getData().getShareURL();
+
 		Long spaceWallId = saveSpaceWall(spaceWallCategoryType, member, addSpace, shareURL, flagType, blockInfoArray);
 
 		return new SpaceWallSaveResponse(spaceWallId);
@@ -170,7 +175,7 @@ public class SpaceWallService {
 			String strategyName = blockType.getStrategyName();
 			MoveBlockStrategy blockProcessingStrategy = blockStrategyFactory.findMoveBlockStrategy(strategyName);
 
-			blockProcessingStrategy.saveBlocks(block.getSubData(), blockInfoArray, position);
+			blockProcessingStrategy.saveBlocks(block, blockInfoArray, position);
 		});
 	}
 

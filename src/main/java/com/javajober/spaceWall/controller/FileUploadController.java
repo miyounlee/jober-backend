@@ -1,5 +1,6 @@
 package com.javajober.spaceWall.controller;
 
+import com.javajober.core.security.JwtTokenizer;
 import com.javajober.core.util.file.FileImageService;
 import com.javajober.core.message.SuccessMessage;
 import com.javajober.core.util.ApiUtils;
@@ -23,10 +24,12 @@ public class FileUploadController {
 
     private final FileImageService fileImageService;
     private final FileUploadService fileUploadService;
+    private final JwtTokenizer jwtTokenizer;
 
-    public FileUploadController(final FileImageService fileImageService, final FileUploadService fileUploadService) {
+    public FileUploadController(final FileImageService fileImageService, final FileUploadService fileUploadService, final JwtTokenizer jwtTokenizer) {
         this.fileImageService = fileImageService;
         this.fileUploadService = fileUploadService;
+        this.jwtTokenizer = jwtTokenizer;
     }
 
     @PostMapping(path = "/wall/file", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -34,11 +37,13 @@ public class FileUploadController {
                                                                             @RequestPart(value = "fileName") List<MultipartFile> files,
                                                                             @RequestPart(value = "backgroundImgURL", required = false) MultipartFile backgroundImgURL,
                                                                             @RequestPart(value = "wallInfoImgURL", required = false) MultipartFile wallInfoImgURL,
-                                                                            @RequestPart(value = "styleImgURL", required = false) MultipartFile styleImgURL) {
+                                                                            @RequestPart(value = "styleImgURL", required = false) MultipartFile styleImgURL,
+                                                                            @RequestHeader("Authorization") String token) {
 
+        Long memberId = jwtTokenizer.getUserIdFromToken(token);
         fileImageService.validatePdfFile(files);
         fileImageService.checkImageFileSize(backgroundImgURL, wallInfoImgURL, styleImgURL);
-        SpaceWallSaveResponse data = fileUploadService.save(spaceWallSaveRequest, FlagType.SAVED, files, backgroundImgURL, wallInfoImgURL, styleImgURL);
+        SpaceWallSaveResponse data = fileUploadService.save(memberId, spaceWallSaveRequest, FlagType.SAVED, files, backgroundImgURL, wallInfoImgURL, styleImgURL);
 
         return ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.SPACE_WALL_SAVE_SUCCESS, data));
     }
@@ -48,11 +53,13 @@ public class FileUploadController {
                                                                               @RequestPart(value = "fileName") List<MultipartFile> files,
                                                                               @RequestPart(value = "backgroundImgURL", required = false) MultipartFile backgroundImgURL,
                                                                               @RequestPart(value = "wallInfoImgURL", required = false) MultipartFile wallInfoImgURL,
-                                                                              @RequestPart(value = "styleImgURL", required = false) MultipartFile styleImgURL){
+                                                                              @RequestPart(value = "styleImgURL", required = false) MultipartFile styleImgURL,
+                                                                              @RequestHeader("Authorization") String token){
 
+        Long memberId = jwtTokenizer.getUserIdFromToken(token);
         fileImageService.validatePdfFile(files);
         fileImageService.checkImageFileSize(backgroundImgURL, wallInfoImgURL, styleImgURL);
-        SpaceWallSaveResponse data = fileUploadService.update(spaceWallRequest, FlagType.SAVED, files, backgroundImgURL, wallInfoImgURL, styleImgURL);
+        SpaceWallSaveResponse data = fileUploadService.update(memberId, spaceWallRequest, FlagType.SAVED, files, backgroundImgURL, wallInfoImgURL, styleImgURL);
 
         return  ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.CREATE_SUCCESS, data));
     }

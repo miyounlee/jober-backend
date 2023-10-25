@@ -78,20 +78,20 @@ public class SpaceWallFindService {
             throw new ApplicationException(ApiStatus.NOT_FOUND, "wallInfoBlock 조회를 실패했습니다.");
         }
 
-        FixBlockStrategy blockStrategy = blockStrategyFactory.findFixBlockStrategy(getStrategyName(wallInfoBlocks));
+        FixBlockStrategy blockStrategy = blockStrategyFactory.findFixBlockStrategy(getBlockTypeStrategyName(wallInfoBlocks));
         return blockStrategy.createFixBlockDTO(wallInfoBlocks);
     }
 
     private CommonResponse createStyleSettingBlock(Map<Long, List<JsonNode>> groupedBlockByPosition) {
         Long endPosition = groupedBlockByPosition.keySet().stream()
                 .max(Long::compareTo)
-                .orElseThrow(() -> new ApplicationException(ApiStatus.EXCEPTION, "end position이 없습니다."));
+                .orElseThrow(() -> new ApplicationException(ApiStatus.NOT_FOUND, "endPosition이 없습니다."));
 
         List<JsonNode> styleSettingBlocks = groupedBlockByPosition.get(endPosition);
         String blockTypeString = styleSettingBlocks.get(0).path(BLOCK_TYPE_KEY).asText();
 
         if (blockTypeString.equals(BlockType.STYLE_SETTING.getEngTitle())) {
-            FixBlockStrategy blockStrategy = blockStrategyFactory.findFixBlockStrategy(getStrategyName(styleSettingBlocks));
+            FixBlockStrategy blockStrategy = blockStrategyFactory.findFixBlockStrategy(getBlockTypeStrategyName(styleSettingBlocks));
             return blockStrategy.createFixBlockDTO(styleSettingBlocks);
         }
         return null;
@@ -103,7 +103,7 @@ public class SpaceWallFindService {
         for (Map.Entry<Long, List<JsonNode>> entry : groupedBlockByPosition.entrySet()) {
             Long currentPosition = entry.getKey();
             List<JsonNode> blocksWithSamePosition = entry.getValue();
-            String strategyName = getStrategyName(blocksWithSamePosition);
+            String strategyName = getBlockTypeStrategyName(blocksWithSamePosition);
 
             if (currentPosition.equals(INITIAL_POSITION) || strategyName.equals(BlockType.STYLE_SETTING.getStrategyName())) {
                 continue;
@@ -111,17 +111,21 @@ public class SpaceWallFindService {
             MoveBlockStrategy blockStrategy = blockStrategyFactory.findMoveBlockStrategy(strategyName);
             List<CommonResponse> subData = blockStrategy.createMoveBlockDTO(blocksWithSamePosition);
 
-            String blockType = blocksWithSamePosition.get(0).path(BLOCK_TYPE_KEY).asText();
+            String blockTypeEngTitle = getBlockTypeEngTitle(blocksWithSamePosition.get(0));
             String blockUUID = blocksWithSamePosition.get(0).path(BLOCK_UUID_KEY).asText();
-            BlockResponse<CommonResponse> blockResponse = new BlockResponse<>(blockUUID, blockType, subData);
+            BlockResponse<CommonResponse> blockResponse = new BlockResponse<>(blockUUID, blockTypeEngTitle, subData);
             blocks.add(blockResponse);
         }
         return blocks;
     }
 
-    private static String getStrategyName(List<JsonNode> blocksWithSamePosition) {
-        String blockTypeString = blocksWithSamePosition.get(0).path(BLOCK_TYPE_KEY).asText();
-        return BlockType.findBlockTypeByString(blockTypeString).getStrategyName();
+    private String getBlockTypeStrategyName(List<JsonNode> blocksWithSamePosition) {
+        return BlockType.valueOf(blocksWithSamePosition.get(0).path(BLOCK_TYPE_KEY).asText()).getStrategyName();
+    }
+
+    private String getBlockTypeEngTitle(JsonNode block) {
+        BlockType blockType = BlockType.valueOf(block.path(BLOCK_TYPE_KEY).asText());
+        return blockType.getEngTitle();
     }
 
 }

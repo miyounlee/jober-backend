@@ -13,8 +13,6 @@ import java.util.Optional;
 
 public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
 
-    void deleteAll(List<SpaceWall> spaceWalls);
-
     SpaceWall save(final SpaceWall spaceWall);
 
     boolean existsByShareURL(final String shareURL);

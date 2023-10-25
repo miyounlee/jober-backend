@@ -111,13 +111,13 @@ public class FileUploadService {
     }
 
     @Transactional
-    public SpaceWallSaveResponse save(final SpaceWallSaveRequest spaceWallSaveRequest, FlagType flagType,
+    public SpaceWallSaveResponse save(final Long memberId, final SpaceWallSaveRequest spaceWallSaveRequest, FlagType flagType,
                                       final List<MultipartFile> files, final MultipartFile backgroundImgURL,
                                       final MultipartFile wallInfoImgURL, final MultipartFile styleImgURL) {
 
         SpaceWallCategoryType spaceWallCategoryType = SpaceWallCategoryType.findSpaceWallCategoryTypeByString(spaceWallSaveRequest.getData().getCategory());
         AddSpace addSpace = addSpaceRepository.findAddSpace(spaceWallSaveRequest.getData().getSpaceId());
-        Member member = memberRepository.findMember(spaceWallSaveRequest.getData().getMemberId());
+        Member member = memberRepository.findMember(memberId);
 
         Long blocksPosition = 2L;
         AtomicLong blocksPositionCounter = new AtomicLong(blocksPosition);
@@ -188,7 +188,7 @@ public class FileUploadService {
     }
 
     @Transactional
-    public SpaceWallSaveResponse update(final SpaceWallUpdateRequest spaceWallRequest, FlagType flagType,
+    public SpaceWallSaveResponse update(final Long memberId, final SpaceWallUpdateRequest spaceWallRequest, FlagType flagType,
         final List<MultipartFile> files, final MultipartFile backgroundImgURL,
         final MultipartFile wallInfoImgURL, final MultipartFile styleImgURL){
 
@@ -196,7 +196,6 @@ public class FileUploadService {
 
         Long spaceWallId = dataUpdateRequest.getSpaceWallId();
         Long addSpaceId = dataUpdateRequest.getSpaceId();
-        Long memberId = dataUpdateRequest.getMemberId();
 
         memberRepository.findMember(memberId);
         addSpaceRepository.findAddSpace(addSpaceId);

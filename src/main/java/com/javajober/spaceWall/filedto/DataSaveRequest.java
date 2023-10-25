@@ -11,7 +11,6 @@ import lombok.Getter;
 public class DataSaveRequest {
 
 	private String category;
-	private Long memberId;
 	private Long spaceId;
 	private String shareURL;
 	private WallInfoBlockSaveRequest wallInfoBlock;
@@ -22,9 +21,8 @@ public class DataSaveRequest {
 
 	}
 
-	public DataSaveRequest(final String category, final Long memberId, Long spaceId, final String shareURL, final WallInfoBlockSaveRequest wallInfoBlock, final List<BlockSaveRequest<?>> blocks, final StyleSettingSaveRequest styleSetting) {
+	public DataSaveRequest(final String category, Long spaceId, final String shareURL, final WallInfoBlockSaveRequest wallInfoBlock, final List<BlockSaveRequest<?>> blocks, final StyleSettingSaveRequest styleSetting) {
 		this.category = category;
-		this.memberId = memberId;
 		this.spaceId = spaceId;
 		this.shareURL = shareURL;
 		this.wallInfoBlock = wallInfoBlock;

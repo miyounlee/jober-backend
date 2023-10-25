@@ -102,9 +102,11 @@ public class SpaceWallController {
     }
 
     @PutMapping("/wall")
-    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallSaveResponse>> update(@RequestBody final SpaceWallStringUpdateRequest spaceWallUpdateRequest){
+    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallSaveResponse>> update(@RequestHeader("Authorization") String token, @RequestBody final SpaceWallStringUpdateRequest spaceWallUpdateRequest){
 
-        SpaceWallSaveResponse data = spaceWallService.update(spaceWallUpdateRequest, FlagType.SAVED);
+        Long memberId = jwtTokenizer.getUserIdFromToken(token);
+
+        SpaceWallSaveResponse data = spaceWallService.update(memberId, spaceWallUpdateRequest, FlagType.SAVED);
 
         return  ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.CREATE_SUCCESS, data));
     }

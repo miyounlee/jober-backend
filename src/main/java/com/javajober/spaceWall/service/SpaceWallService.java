@@ -197,13 +197,12 @@ public class SpaceWallService {
 	}
 
 	@Transactional
-	public SpaceWallSaveResponse update(final SpaceWallStringUpdateRequest spaceWallUpdateRequest, final FlagType flagType) {
+	public SpaceWallSaveResponse update(final Long memberId, final SpaceWallStringUpdateRequest spaceWallUpdateRequest, final FlagType flagType) {
 
 		DataStringUpdateRequest dataUpdateRequest = spaceWallUpdateRequest.getData();
 
 		Long spaceWallId = dataUpdateRequest.getSpaceWallId();
 		Long addSpaceId = dataUpdateRequest.getSpaceId();
-		Long memberId = dataUpdateRequest.getMemberId();
 
 		memberRepository.findMember(memberId);
 		addSpaceRepository.findAddSpace(addSpaceId);

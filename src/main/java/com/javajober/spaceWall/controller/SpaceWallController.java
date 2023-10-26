@@ -121,12 +121,12 @@ public class SpaceWallController {
     }
 
     @PutMapping("/wall/public")
-    public ResponseEntity<ApiResponse.Response<Object>> updateIsPublic(@RequestBody IsPublicUpdateRequest isPublicUpdateRequest,
+    public ResponseEntity<ApiResponse.MessageResponse> updateIsPublic(@RequestBody IsPublicUpdateRequest isPublicUpdateRequest,
                                                                        @RequestHeader("Authorization") String token) {
 
         Long memberId = jwtTokenizer.getUserIdFromToken(token);
         spaceWallService.updateIsPublic(isPublicUpdateRequest, memberId);
 
-        return ApiResponse.response(ApiStatus.OK, "외부 공개 여부가 업데이트 되었습니다.", null);
+        return ApiResponse.messageResponse(ApiStatus.OK, "외부 공개 여부가 업데이트 되었습니다.");
     }
 }

@@ -197,6 +197,17 @@ public class SpaceWallService {
 	}
 
 	@Transactional
+	public void updateIsPublic(IsPublicUpdateRequest publicUpdateRequest, Long memberId) {
+		Long spaceId = publicUpdateRequest.getSpaceId();
+		Long spaceWallId = publicUpdateRequest.getSpaceWallId();
+		SpaceWall spaceWall = spaceWallRepository.findSpaceWall(spaceWallId, spaceId, memberId, FlagType.SAVED);
+
+		Boolean isPublic = publicUpdateRequest.getIsPublic();
+		spaceWall.updateIsPublic(isPublic);
+		spaceWallRepository.save(spaceWall);
+	}
+
+	@Transactional
 	public SpaceWallSaveResponse update(final Long memberId, final SpaceWallStringUpdateRequest spaceWallUpdateRequest, final FlagType flagType) {
 
 		DataStringUpdateRequest dataUpdateRequest = spaceWallUpdateRequest.getData();

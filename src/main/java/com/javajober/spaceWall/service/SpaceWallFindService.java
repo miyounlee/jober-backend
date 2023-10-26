@@ -49,6 +49,9 @@ public class SpaceWallFindService {
     public SpaceWallResponse findByShareURL(final String shareURL) {
 
         SpaceWall spaceWall = spaceWallRepository.getByShareURL(shareURL);
+        if (!spaceWall.getIsPublic()) {
+            throw new ApplicationException(ApiStatus.FORBIDDEN, "공유페이지에 접근 권한이 없습니다.");
+        }
         Long memberId = spaceWall.getMember().getId();
         Long spaceId = spaceWall.getAddSpace().getId();
         Long spaceWallId = spaceWall.getId();
@@ -67,15 +70,16 @@ public class SpaceWallFindService {
 
         String category = spaceWall.getSpaceWallCategoryType().getEngTitle();
         String shareURL = spaceWall.getShareURL();
+        Boolean isPublic = spaceWall.getIsPublic();
 
-        return new SpaceWallResponse(category, memberId, spaceId, shareURL, wallInfoBlockResponse, blocks, styleSettingResponse);
+        return new SpaceWallResponse(category, spaceId, isPublic, shareURL, wallInfoBlockResponse, blocks, styleSettingResponse);
     }
 
     private CommonResponse createWallInfoBlock(Map<Long, List<JsonNode>> groupedBlockByPosition) {
         List<JsonNode> wallInfoBlocks = groupedBlockByPosition.get(INITIAL_POSITION);
 
         if (wallInfoBlocks == null || wallInfoBlocks.isEmpty()) {
-            throw new ApplicationException(ApiStatus.NOT_FOUND, "wallInfoBlock 조회를 실패했습니다.");
+            throw new ApplicationException(ApiStatus.FAIL, "wallInfoBlock 조회를 실패했습니다.");
         }
 
         FixBlockStrategy blockStrategy = blockStrategyFactory.findFixBlockStrategy(getBlockTypeStrategyName(wallInfoBlocks));
@@ -85,16 +89,17 @@ public class SpaceWallFindService {
     private CommonResponse createStyleSettingBlock(Map<Long, List<JsonNode>> groupedBlockByPosition) {
         Long endPosition = groupedBlockByPosition.keySet().stream()
                 .max(Long::compareTo)
-                .orElseThrow(() -> new ApplicationException(ApiStatus.NOT_FOUND, "endPosition이 없습니다."));
+                .orElseThrow(() -> new ApplicationException(ApiStatus.FAIL, "endPosition이 없습니다."));
 
         List<JsonNode> styleSettingBlocks = groupedBlockByPosition.get(endPosition);
         String blockTypeString = styleSettingBlocks.get(0).path(BLOCK_TYPE_KEY).asText();
 
-        if (blockTypeString.equals(BlockType.STYLE_SETTING.getEngTitle())) {
-            FixBlockStrategy blockStrategy = blockStrategyFactory.findFixBlockStrategy(getBlockTypeStrategyName(styleSettingBlocks));
-            return blockStrategy.createFixBlockDTO(styleSettingBlocks);
+        if (!blockTypeString.equals(BlockType.STYLE_SETTING.name())) {
+            throw new ApplicationException(ApiStatus.FAIL, "styleSetting 조회를 실패하였습니다.");
         }
-        return null;
+
+        FixBlockStrategy blockStrategy = blockStrategyFactory.findFixBlockStrategy(getBlockTypeStrategyName(styleSettingBlocks));
+        return blockStrategy.createFixBlockDTO(styleSettingBlocks);
     }
 
     private List<BlockResponse<CommonResponse>> createBlockResponses(Map<Long, List<JsonNode>> groupedBlockByPosition) {

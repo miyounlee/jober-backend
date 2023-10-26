@@ -190,23 +190,26 @@ public class FileUploadService {
 
     private void processBlocks(final List<BlockSaveRequest<?>> blocks, final ArrayNode blockInfoArray,
         final AtomicLong blocksPositionCounter, final List<MultipartFile> files) {
+        try {
+            AtomicInteger fileIndexCounter = new AtomicInteger();
 
-        AtomicInteger fileIndexCounter = new AtomicInteger();
+            blocks.forEach(block -> {
 
-        blocks.forEach(block -> {
+                BlockType blockType = BlockType.findBlockTypeByString(block.getBlockType());
+                Long position = blocksPositionCounter.getAndIncrement();
 
-            BlockType blockType = BlockType.findBlockTypeByString(block.getBlockType());
-            Long position = blocksPositionCounter.getAndIncrement();
+                String strategyName = blockType.getStrategyName();
+                MoveBlockStrategy blockProcessingStrategy = blockStrategyFactory.findMoveBlockStrategy(strategyName);
 
-            String strategyName = blockType.getStrategyName();
-            MoveBlockStrategy blockProcessingStrategy = blockStrategyFactory.findMoveBlockStrategy(strategyName);
+                if (BlockStrategyName.FileBlockStrategy.name().equals(blockProcessingStrategy.getStrategyName())) {
+                    blockProcessingStrategy.uploadFile(files.get(fileIndexCounter.getAndIncrement()));
+                }
 
-            if (BlockStrategyName.FileBlockStrategy.name().equals(blockProcessingStrategy.getStrategyName())) {
-                blockProcessingStrategy.uploadFile(files.get(fileIndexCounter.getAndIncrement()));
-            }
-
-            blockProcessingStrategy.saveBlocks(block, blockInfoArray, position);
-        });
+                blockProcessingStrategy.saveBlocks(block, blockInfoArray, position);
+            });
+        } catch (IndexOutOfBoundsException e) {
+            throw new ApplicationException(ApiStatus.INVALID_DATA, "파일이 첨부되지 않은 파일블록이 있습니다.");
+        }
     }
 
     private void processStyleSettingBlock(final MultipartFile styleImgURL, final DataSaveRequest data, final ArrayNode blockInfoArray,

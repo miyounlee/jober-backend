@@ -4,6 +4,7 @@ import com.javajober.core.exception.ApiStatus;
 import com.javajober.core.exception.ApplicationException;
 import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.domain.SpaceWall;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
@@ -51,7 +52,11 @@ public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
     }
 
     default SpaceWall getByShareURL(final String shareURL) {
-        return findByShareURL(shareURL)
-                .orElseThrow(() -> new ApplicationException(ApiStatus.NOT_FOUND, "존재하지 않는 shareURL입니다."));
+        try {
+            return findByShareURL(shareURL)
+                    .orElseThrow(() -> new ApplicationException(ApiStatus.NOT_FOUND, "존재하지 않는 shareURL입니다."));
+        } catch (IncorrectResultSizeDataAccessException e) {
+            throw new ApplicationException(ApiStatus.EXCEPTION, "중복된 shareURL이 존재합니다.");
+        }
     }
 }

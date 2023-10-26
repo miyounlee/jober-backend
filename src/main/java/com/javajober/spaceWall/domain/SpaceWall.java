@@ -8,6 +8,8 @@ import com.javajober.spaceWall.spaceWallCategory.domain.SpaceWallCategoryType;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,6 +17,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@DynamicInsert
 @Getter
 @Table(name = "space_wall")
 @EntityListeners(AuditingEntityListener.class)
@@ -47,6 +50,10 @@ public class SpaceWall {
     @Column(name = "flag", nullable = false)
     private FlagType flag;
 
+    @ColumnDefault("false")
+    @Column(name = "is_public")
+    private Boolean isPublic;
+
     @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -64,13 +71,14 @@ public class SpaceWall {
 
     @Builder
     public SpaceWall(final String blocks, final String shareURL, final AddSpace addSpace, final Member member,
-                     final SpaceWallCategoryType spaceWallCategoryType, final FlagType flag) {
+                     final SpaceWallCategoryType spaceWallCategoryType, final FlagType flag, final Boolean isPublic) {
         this.blocks = blocks;
         this.shareURL = shareURL;
         this.addSpace = addSpace;
         this.member = member;
         this.spaceWallCategoryType = spaceWallCategoryType;
         this.flag = flag;
+        this.isPublic = isPublic;
     }
 
     public void update(final DataStringUpdateRequest request, final FlagType flag, final String blockInfoArrayAsString){
@@ -78,9 +86,14 @@ public class SpaceWall {
         this.shareURL = request.getShareURL();
         this.flag = flag;
     }
+
     public void fileUpdate(final DataUpdateRequest request, final FlagType flag, final String blockInfoArrayAsString){
         this.blocks = blockInfoArrayAsString;
         this.shareURL = request.getShareURL();
         this.flag = flag;
+    }
+
+    public void updateIsPublic(final Boolean isPublic) {
+        this.isPublic = isPublic;
     }
 }

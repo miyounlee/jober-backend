@@ -19,7 +19,7 @@ public class SecurityConfig {
 	private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
 	public SecurityConfig(AuthenticationManagerConfig authenticationManagerConfig,
-		CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
+						  CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
 		this.authenticationManagerConfig = authenticationManagerConfig;
 		this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
 	}
@@ -27,26 +27,26 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //세션 사용 x 설정
-			.and()
-			.formLogin().disable()
-			.csrf().disable()
-			.cors()
-			.and()
-			.apply(authenticationManagerConfig)
-			.and()
-			.httpBasic().disable()
-			.authorizeRequests()
-			.antMatchers("/api/members/login").permitAll()
-			.antMatchers("/api/members/signup").permitAll()
-			.antMatchers("/healthCheck").permitAll()
-			.antMatchers("/api/wall/shareURL/**").permitAll()
-			.anyRequest().authenticated()
-			.and()
-			.exceptionHandling()
-			.authenticationEntryPoint(customAuthenticationEntryPoint)
-			.and()
-			.build();
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //세션 사용 x 설정
+				.and()
+				.formLogin().disable()
+				.csrf().disable()
+				.cors()
+				.and()
+				.apply(authenticationManagerConfig)
+				.and()
+				.httpBasic().disable()
+				.authorizeRequests()
+				.antMatchers("/api/members/login").permitAll()
+				.antMatchers("/api/members/signup").permitAll()
+				.antMatchers("/healthCheck").permitAll()
+				.antMatchers("/api/wall/{shareURL}").permitAll()
+				.anyRequest().authenticated()
+				.and()
+				.exceptionHandling()
+				.authenticationEntryPoint(customAuthenticationEntryPoint)
+				.and()
+				.build();
 	}
 
 	public CorsConfigurationSource corsConfigurationSource() {

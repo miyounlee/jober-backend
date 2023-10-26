@@ -22,7 +22,8 @@ public enum ApiStatus {
 	INVALID_DATE(HttpStatus.BAD_REQUEST, "invalid date"),
 	NOT_FOUND(HttpStatus.NOT_FOUND, "data not found"),
 	PAYLOAD_TOO_LARGE(HttpStatus.PAYLOAD_TOO_LARGE, "Payload Too Large"),
-	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "login token expire");
+	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "login token expire"),
+	FORBIDDEN(HttpStatus.FORBIDDEN, "forbidden");;
 
 	private final HttpStatus httpStatus;
 	private final String message;

@@ -83,13 +83,12 @@ public class SpaceWallController {
     }
 
     @GetMapping("/wall/{shareURL}")
-    public ResponseEntity<ApiResponse.Response<SpaceWallResponse>> findByShareURL(@PathVariable final String shareURL) {
+    public ResponseEntity<ApiResponse.Response<SpaceWallResponse>> findByShareURL(
+            @PathVariable final String shareURL, @RequestHeader(value = "Authorization", required = false) String token) {
 
-        SpaceWallResponse data = spaceWallFindService.findByShareURL(shareURL);
-
+        SpaceWallResponse data = spaceWallFindService.findByShareURL(shareURL, token, jwtTokenizer);
         return ApiResponse.response(ApiStatus.OK, "공유페이지 조회를 성공했습니다.", data);
     }
-
     @GetMapping("/wall/has-duplicate/{shareURL}")
     public ResponseEntity<ApiResponse.Response<DuplicateURLResponse>> hasDuplicateShareURL (@PathVariable final String shareURL) {
 

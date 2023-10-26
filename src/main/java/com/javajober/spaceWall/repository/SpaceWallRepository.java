@@ -16,7 +16,7 @@ public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
 
     SpaceWall save(final SpaceWall spaceWall);
 
-    boolean existsByShareURL(final String shareURL);
+    boolean existsByShareURLAndFlag(final String shareURL, final FlagType flagType);
 
     boolean existsByAddSpaceId(final Long spaceId);
 

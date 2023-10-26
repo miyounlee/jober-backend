@@ -41,7 +41,7 @@ public class SpaceWallFindService {
     }
 
     public DuplicateURLResponse hasDuplicateShareURL(final String shareURL) {
-        boolean hasDuplicateURL = spaceWallRepository.existsByShareURL(shareURL);
+        boolean hasDuplicateURL = spaceWallRepository.existsByShareURLAndFlag(shareURL, FlagType.SAVED);
         return new DuplicateURLResponse(hasDuplicateURL);
     }
 

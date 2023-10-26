@@ -121,6 +121,8 @@ public class SpaceWallService {
 
 		validateAddSpaceId(addSpace.getId());
 
+		checkDuplicateShareURL(data.getShareURL());
+
 		SpaceWallCategoryType spaceWallCategoryType = SpaceWallCategoryType.findSpaceWallCategoryTypeByString(data.getCategory());
 
 		ArrayNode blockInfoArray = blockJsonProcessor.createArrayNode();
@@ -155,6 +157,13 @@ public class SpaceWallService {
 		boolean existsSpaceId = spaceWallRepository.existsByAddSpaceId(spaceId);
 		if (existsSpaceId) {
 			throw new ApplicationException(ApiStatus.INVALID_DATA, "스페이스 하나당 공유페이지 하나만 생성 가능합니다.");
+		}
+	}
+
+	private void checkDuplicateShareURL(final String shareURL) {
+		boolean existsShareURL = spaceWallRepository.existsByShareURLAndFlag(shareURL, FlagType.SAVED);
+		if (existsShareURL) {
+			throw new ApplicationException(ApiStatus.ALREADY_EXIST, "이미 사용중인 shareURL입니다.");
 		}
 	}
 

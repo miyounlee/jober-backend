@@ -138,6 +138,8 @@ public class FileUploadService {
 
         validateAddSpaceId(addSpace.getId());
 
+        checkDuplicateShareURL(data.getShareURL());
+
         SpaceWallCategoryType spaceWallCategoryType = SpaceWallCategoryType.findSpaceWallCategoryTypeByString(data.getCategory());
 
         ArrayNode blockInfoArray = blockJsonProcessor.createArrayNode();
@@ -175,6 +177,13 @@ public class FileUploadService {
         }
     }
 
+    private void checkDuplicateShareURL(final String shareURL) {
+        boolean existsShareURL = spaceWallRepository.existsByShareURLAndFlag(shareURL, FlagType.SAVED);
+        if (existsShareURL) {
+            throw new ApplicationException(ApiStatus.ALREADY_EXIST, "이미 사용중인 shareURL입니다.");
+        }
+    }
+
     private void processWallInfoBlock(final MultipartFile backgroundImgURL, final MultipartFile wallInfoImgURL,
         final DataSaveRequest data, final ArrayNode blockInfoArray,
         final AtomicLong blocksPositionCounter) {
@@ -190,6 +199,7 @@ public class FileUploadService {
 
     private void processBlocks(final List<BlockSaveRequest<?>> blocks, final ArrayNode blockInfoArray,
         final AtomicLong blocksPositionCounter, final List<MultipartFile> files) {
+
         try {
             AtomicInteger fileIndexCounter = new AtomicInteger();
 

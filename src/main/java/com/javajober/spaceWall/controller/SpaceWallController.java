@@ -6,6 +6,7 @@ import com.javajober.core.util.response.ApiResponse;
 import com.javajober.core.util.ApiUtils;
 import com.javajober.core.exception.ApiStatus;
 import com.javajober.spaceWall.domain.FlagType;
+import com.javajober.spaceWall.dto.request.IsPublicUpdateRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallStringRequest;
 import com.javajober.spaceWall.dto.request.SpaceWallStringUpdateRequest;
 import com.javajober.spaceWall.dto.response.DuplicateURLResponse;
@@ -84,7 +85,7 @@ public class SpaceWallController {
         return ApiResponse.response(ApiStatus.OK, "공유페이지 임시 저장 조회를 성공했습니다.", data);
     }
 
-    @GetMapping("/wall/shareURL/{shareURL}")
+    @GetMapping("/wall/{shareURL}")
     public ResponseEntity<ApiResponse.Response<SpaceWallResponse>> findByShareURL(@PathVariable final String shareURL) {
 
         SpaceWallResponse data = spaceWallFindService.findByShareURL(shareURL);
@@ -117,5 +118,15 @@ public class SpaceWallController {
         spaceWallTemporaryService.delete(memberId, spaceId);
 
         return ApiResponse.messageResponse(ApiStatus.OK, "공유페이지 임시 저장 삭제를 성공했습니다.");
+    }
+
+    @PutMapping("/wall/public")
+    public ResponseEntity<ApiResponse.Response<Object>> updateIsPublic(@RequestBody IsPublicUpdateRequest publicUpdateRequest,
+                                                                       @RequestHeader("Authorization") String token) {
+
+        Long memberId = jwtTokenizer.getUserIdFromToken(token);
+        spaceWallService.updateIsPublic(publicUpdateRequest, memberId);
+
+        return ApiResponse.response(ApiStatus.OK, "외부 공개 여부가 업데이트 되었습니다.", null);
     }
 }

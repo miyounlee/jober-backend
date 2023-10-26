@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import com.javajober.core.exception.ApiStatus;
 import com.javajober.core.exception.ApplicationException;
+import com.javajober.core.security.JwtTokenizer;
 import com.javajober.core.util.response.CommonResponse;
 import com.javajober.spaceWall.domain.BlockType;
 import com.javajober.spaceWall.domain.FlagType;
@@ -32,8 +33,8 @@ public class SpaceWallFindService {
     private final BlockStrategyFactory blockStrategyFactory;
     private final BlockJsonProcessor jsonProcessor;
 
-    public SpaceWallFindService(final SpaceWallRepository spaceWallRepository,
-                                final BlockStrategyFactory blockStrategyFactory, final BlockJsonProcessor jsonProcessor) {
+    public SpaceWallFindService(final SpaceWallRepository spaceWallRepository, final BlockStrategyFactory blockStrategyFactory,
+                                final BlockJsonProcessor jsonProcessor) {
 
         this.spaceWallRepository = spaceWallRepository;
         this.blockStrategyFactory = blockStrategyFactory;
@@ -46,17 +47,29 @@ public class SpaceWallFindService {
     }
 
     @Transactional
-    public SpaceWallResponse findByShareURL(final String shareURL) {
-
+    public SpaceWallResponse findByShareURL(final String shareURL, final String token, final JwtTokenizer jwtTokenizer) {
         SpaceWall spaceWall = spaceWallRepository.getByShareURL(shareURL);
-        if (!spaceWall.getIsPublic()) {
-            throw new ApplicationException(ApiStatus.FORBIDDEN, "공유페이지에 접근 권한이 없습니다.");
-        }
+        checkToken(token, jwtTokenizer, spaceWall);
+
         Long memberId = spaceWall.getMember().getId();
         Long spaceId = spaceWall.getAddSpace().getId();
         Long spaceWallId = spaceWall.getId();
 
         return find(memberId, spaceId, spaceWallId, FlagType.SAVED);
+    }
+
+    private void checkToken(final String token, final JwtTokenizer jwtTokenizer, final SpaceWall spaceWall) {
+        if (token == null) {
+            if (!spaceWall.getIsPublic()) {
+                throw new ApplicationException(ApiStatus.FORBIDDEN, "공유페이지에 접근 권한이 없습니다.");
+            }
+            return;
+        }
+        Long memberIdFromToken = jwtTokenizer.getUserIdFromToken(token);
+        Long memberIdFromSpaceWall = spaceWall.getMember().getId();
+        if ((!Objects.equals(memberIdFromToken, memberIdFromSpaceWall)) && !spaceWall.getIsPublic()) {
+            throw new ApplicationException(ApiStatus.FORBIDDEN, "공유페이지에 접근 권한이 없습니다.");
+        }
     }
 
     @Transactional

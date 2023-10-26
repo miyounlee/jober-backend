@@ -10,7 +10,7 @@ import java.util.List;
 public class SpaceWallResponse {
 
     private String category;
-    private Long spaceId;
+    private Long spaceWallId;
     private Boolean isPublic;
     private String shareURL;
     private CommonResponse wallInfoBlock;
@@ -20,11 +20,11 @@ public class SpaceWallResponse {
     private SpaceWallResponse() {}
 
     @Builder
-    public SpaceWallResponse(final String category, final Long spaceId, final Boolean isPublic, final String shareURL, final CommonResponse wallInfoBlock,
+    public SpaceWallResponse(final String category, final Long spaceWallId, final Boolean isPublic, final String shareURL, final CommonResponse wallInfoBlock,
                              final List<BlockResponse<CommonResponse>> blocks, final CommonResponse styleSetting) {
 
         this.category = category;
-        this.spaceId = spaceId;
+        this.spaceWallId = spaceWallId;
         this.isPublic = isPublic;
         this.shareURL = shareURL;
         this.wallInfoBlock = wallInfoBlock;

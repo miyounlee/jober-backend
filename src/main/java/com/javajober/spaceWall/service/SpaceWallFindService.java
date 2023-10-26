@@ -72,7 +72,7 @@ public class SpaceWallFindService {
         String shareURL = spaceWall.getShareURL();
         Boolean isPublic = spaceWall.getIsPublic();
 
-        return new SpaceWallResponse(category, spaceId, isPublic, shareURL, wallInfoBlockResponse, blocks, styleSettingResponse);
+        return new SpaceWallResponse(category, spaceWallId, isPublic, shareURL, wallInfoBlockResponse, blocks, styleSettingResponse);
     }
 
     private CommonResponse createWallInfoBlock(Map<Long, List<JsonNode>> groupedBlockByPosition) {

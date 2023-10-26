@@ -1,9 +1,7 @@
 package com.javajober.spaceWall.controller;
 
-import com.javajober.core.message.SuccessMessage;
 import com.javajober.core.security.JwtTokenizer;
 import com.javajober.core.util.response.ApiResponse;
-import com.javajober.core.util.ApiUtils;
 import com.javajober.core.exception.ApiStatus;
 import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.dto.request.IsPublicUpdateRequest;
@@ -16,7 +14,6 @@ import com.javajober.spaceWall.dto.response.SpaceWallTemporaryResponse;
 import com.javajober.spaceWall.service.SpaceWallFindService;
 import com.javajober.spaceWall.service.SpaceWallService;
 import com.javajober.spaceWall.service.SpaceWallTemporaryService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -102,13 +99,33 @@ public class SpaceWallController {
     }
 
     @PutMapping("/wall")
-    public ResponseEntity<ApiUtils.ApiResponse<SpaceWallSaveResponse>> update(@RequestHeader("Authorization") String token, @RequestBody final SpaceWallStringUpdateRequest spaceWallUpdateRequest){
+    public ResponseEntity<ApiResponse.Response<SpaceWallSaveResponse>> update(@RequestHeader("Authorization") String token, @RequestBody final SpaceWallStringUpdateRequest spaceWallUpdateRequest){
 
         Long memberId = jwtTokenizer.getUserIdFromToken(token);
 
         SpaceWallSaveResponse data = spaceWallService.update(memberId, spaceWallUpdateRequest, FlagType.SAVED);
 
-        return  ResponseEntity.ok(ApiUtils.success(HttpStatus.OK, SuccessMessage.CREATE_SUCCESS, data));
+        return ApiResponse.response(ApiStatus.OK, "공유페이지 수정이 완료되었습니다.", data);
+    }
+
+    @PutMapping(path = "/wall-temporary")
+    public ResponseEntity<ApiResponse.Response<SpaceWallSaveResponse>> updatePending(@RequestHeader("Authorization") String token, @RequestBody final SpaceWallStringUpdateRequest spaceWallUpdateRequest) {
+
+        Long memberId = jwtTokenizer.getUserIdFromToken(token);
+
+        SpaceWallSaveResponse data = spaceWallService.update(memberId, spaceWallUpdateRequest, FlagType.PENDING);
+
+        return ApiResponse.response(ApiStatus.OK, "공유페이지 임시저장이 완료되었습니다.", data);
+    }
+
+    @PutMapping("/wall/public")
+    public ResponseEntity<ApiResponse.MessageResponse> updateIsPublic(@RequestBody IsPublicUpdateRequest isPublicUpdateRequest,
+        @RequestHeader("Authorization") String token) {
+
+        Long memberId = jwtTokenizer.getUserIdFromToken(token);
+        spaceWallService.updateIsPublic(isPublicUpdateRequest, memberId);
+
+        return ApiResponse.messageResponse(ApiStatus.OK, "외부 공개 여부가 업데이트 되었습니다.");
     }
 
     @DeleteMapping("/wall-temporary/{spaceId}")
@@ -118,15 +135,5 @@ public class SpaceWallController {
         spaceWallTemporaryService.delete(memberId, spaceId);
 
         return ApiResponse.messageResponse(ApiStatus.OK, "공유페이지 임시 저장 삭제를 성공했습니다.");
-    }
-
-    @PutMapping("/wall/public")
-    public ResponseEntity<ApiResponse.MessageResponse> updateIsPublic(@RequestBody IsPublicUpdateRequest isPublicUpdateRequest,
-                                                                       @RequestHeader("Authorization") String token) {
-
-        Long memberId = jwtTokenizer.getUserIdFromToken(token);
-        spaceWallService.updateIsPublic(isPublicUpdateRequest, memberId);
-
-        return ApiResponse.messageResponse(ApiStatus.OK, "외부 공개 여부가 업데이트 되었습니다.");
     }
 }

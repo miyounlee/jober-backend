@@ -9,6 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import com.javajober.blocks.styleSetting.backgroundSetting.dto.request.BackgroundStringUpdateRequest;
+
 @Getter
 @Table(name = "background_setting")
 @EntityListeners(AuditingEntityListener.class)
@@ -50,9 +52,9 @@ public class BackgroundSetting {
         this.styleImageURL = styleImageURL;
     }
 
-    public void update(final String solidColor, final Boolean gradation, final String styleImageURL) {
-        this.solidColor = solidColor;
-        this.gradation = gradation;
-        this.styleImageURL = styleImageURL;
+    public void update(final BackgroundStringUpdateRequest request) {
+        this.solidColor = request.getSolidColor();
+        this.gradation = request.getGradation();
+        this.styleImageURL = request.getStyleImgURL();
     }
 }

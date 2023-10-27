@@ -17,6 +17,8 @@ public interface TemplateBlockRepository extends Repository<TemplateBlock, Long>
 
 	List<TemplateBlock> findAllById(final Iterable<Long> id);
 
+	void deleteAllById(final Iterable<Long> id);
+
 	Optional<TemplateBlock> findById(final Long id);
 
 	default TemplateBlock findTemplateBlock(final Long id){

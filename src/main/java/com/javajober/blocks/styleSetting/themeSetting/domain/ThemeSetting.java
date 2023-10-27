@@ -9,6 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import com.javajober.blocks.styleSetting.themeSetting.dto.request.ThemeSettingUpdateRequest;
+
 @Getter
 @Table (name = "theme_setting")
 @EntityListeners(AuditingEntityListener.class)
@@ -42,7 +44,7 @@ public class ThemeSetting {
         this.theme = theme;
     }
 
-    public void update(final String theme) {
-        this.theme = theme;
+    public void update(final ThemeSettingUpdateRequest request) {
+        this.theme = request.getTheme();
     }
 }

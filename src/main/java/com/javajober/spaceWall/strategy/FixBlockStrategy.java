@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.javajober.core.exception.ApplicationException;
 import com.javajober.core.util.response.CommonResponse;
 import com.javajober.spaceWall.dto.request.DataStringSaveRequest;
+import com.javajober.spaceWall.dto.request.DataStringUpdateRequest;
 import com.javajober.spaceWall.filedto.DataSaveRequest;
 
 import java.util.List;
@@ -19,6 +20,8 @@ public interface FixBlockStrategy {
 	void saveBlocks(final DataSaveRequest data, ArrayNode blockInfoArray, Long position);
 
 	CommonResponse createFixBlockDTO(final List<JsonNode> fixBlocks);
+
+	void updateBlocks(final DataStringUpdateRequest data, final ArrayNode blockInfoArray, final Long position);
 
 	String getStrategyName();
 

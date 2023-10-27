@@ -9,6 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import com.javajober.blocks.templateBlock.dto.request.TemplateBlockUpdateRequest;
+
 @Getter
 @Table(name = "template_block")
 @EntityListeners(AuditingEntityListener.class)
@@ -49,10 +51,10 @@ public class TemplateBlock {
         this.templateDescription = templateDescription;
     }
 
-    public void update(final String templateUUID, final String templateTitle, final String templateDescription) {
-        this.templateUUID = templateUUID;
-        this.templateTitle = templateTitle;
-        this.templateDescription = templateDescription;
+    public void update(final TemplateBlockUpdateRequest request) {
+        this.templateUUID = request.getTemplateUUID();
+        this.templateTitle = request.getTemplateTitle();
+        this.templateDescription = request.getTemplateDescription();
     }
 
     public void setDeletedAt(){

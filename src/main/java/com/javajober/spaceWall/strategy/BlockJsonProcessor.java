@@ -12,8 +12,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.javajober.spaceWall.domain.BlockType;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -63,5 +65,23 @@ public class BlockJsonProcessor {
 		} catch (JsonProcessingException e) {
 			throw new ApplicationException(ApiStatus.FAIL, "제이슨 변환 중 실패하였습니다.");
 		}
+	}
+
+	public Set<Long> existingBlockIds (final String existingBlocks, final BlockType blockType) {
+
+		Set<Long> existingBlockIds;
+
+		try {
+			JsonNode blocksArrayNode = jsonMapper.readTree(existingBlocks);
+			existingBlockIds = new HashSet<>();
+			for (JsonNode blockNode : blocksArrayNode) {
+				if (blockNode.get("block_type").asText().equals(blockType.name())) {
+					existingBlockIds.add(blockNode.get("block_id").asLong());
+				}
+			}
+		} catch (JsonProcessingException e) {
+			throw new ApplicationException(ApiStatus.FAIL, "제이슨 변환 중 실패하였습니다.");
+		}
+		return existingBlockIds;
 	}
 }

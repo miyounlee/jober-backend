@@ -15,6 +15,8 @@ public interface ListBlockRepository extends Repository<ListBlock, Long> {
 
 	List<ListBlock> saveAll(final Iterable<ListBlock> listBlocks);
 
+	void deleteAllById(final Iterable<Long> id);
+
 	Optional<ListBlock> findByIdAndDeletedAtIsNull(final Long id);
 
 	default ListBlock findListBlock(final Long id) {

@@ -1,12 +1,15 @@
 package com.javajober.spaceWall.strategy.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Collections;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.javajober.blocks.templateBlock.dto.request.TemplateBlockUpdateRequest;
 import com.javajober.blocks.templateBlock.dto.response.TemplateBlockResponse;
 import com.javajober.core.util.response.CommonResponse;
 import org.springframework.stereotype.Component;
@@ -43,7 +46,7 @@ public class TemplateBlockStrategy implements MoveBlockStrategy {
 	}
 
 	@Override
-	public void saveBlocks(BlockSaveRequest<?> block, ArrayNode blockInfoArray, Long position) {
+	public void saveBlocks(final BlockSaveRequest<?> block, final ArrayNode blockInfoArray, final Long position) {
 		List<TemplateBlockSaveRequest> templateBlockRequests = convertSubDataToTemplateBlockSaveRequests(block.getSubData());
 
 		List<TemplateBlock> templateBlocks = convertToTemplateBlocks(templateBlockRequests);
@@ -80,7 +83,7 @@ public class TemplateBlockStrategy implements MoveBlockStrategy {
 	}
 
 	@Override
-	public List<CommonResponse> createMoveBlockDTO(List<JsonNode> blocksWithSamePosition) {
+	public List<CommonResponse> createMoveBlockDTO(final List<JsonNode> blocksWithSamePosition) {
 		List<CommonResponse> subData = new ArrayList<>();
 		for (JsonNode block : blocksWithSamePosition) {
 			long blockId = block.path("block_id").asLong();
@@ -88,6 +91,39 @@ public class TemplateBlockStrategy implements MoveBlockStrategy {
 			subData.add(TemplateBlockResponse.of(templateBlock, Collections.emptyList(), Collections.emptyList()));
 		}
 		return subData;
+	}
+
+	@Override
+	public Set<Long> updateBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
+
+		List<TemplateBlock> templateBlocks = new ArrayList<>();
+
+		blocks.getSubData().forEach(block -> {
+			TemplateBlockUpdateRequest request = blockJsonProcessor.convertValue(block, TemplateBlockUpdateRequest.class);
+			TemplateBlock templateBlock = saveOrUpdateTemplateBlock(request);
+			templateBlocks.add(templateBlock);
+		});
+
+		List<TemplateBlock> updateTemplateBlocks = templateBlockRepository.saveAll(templateBlocks);
+
+		return updateTemplateBlocks.stream().map(TemplateBlock::getId).collect(Collectors.toCollection(LinkedHashSet::new));
+	}
+
+	private TemplateBlock saveOrUpdateTemplateBlock(final TemplateBlockUpdateRequest request) {
+
+		if (request.getTemplateBlockId() == null) {
+			return TemplateBlockUpdateRequest.toEntity(request);
+		}
+
+		TemplateBlock templateBlock = templateBlockRepository.findTemplateBlock(request.getTemplateBlockId());
+		templateBlock.update(request);
+
+		return templateBlock;
+	}
+
+	@Override
+	public void deleteAllById(final Set<Long> blockIds) {
+		templateBlockRepository.deleteAllById(blockIds);
 	}
 
 	@Override

@@ -1,11 +1,14 @@
 package com.javajober.spaceWall.strategy.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.javajober.blocks.listBlock.dto.request.ListBlockUpdateRequest;
 import com.javajober.blocks.listBlock.dto.response.ListBlockResponse;
 import com.javajober.core.util.response.CommonResponse;
 import org.springframework.stereotype.Component;
@@ -43,7 +46,7 @@ public class ListBlockStrategy implements MoveBlockStrategy {
 	}
 
 	@Override
-	public void saveBlocks(BlockSaveRequest<?> block, ArrayNode blockInfoArray, Long position) {
+	public void saveBlocks(final BlockSaveRequest<?> block, final ArrayNode blockInfoArray, final Long position) {
 		List<ListBlockSaveRequest> listBlockRequests = convertSubDataToListBlockSaveRequests(block.getSubData());
 
 		List<ListBlock> listBlocks = convertToListBlocks(listBlockRequests);
@@ -88,6 +91,38 @@ public class ListBlockStrategy implements MoveBlockStrategy {
 			subData.add(ListBlockResponse.from(listBlock));
 		}
 		return subData;
+	}
+
+	@Override
+	public Set<Long> updateBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
+
+		List<ListBlock> listBlocks = new ArrayList<>();
+
+		blocks.getSubData().forEach(block -> {
+			ListBlockUpdateRequest request = blockJsonProcessor.convertValue(block, ListBlockUpdateRequest.class);
+			ListBlock listBlock = saveOrUpdateListBlock(request);
+			listBlocks.add(listBlock);
+		});
+
+		List<ListBlock> updatedListBlocks = listBlockRepository.saveAll(listBlocks);
+
+		return updatedListBlocks.stream().map(ListBlock::getId).collect(Collectors.toCollection(LinkedHashSet::new));
+	}
+
+	private ListBlock saveOrUpdateListBlock (final ListBlockUpdateRequest request) {
+
+		if(request.getListBlockId() == null) {
+			return ListBlockUpdateRequest.toEntity(request);
+		}
+
+		ListBlock listBlock = listBlockRepository.findListBlock(request.getListBlockId());
+		listBlock.update(request);
+		return listBlock;
+	}
+
+	@Override
+	public void deleteAllById(final Set<Long> blockIds) {
+		listBlockRepository.deleteAllById(blockIds);
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import com.javajober.core.util.response.CommonResponse;
 import com.javajober.spaceWall.dto.request.BlockSaveRequest;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,8 +18,11 @@ public interface MoveBlockStrategy {
 
 	void saveBlocks(final BlockSaveRequest<?> block, final ArrayNode blockInfoArray, final Long position);
 
-
 	List<CommonResponse> createMoveBlockDTO(List<JsonNode> blocksWithSamePosition);
+
+	Set<Long> updateBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position);
+
+	void deleteAllById(final Set<Long> blockIds);
 
 	String getStrategyName();
 

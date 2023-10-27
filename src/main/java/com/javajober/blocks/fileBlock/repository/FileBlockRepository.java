@@ -14,6 +14,8 @@ public interface FileBlockRepository extends Repository<FileBlock, Long> {
 
     List<FileBlock> saveAll(final Iterable<FileBlock> fileBlocks);
 
+    void deleteAllById(final Iterable<Long> id);
+
     Optional<FileBlock> findByIdAndDeletedAtIsNull(final Long id);
 
     default FileBlock findFileBlock(final Long id) {

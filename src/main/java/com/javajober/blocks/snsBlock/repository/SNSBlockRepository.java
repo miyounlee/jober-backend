@@ -16,6 +16,8 @@ public interface SNSBlockRepository extends Repository<SNSBlock, Long> {
 
 	List<SNSBlock> findAllById(final Iterable<Long> id);
 
+	void deleteAllById(final Iterable<Long> id);
+
 	Optional<SNSBlock> findById(final Long id);
 
 	default SNSBlock findSNSBlock(final Long id) {

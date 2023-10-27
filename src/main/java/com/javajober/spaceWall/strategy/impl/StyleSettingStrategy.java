@@ -2,11 +2,15 @@ package com.javajober.spaceWall.strategy.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.javajober.blocks.styleSetting.backgroundSetting.dto.request.BackgroundStringUpdateRequest;
 import com.javajober.blocks.styleSetting.backgroundSetting.dto.response.BackgroundSettingResponse;
 import com.javajober.blocks.styleSetting.backgroundSetting.filedto.BackgroundSettingSaveRequest;
+import com.javajober.blocks.styleSetting.blockSetting.dto.request.BlockSettingUpdateRequest;
 import com.javajober.blocks.styleSetting.blockSetting.dto.response.BlockSettingResponse;
+import com.javajober.blocks.styleSetting.dto.request.StyleSettingStringUpdateRequest;
 import com.javajober.blocks.styleSetting.dto.response.StyleSettingResponse;
 import com.javajober.blocks.styleSetting.filedto.StyleSettingSaveRequest;
+import com.javajober.blocks.styleSetting.themeSetting.dto.request.ThemeSettingUpdateRequest;
 import com.javajober.blocks.styleSetting.themeSetting.dto.response.ThemeSettingResponse;
 import com.javajober.core.util.file.FileImageService;
 import com.javajober.core.util.response.CommonResponse;
@@ -27,6 +31,7 @@ import com.javajober.blocks.styleSetting.themeSetting.dto.request.ThemeSettingSa
 import com.javajober.blocks.styleSetting.themeSetting.repository.ThemeSettingRepository;
 import com.javajober.spaceWall.domain.BlockType;
 import com.javajober.spaceWall.dto.request.DataStringSaveRequest;
+import com.javajober.spaceWall.dto.request.DataStringUpdateRequest;
 import com.javajober.spaceWall.filedto.DataSaveRequest;
 import com.javajober.spaceWall.strategy.BlockJsonProcessor;
 import com.javajober.spaceWall.strategy.BlockStrategyName;
@@ -58,7 +63,7 @@ public class StyleSettingStrategy implements FixBlockStrategy {
 	}
 
 	@Override
-	public void saveBlocks(final DataSaveRequest data, ArrayNode blockInfoArray, Long position) {
+	public void saveBlocks(final DataSaveRequest data, final ArrayNode blockInfoArray, final Long position) {
 		StyleSettingSaveRequest request = data.getStyleSetting();
 
 		Long styleSettingId = saveStyleSetting(request);
@@ -70,7 +75,7 @@ public class StyleSettingStrategy implements FixBlockStrategy {
 		uploadedStyleImageURL.set(fileImageService.uploadFile(styleImgURL));
 	}
 
-	private Long saveStyleSetting(final StyleSettingSaveRequest request){
+	private Long saveStyleSetting(final StyleSettingSaveRequest request) {
 
 		BackgroundSettingSaveRequest backgroundRequest = request.getBackgroundSetting();
 		BackgroundSetting backgroundSetting = backgroundSettingRepository.save(BackgroundSettingSaveRequest.toEntity(backgroundRequest, uploadedStyleImageURL.get()));
@@ -87,14 +92,14 @@ public class StyleSettingStrategy implements FixBlockStrategy {
 	}
 
 	@Override
-	public void saveStringBlocks(DataStringSaveRequest data, ArrayNode blockInfoArray, Long position) {
+	public void saveStringBlocks(final DataStringSaveRequest data, final ArrayNode blockInfoArray, final Long position) {
 		StyleSettingStringSaveRequest request = data.getStyleSetting();
 
 		Long styleSettingId = saveStringStyleSetting(request);
 		blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, BlockType.STYLE_SETTING, styleSettingId, "");
 	}
 
-	private Long saveStringStyleSetting(final StyleSettingStringSaveRequest request){
+	private Long saveStringStyleSetting(final StyleSettingStringSaveRequest request) {
 
 		BackgroundSettingStringSaveRequest backgroundRequest = request.getBackgroundSetting();
 		BackgroundSetting backgroundSetting = backgroundSettingRepository.save(BackgroundSettingStringSaveRequest.toEntity(backgroundRequest));
@@ -111,7 +116,7 @@ public class StyleSettingStrategy implements FixBlockStrategy {
 	}
 
 	@Override
-	public CommonResponse createFixBlockDTO(List<JsonNode> fixBlocks) {
+	public CommonResponse createFixBlockDTO(final List<JsonNode> fixBlocks) {
 		Long blockId = fixBlocks.get(0).path("block_id").asLong();
 		StyleSetting styleSetting = styleSettingRepository.findStyleBlock(blockId);
 
@@ -120,6 +125,38 @@ public class StyleSettingStrategy implements FixBlockStrategy {
 		ThemeSettingResponse themeSettingResponse = ThemeSettingResponse.from(styleSetting.getThemeSetting());
 
 		return new StyleSettingResponse(blockId, backgroundSettingResponse, blockSettingResponse, themeSettingResponse);
+	}
+
+	@Override
+	public void updateBlocks(final DataStringUpdateRequest data, final ArrayNode blockInfoArray, final Long position) {
+		StyleSettingStringUpdateRequest request = data.getStyleSetting();
+
+		Long styleSettingId = updateStringStyleSetting(request);
+
+		blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, BlockType.STYLE_SETTING, styleSettingId, "");
+	}
+
+	private Long updateStringStyleSetting(final StyleSettingStringUpdateRequest request){
+
+		BackgroundStringUpdateRequest backgroundRequest = request.getBackgroundSetting();
+		BackgroundSetting backgroundSetting = backgroundSettingRepository.getById(backgroundRequest.getBackgroundSettingBlockId());
+		backgroundSetting.update(backgroundRequest);
+		backgroundSettingRepository.save(backgroundSetting);
+
+		BlockSettingUpdateRequest blockSettingRequest = request.getBlockSetting();
+		BlockSetting blockSetting = blockSettingRepository.getById(blockSettingRequest.getBlockSettingBlockId());
+		blockSetting.update(blockSettingRequest);
+		blockSettingRepository.save(blockSetting);
+
+		ThemeSettingUpdateRequest themeSettingRequest = request.getThemeSetting();
+		ThemeSetting themeSetting = themeSettingRepository.getById(themeSettingRequest.getThemeSettingBlockId());
+		themeSetting.update(themeSettingRequest);
+		themeSettingRepository.save(themeSetting);
+
+		StyleSetting styleSetting = styleSettingRepository.findStyleBlock(request.getStyleSettingBlockId());
+		styleSetting.update(backgroundSetting, blockSetting, themeSetting);
+
+		return styleSettingRepository.save(styleSetting).getId();
 	}
 
 	@Override

@@ -56,9 +56,9 @@ public class StyleSetting {
         this.blockSetting = blockSetting;
         this.themeSetting = themeSetting;
     }
-    public void update(final StyleSetting styleSetting){
-        this.backgroundSetting = styleSetting.backgroundSetting;
-        this.blockSetting = styleSetting.blockSetting;
-        this.themeSetting = styleSetting.themeSetting;
+    public void update(final BackgroundSetting backgroundSetting, final BlockSetting blockSetting, final ThemeSetting themeSetting){
+        this.backgroundSetting = backgroundSetting;
+        this.blockSetting = blockSetting;
+        this.themeSetting = themeSetting;
     }
 }

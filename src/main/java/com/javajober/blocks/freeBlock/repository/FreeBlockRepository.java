@@ -14,6 +14,8 @@ public interface FreeBlockRepository extends Repository<FreeBlock, Long> {
 
     List<FreeBlock> saveAll(final Iterable<FreeBlock> freeBlocks);
 
+    void deleteAllById(final Iterable<Long> id);
+
     Optional<FreeBlock> findByIdAndDeletedAtIsNull(final Long freeId);
 
     default FreeBlock findFreeBlock(final Long freeId) {

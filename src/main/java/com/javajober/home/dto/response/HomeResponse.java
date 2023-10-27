@@ -12,11 +12,11 @@ import lombok.Getter;
 public class HomeResponse {
 
 	private MemberResponse member;
-	private Map<SpaceType, List<AddSpaceResponse>> spaceWall;
+	private Map<SpaceType, List<AddSpaceResponse>> space;
 
 	@Builder
-	public HomeResponse(final MemberResponse member, final Map<SpaceType, List<AddSpaceResponse>> spaceWall) {
+	public HomeResponse(final MemberResponse member, final Map<SpaceType, List<AddSpaceResponse>> space) {
 		this.member = member;
-		this.spaceWall = spaceWall;
+		this.space = space;
 	}
 }

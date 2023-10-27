@@ -5,6 +5,7 @@ import org.springframework.data.repository.Repository;
 
 import com.javajober.core.exception.ApiStatus;
 import com.javajober.core.exception.ApplicationException;
+
 import com.javajober.member.domain.Member;
 
 public interface MemberRepository extends Repository<Member, Long> {

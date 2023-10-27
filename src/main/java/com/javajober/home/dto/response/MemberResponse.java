@@ -1,6 +1,5 @@
 package com.javajober.home.dto.response;
 
-
 import com.javajober.member.domain.Member;
 import com.javajober.member.domain.MemberShipType;
 
@@ -10,7 +9,6 @@ import lombok.Getter;
 @Getter
 public class MemberResponse {
 
-	private Long memberId;
 	private String memberName;
 	private String memberProfileImageUrl;
 	private MemberShipType memberShip;
@@ -20,9 +18,7 @@ public class MemberResponse {
 	}
 
 	@Builder
-	public MemberResponse(final Long memberId, final String memberName, final String memberProfileImageUrl,
-		final MemberShipType memberShip) {
-		this.memberId = memberId;
+	public MemberResponse(final String memberName, final String memberProfileImageUrl, final MemberShipType memberShip) {
 		this.memberName = memberName;
 		this.memberProfileImageUrl = memberProfileImageUrl;
 		this.memberShip = memberShip;
@@ -31,7 +27,6 @@ public class MemberResponse {
 	public static MemberResponse from(final Member member) {
 
 		return MemberResponse.builder()
-			.memberId(member.getId())
 			.memberName(member.getMemberName())
 			.memberProfileImageUrl(member.getMemberProfileImageUrl())
 			.memberShip(member.getMemberShip())

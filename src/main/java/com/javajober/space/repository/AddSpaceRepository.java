@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.javajober.core.exception.ApiStatus;
 import com.javajober.core.exception.ApplicationException;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 
@@ -14,7 +15,6 @@ import com.javajober.space.domain.SpaceType;
 import org.springframework.data.repository.query.Param;
 
 public interface AddSpaceRepository extends Repository<AddSpace, Long> {
-
 	AddSpace save(final AddSpace addSpace);
 
 	Optional<AddSpace> findById(final Long id);

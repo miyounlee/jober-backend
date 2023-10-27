@@ -11,6 +11,7 @@ public class SpaceWallResponse {
 
     private String category;
     private Long spaceWallId;
+    private Long memberId;
     private Boolean isPublic;
     private String shareURL;
     private CommonResponse wallInfoBlock;
@@ -20,11 +21,12 @@ public class SpaceWallResponse {
     private SpaceWallResponse() {}
 
     @Builder
-    public SpaceWallResponse(final String category, final Long spaceWallId, final Boolean isPublic, final String shareURL, final CommonResponse wallInfoBlock,
+    public SpaceWallResponse(final String category, final Long spaceWallId, final Long memberId, final Boolean isPublic, final String shareURL, final CommonResponse wallInfoBlock,
                              final List<BlockResponse<CommonResponse>> blocks, final CommonResponse styleSetting) {
 
         this.category = category;
         this.spaceWallId = spaceWallId;
+        this.memberId = memberId;
         this.isPublic = isPublic;
         this.shareURL = shareURL;
         this.wallInfoBlock = wallInfoBlock;

@@ -66,9 +66,9 @@ public class SpaceWallService {
 
 		validateSpaceOwnership(member, addSpace);
 
-		validateAddSpaceId(addSpace.getId());
+		validateAddSpaceId(addSpace.getId(), flagType);
 
-		checkDuplicateShareURL(data.getShareURL());
+		checkDuplicateShareURL(data.getShareURL(), flagType);
 
 		SpaceWallCategoryType spaceWallCategoryType = SpaceWallCategoryType.findSpaceWallCategoryTypeByString(data.getCategory());
 
@@ -100,16 +100,16 @@ public class SpaceWallService {
 		}
 	}
 
-	private void validateAddSpaceId (final Long spaceId) {
+	private void validateAddSpaceId (final Long spaceId, FlagType flagType) {
 		boolean existsSpaceId = spaceWallRepository.existsByAddSpaceId(spaceId);
-		if (existsSpaceId) {
+		if (existsSpaceId && flagType == FlagType.SAVED) {
 			throw new ApplicationException(ApiStatus.INVALID_DATA, "스페이스 하나당 공유페이지 하나만 생성 가능합니다.");
 		}
 	}
 
-	private void checkDuplicateShareURL(final String shareURL) {
+	private void checkDuplicateShareURL(final String shareURL, FlagType flagType) {
 		boolean existsShareURL = spaceWallRepository.existsByShareURLAndFlag(shareURL, FlagType.SAVED);
-		if (existsShareURL) {
+		if (existsShareURL && flagType == FlagType.SAVED) {
 			throw new ApplicationException(ApiStatus.ALREADY_EXIST, "이미 사용중인 shareURL입니다.");
 		}
 	}

@@ -89,6 +89,7 @@ public class SpaceWallController {
         SpaceWallResponse data = spaceWallFindService.findByShareURL(shareURL, token, jwtTokenizer);
         return ApiResponse.response(ApiStatus.OK, "공유페이지 조회를 성공했습니다.", data);
     }
+
     @GetMapping("/wall/has-duplicate/{shareURL}")
     public ResponseEntity<ApiResponse.Response<DuplicateURLResponse>> hasDuplicateShareURL (@PathVariable final String shareURL) {
 

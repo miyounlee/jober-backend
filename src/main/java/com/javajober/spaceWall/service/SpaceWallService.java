@@ -43,10 +43,10 @@ public class SpaceWallService {
 	private final BlockJsonProcessor blockJsonProcessor;
 
 	public SpaceWallService(final SpaceWallRepository spaceWallRepository,
-							final MemberRepository memberRepository,
-							final AddSpaceRepository addSpaceRepository,
-							final BlockStrategyFactory blockStrategyFactory,
-							final BlockJsonProcessor blockJsonProcessor) {
+		final MemberRepository memberRepository,
+		final AddSpaceRepository addSpaceRepository,
+		final BlockStrategyFactory blockStrategyFactory,
+		final BlockJsonProcessor blockJsonProcessor) {
 
 		this.spaceWallRepository = spaceWallRepository;
 		this.memberRepository = memberRepository;
@@ -129,9 +129,9 @@ public class SpaceWallService {
 			Long position = blocksPositionCounter.getAndIncrement();
 
 			String strategyName = blockType.getStrategyName();
-			MoveBlockStrategy blockProcessingStrategy = blockStrategyFactory.findMoveBlockStrategy(strategyName);
+			MoveBlockStrategy moveBlockStrategy = blockStrategyFactory.findMoveBlockStrategy(strategyName);
 
-			blockProcessingStrategy.saveStringBlocks(block, blockInfoArray, position);
+			moveBlockStrategy.saveStringBlocks(block, blockInfoArray, position);
 		});
 	}
 
@@ -212,11 +212,12 @@ public class SpaceWallService {
 		FixBlockStrategy wallInfoBlockStrategy = blockStrategyFactory.findFixBlockStrategy(wallInfoBlockStrategyName);
 
 		Long wallInfoBlockPosition = blocksPositionCounter.getAndIncrement();
-		wallInfoBlockStrategy.updateBlocks(data, blockInfoArray, wallInfoBlockPosition);
+		wallInfoBlockStrategy.updateStringBlocks(data, blockInfoArray, wallInfoBlockPosition);
 	}
 
 	private void processBlocks(final List<BlockSaveRequest<?>> blocksRequest, final ArrayNode blockInfoArray, final AtomicLong blocksPositionCounter,
-		final Map<BlockType, Set<Long>> existingBlockIdsByType, final Map<BlockType, Set<Long>> updatedBlockIdsByType, final String existingBlocks) {
+		                       final Map<BlockType, Set<Long>> existingBlockIdsByType, final Map<BlockType, Set<Long>> updatedBlockIdsByType, final String existingBlocks) {
+
 		blocksRequest.forEach(block -> {
 			BlockType blockType = BlockType.findBlockTypeByString(block.getBlockType());
 			Long position = blocksPositionCounter.getAndIncrement();
@@ -234,7 +235,7 @@ public class SpaceWallService {
 			existingBlockIdsByType.put(blockType, existingBlockIdsForThisType);
 		}
 
-		Set<Long> updatedIds = moveBlockStrategy.updateBlocks(block, blockInfoArray, position);
+		Set<Long> updatedIds = moveBlockStrategy.updateStringBlocks(block, blockInfoArray, position);
 
 		updatedIds.forEach(blockId ->
 			blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, blockType, blockId, block.getBlockUUID()));
@@ -250,9 +251,9 @@ public class SpaceWallService {
 			Set<Long> remainingBlockIds = existingBlockIdsByType.get(blockType);
 			remainingBlockIds.removeAll(updatedBlockIdsByType.getOrDefault(blockType, Collections.emptySet()));
 			if (!remainingBlockIds.isEmpty()) {
-				MoveBlockStrategy blockProcessingStrategy = blockStrategyFactory.findMoveBlockStrategy(
+				MoveBlockStrategy moveBlockStrategy = blockStrategyFactory.findMoveBlockStrategy(
 					(blockType.getStrategyName()));
-				blockProcessingStrategy.deleteAllById(remainingBlockIds);
+				moveBlockStrategy.deleteAllById(remainingBlockIds);
 			}
 		}
 	}
@@ -263,6 +264,6 @@ public class SpaceWallService {
 		FixBlockStrategy styleSettingBlockStrategy = blockStrategyFactory.findFixBlockStrategy(styleSettingBlockStrategyName);
 
 		Long styleSettingPosition = blocksPositionCounter.getAndIncrement();
-		styleSettingBlockStrategy.updateBlocks(data, blockInfoArray, styleSettingPosition);
+		styleSettingBlockStrategy.updateStringBlocks(data, blockInfoArray, styleSettingPosition);
 	}
 }

@@ -97,7 +97,7 @@ public class SNSBlockStrategy implements MoveBlockStrategy {
 	}
 
 	@Override
-	public Set<Long> updateBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
+	public Set<Long> updateStringBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
 
 		List<SNSBlock> snsBlocks = new ArrayList<>();
 
@@ -123,6 +123,21 @@ public class SNSBlockStrategy implements MoveBlockStrategy {
 		snsBlock.update(request);
 
 		return snsBlock;
+	}
+
+	@Override
+	public Set<Long> updateBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
+		List<SNSBlock> snsBlocks = new ArrayList<>();
+
+		blocks.getSubData().forEach(block -> {
+			SNSBlockUpdateRequest request = blockJsonProcessor.convertValue(block, SNSBlockUpdateRequest.class);
+			SNSBlock snsBlock = saveOrUpdateSNSBlock(request);
+			snsBlocks.add(snsBlock);
+		});
+
+		List<SNSBlock> updatedSNSBlocks = snsBlockRepository.saveAll(snsBlocks);
+
+		return updatedSNSBlocks.stream().map(SNSBlock::getId).collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
 	@Override

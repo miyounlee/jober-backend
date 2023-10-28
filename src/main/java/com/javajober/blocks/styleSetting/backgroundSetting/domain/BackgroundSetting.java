@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 import com.javajober.blocks.styleSetting.backgroundSetting.dto.request.BackgroundStringUpdateRequest;
+import com.javajober.blocks.styleSetting.backgroundSetting.filedto.BackgroundSettingUpdateRequest;
 
 @Getter
 @Table(name = "background_setting")
@@ -56,5 +57,11 @@ public class BackgroundSetting {
         this.solidColor = request.getSolidColor();
         this.gradation = request.getGradation();
         this.styleImageURL = request.getStyleImgURL();
+    }
+
+    public void update(final BackgroundSettingUpdateRequest request, String styleImageURL) {
+        this.solidColor = request.getSolidColor();
+        this.gradation = request.getGradation();
+        this.styleImageURL = styleImageURL;
     }
 }

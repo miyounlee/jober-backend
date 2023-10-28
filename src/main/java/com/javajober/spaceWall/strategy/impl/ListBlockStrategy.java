@@ -94,7 +94,7 @@ public class ListBlockStrategy implements MoveBlockStrategy {
 	}
 
 	@Override
-	public Set<Long> updateBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
+	public Set<Long> updateStringBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
 
 		List<ListBlock> listBlocks = new ArrayList<>();
 
@@ -118,6 +118,21 @@ public class ListBlockStrategy implements MoveBlockStrategy {
 		ListBlock listBlock = listBlockRepository.findListBlock(request.getListBlockId());
 		listBlock.update(request);
 		return listBlock;
+	}
+
+	@Override
+	public Set<Long> updateBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
+		List<ListBlock> listBlocks = new ArrayList<>();
+
+		blocks.getSubData().forEach(block -> {
+			ListBlockUpdateRequest request = blockJsonProcessor.convertValue(block, ListBlockUpdateRequest.class);
+			ListBlock listBlock = saveOrUpdateListBlock(request);
+			listBlocks.add(listBlock);
+		});
+
+		List<ListBlock> updatedListBlocks = listBlockRepository.saveAll(listBlocks);
+
+		return updatedListBlocks.stream().map(ListBlock::getId).collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
 	@Override

@@ -94,7 +94,7 @@ public class TemplateBlockStrategy implements MoveBlockStrategy {
 	}
 
 	@Override
-	public Set<Long> updateBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
+	public Set<Long> updateStringBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
 
 		List<TemplateBlock> templateBlocks = new ArrayList<>();
 
@@ -119,6 +119,21 @@ public class TemplateBlockStrategy implements MoveBlockStrategy {
 		templateBlock.update(request);
 
 		return templateBlock;
+	}
+
+	@Override
+	public Set<Long> updateBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
+		List<TemplateBlock> templateBlocks = new ArrayList<>();
+
+		blocks.getSubData().forEach(block -> {
+			TemplateBlockUpdateRequest request = blockJsonProcessor.convertValue(block, TemplateBlockUpdateRequest.class);
+			TemplateBlock templateBlock = saveOrUpdateTemplateBlock(request);
+			templateBlocks.add(templateBlock);
+		});
+
+		List<TemplateBlock> updateTemplateBlocks = templateBlockRepository.saveAll(templateBlocks);
+
+		return updateTemplateBlocks.stream().map(TemplateBlock::getId).collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
 	@Override

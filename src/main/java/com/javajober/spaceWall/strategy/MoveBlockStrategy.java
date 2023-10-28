@@ -20,6 +20,8 @@ public interface MoveBlockStrategy {
 
 	List<CommonResponse> createMoveBlockDTO(List<JsonNode> blocksWithSamePosition);
 
+	Set<Long> updateStringBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position);
+
 	Set<Long> updateBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position);
 
 	void deleteAllById(final Set<Long> blockIds);

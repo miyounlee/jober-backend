@@ -5,11 +5,13 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.javajober.blocks.styleSetting.backgroundSetting.dto.request.BackgroundStringUpdateRequest;
 import com.javajober.blocks.styleSetting.backgroundSetting.dto.response.BackgroundSettingResponse;
 import com.javajober.blocks.styleSetting.backgroundSetting.filedto.BackgroundSettingSaveRequest;
+import com.javajober.blocks.styleSetting.backgroundSetting.filedto.BackgroundSettingUpdateRequest;
 import com.javajober.blocks.styleSetting.blockSetting.dto.request.BlockSettingUpdateRequest;
 import com.javajober.blocks.styleSetting.blockSetting.dto.response.BlockSettingResponse;
 import com.javajober.blocks.styleSetting.dto.request.StyleSettingStringUpdateRequest;
 import com.javajober.blocks.styleSetting.dto.response.StyleSettingResponse;
 import com.javajober.blocks.styleSetting.filedto.StyleSettingSaveRequest;
+import com.javajober.blocks.styleSetting.filedto.StyleSettingUpdateRequest;
 import com.javajober.blocks.styleSetting.themeSetting.dto.request.ThemeSettingUpdateRequest;
 import com.javajober.blocks.styleSetting.themeSetting.dto.response.ThemeSettingResponse;
 import com.javajober.core.util.file.FileImageService;
@@ -33,6 +35,7 @@ import com.javajober.spaceWall.domain.BlockType;
 import com.javajober.spaceWall.dto.request.DataStringSaveRequest;
 import com.javajober.spaceWall.dto.request.DataStringUpdateRequest;
 import com.javajober.spaceWall.filedto.DataSaveRequest;
+import com.javajober.spaceWall.filedto.DataUpdateRequest;
 import com.javajober.spaceWall.strategy.BlockJsonProcessor;
 import com.javajober.spaceWall.strategy.BlockStrategyName;
 import com.javajober.spaceWall.strategy.FixBlockStrategy;
@@ -128,7 +131,7 @@ public class StyleSettingStrategy implements FixBlockStrategy {
 	}
 
 	@Override
-	public void updateBlocks(final DataStringUpdateRequest data, final ArrayNode blockInfoArray, final Long position) {
+	public void updateStringBlocks(final DataStringUpdateRequest data, final ArrayNode blockInfoArray, final Long position) {
 		StyleSettingStringUpdateRequest request = data.getStyleSetting();
 
 		Long styleSettingId = updateStringStyleSetting(request);
@@ -141,6 +144,38 @@ public class StyleSettingStrategy implements FixBlockStrategy {
 		BackgroundStringUpdateRequest backgroundRequest = request.getBackgroundSetting();
 		BackgroundSetting backgroundSetting = backgroundSettingRepository.getById(backgroundRequest.getBackgroundSettingBlockId());
 		backgroundSetting.update(backgroundRequest);
+		backgroundSettingRepository.save(backgroundSetting);
+
+		BlockSettingUpdateRequest blockSettingRequest = request.getBlockSetting();
+		BlockSetting blockSetting = blockSettingRepository.getById(blockSettingRequest.getBlockSettingBlockId());
+		blockSetting.update(blockSettingRequest);
+		blockSettingRepository.save(blockSetting);
+
+		ThemeSettingUpdateRequest themeSettingRequest = request.getThemeSetting();
+		ThemeSetting themeSetting = themeSettingRepository.getById(themeSettingRequest.getThemeSettingBlockId());
+		themeSetting.update(themeSettingRequest);
+		themeSettingRepository.save(themeSetting);
+
+		StyleSetting styleSetting = styleSettingRepository.findStyleBlock(request.getStyleSettingBlockId());
+		styleSetting.update(backgroundSetting, blockSetting, themeSetting);
+
+		return styleSettingRepository.save(styleSetting).getId();
+	}
+
+	@Override
+	public void updateBlocks(DataUpdateRequest data, ArrayNode blockInfoArray, Long position) {
+		StyleSettingUpdateRequest request = data.getStyleSetting();
+
+		Long styleSettingId = updateStyleSetting(request);
+
+		blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, BlockType.STYLE_SETTING, styleSettingId, "");
+	}
+
+	private Long updateStyleSetting(final StyleSettingUpdateRequest request){
+
+		BackgroundSettingUpdateRequest backgroundRequest = request.getBackgroundSetting();
+		BackgroundSetting backgroundSetting = backgroundSettingRepository.getById(backgroundRequest.getBackgroundSettingBlockId());
+		backgroundSetting.update(backgroundRequest, uploadedStyleImageURL.get());
 		backgroundSettingRepository.save(backgroundSetting);
 
 		BlockSettingUpdateRequest blockSettingRequest = request.getBlockSetting();

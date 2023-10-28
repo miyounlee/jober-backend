@@ -9,6 +9,7 @@ import com.javajober.core.util.response.CommonResponse;
 import com.javajober.spaceWall.dto.request.DataStringSaveRequest;
 import com.javajober.spaceWall.dto.request.DataStringUpdateRequest;
 import com.javajober.spaceWall.filedto.DataSaveRequest;
+import com.javajober.spaceWall.filedto.DataUpdateRequest;
 
 import java.util.List;
 
@@ -21,7 +22,9 @@ public interface FixBlockStrategy {
 
 	CommonResponse createFixBlockDTO(final List<JsonNode> fixBlocks);
 
-	void updateBlocks(final DataStringUpdateRequest data, final ArrayNode blockInfoArray, final Long position);
+	void updateStringBlocks(final DataStringUpdateRequest data, final ArrayNode blockInfoArray, final Long position);
+
+	void updateBlocks(final DataUpdateRequest data, final ArrayNode blockInfoArray, final Long position);
 
 	String getStrategyName();
 

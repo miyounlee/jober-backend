@@ -93,7 +93,7 @@ public class FreeBlockStrategy implements MoveBlockStrategy {
 	}
 
 	@Override
-	public Set<Long> updateBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
+	public Set<Long> updateStringBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
 
 		List<FreeBlock> freeBlocks = new ArrayList<>();
 
@@ -118,6 +118,22 @@ public class FreeBlockStrategy implements MoveBlockStrategy {
 		freeblock.update(request);
 
 		return freeblock;
+	}
+
+	@Override
+	public Set<Long> updateBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
+
+		List<FreeBlock> freeBlocks = new ArrayList<>();
+
+		blocks.getSubData().forEach(block -> {
+			FreeBlockUpdateRequest request = blockJsonProcessor.convertValue(block, FreeBlockUpdateRequest.class);
+			FreeBlock freeBlock = saveOrUpdateFreeBlock(request);
+			freeBlocks.add(freeBlock);
+		});
+
+		List<FreeBlock> updatedFreeBlocks = freeBlockRepository.saveAll(freeBlocks);
+
+		return updatedFreeBlocks.stream().map(FreeBlock::getId).collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
 	@Override

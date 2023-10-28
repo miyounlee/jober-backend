@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.javajober.blocks.fileBlock.dto.request.FileBlockStringUpdateRequest;
 import com.javajober.blocks.fileBlock.dto.response.FileBlockResponse;
 import com.javajober.blocks.fileBlock.filedto.FileBlockSaveRequest;
+import com.javajober.blocks.fileBlock.filedto.FileBlockUpdateRequest;
 import com.javajober.core.util.file.FileImageService;
 import com.javajober.core.util.response.CommonResponse;
 import org.springframework.stereotype.Component;
@@ -31,7 +32,7 @@ public class FileBlockStrategy implements MoveBlockStrategy {
 	private final BlockJsonProcessor blockJsonProcessor;
 	private final FileBlockRepository fileBlockRepository;
 	private final FileImageService fileImageService;
-	private final AtomicReference<String> currentFileName = new AtomicReference<>();
+	private final AtomicReference<String> saveFileName = new AtomicReference<>();
 
 	public FileBlockStrategy(final BlockJsonProcessor blockJsonProcessor, final FileBlockRepository fileBlockRepository,
 		FileImageService fileImageService) {
@@ -45,16 +46,16 @@ public class FileBlockStrategy implements MoveBlockStrategy {
 
 		List<FileBlockSaveRequest> fileBlockRequests = convertSubDataToFileBlockSaveRequests(block.getSubData());
 
-		List<FileBlock> fileBlocks = convertToFileBlocks(fileBlockRequests,  currentFileName.get());
+		List<FileBlock> fileBlocks = convertToFileBlocks(fileBlockRequests, saveFileName.get());
 
 		List<FileBlock> savedFileBlocks = saveAllFileBlock(fileBlocks);
 
-		addToFileBlockInfoArray(savedFileBlocks, blockInfoArray, position, block.getBlockType());
+		addToFileBlockInfoArray(savedFileBlocks, blockInfoArray, position, block.getBlockUUID());
 	}
 
 	@Override
 	public void uploadFile (final MultipartFile file) {
-		currentFileName.set(fileImageService.uploadFile(file));
+		saveFileName.set(fileImageService.uploadFile(file));
 	}
 
 	private List<FileBlockSaveRequest> convertSubDataToFileBlockSaveRequests(final List<?> subData) {
@@ -82,7 +83,7 @@ public class FileBlockStrategy implements MoveBlockStrategy {
 
 		List<FileBlock> stringSavedFileBlocks = saveAllFileBlock(stringFileBlocks);
 
-		addToFileBlockInfoArray(stringSavedFileBlocks, blockInfoArray, position, block.getBlockType());
+		addToFileBlockInfoArray(stringSavedFileBlocks, blockInfoArray, position, block.getBlockUUID());
 	}
 
 	private List<FileBlockStringSaveRequest> convertSubDataToFileBlockStringSaveRequests(final List<?> subData) {
@@ -123,12 +124,39 @@ public class FileBlockStrategy implements MoveBlockStrategy {
 	}
 
 	@Override
-	public Set<Long> updateBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
+	public Set<Long> updateStringBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
 
 		List<FileBlock> fileBlocks = new ArrayList<>();
 
 		blocks.getSubData().forEach(block -> {
 			FileBlockStringUpdateRequest request = blockJsonProcessor.convertValue(block, FileBlockStringUpdateRequest.class);
+			FileBlock fileBlock = saveOrUpdateStringFileBlock(request);
+			fileBlocks.add(fileBlock);
+		});
+
+		List<FileBlock> updatedFileBlocks = fileBlockRepository.saveAll(fileBlocks);
+
+		return updatedFileBlocks.stream().map(FileBlock::getId).collect(Collectors.toCollection(LinkedHashSet::new));
+	}
+
+	private FileBlock saveOrUpdateStringFileBlock(final FileBlockStringUpdateRequest request) {
+
+		if (request.getFileBlockId() == null) {
+			return FileBlockStringUpdateRequest.toEntity(request);
+		}
+
+		FileBlock fileBlock = fileBlockRepository.findFileBlock(request.getFileBlockId());
+		fileBlock.update(request);
+
+		return fileBlock;
+	}
+
+	@Override
+	public Set<Long> updateBlocks(final BlockSaveRequest<?> blocks, final ArrayNode blockInfoArray, final Long position) {
+		List<FileBlock> fileBlocks = new ArrayList<>();
+
+		blocks.getSubData().forEach(block -> {
+			FileBlockUpdateRequest request = blockJsonProcessor.convertValue(block, FileBlockUpdateRequest.class);
 			FileBlock fileBlock = saveOrUpdateFileBlock(request);
 			fileBlocks.add(fileBlock);
 		});
@@ -138,14 +166,14 @@ public class FileBlockStrategy implements MoveBlockStrategy {
 		return updatedFileBlocks.stream().map(FileBlock::getId).collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
-	private FileBlock saveOrUpdateFileBlock(final FileBlockStringUpdateRequest request) {
+	private FileBlock saveOrUpdateFileBlock(final FileBlockUpdateRequest request) {
 
 		if (request.getFileBlockId() == null) {
-			return FileBlockStringUpdateRequest.toEntity(request);
+			return FileBlockUpdateRequest.toEntity(request, saveFileName.get());
 		}
 
 		FileBlock fileBlock = fileBlockRepository.findFileBlock(request.getFileBlockId());
-		fileBlock.update(request);
+		fileBlock.update(request, saveFileName.get());
 
 		return fileBlock;
 	}

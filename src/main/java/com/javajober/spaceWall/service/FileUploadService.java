@@ -12,6 +12,7 @@ import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.domain.SpaceWall;
 import com.javajober.spaceWall.dto.request.BlockSaveRequest;
 import com.javajober.spaceWall.filedto.DataSaveRequest;
+import com.javajober.spaceWall.filedto.DataUpdateRequest;
 import com.javajober.spaceWall.filedto.SpaceWallSaveRequest;
 import com.javajober.spaceWall.dto.response.SpaceWallSaveResponse;
 import com.javajober.spaceWall.filedto.SpaceWallUpdateRequest;
@@ -28,7 +29,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -42,10 +48,10 @@ public class FileUploadService {
     private final BlockJsonProcessor blockJsonProcessor;
 
     public FileUploadService(final SpaceWallRepository spaceWallRepository,
-                             final MemberRepository memberRepository,
-                             final AddSpaceRepository addSpaceRepository,
-                             final BlockStrategyFactory blockStrategyFactory,
-                             final BlockJsonProcessor blockJsonProcessor) {
+        final MemberRepository memberRepository,
+        final AddSpaceRepository addSpaceRepository,
+        final BlockStrategyFactory blockStrategyFactory,
+        final BlockJsonProcessor blockJsonProcessor) {
 
         this.spaceWallRepository = spaceWallRepository;
         this.memberRepository = memberRepository;
@@ -67,9 +73,9 @@ public class FileUploadService {
 
         validateSpaceOwnership(member, addSpace);
 
-        validateAddSpaceId(addSpace.getId());
+        validateAddSpaceId(addSpace.getId(), flagType);
 
-        checkDuplicateShareURL(data.getShareURL());
+        checkDuplicateShareURL(data.getShareURL(), flagType);
 
         SpaceWallCategoryType spaceWallCategoryType = SpaceWallCategoryType.findSpaceWallCategoryTypeByString(data.getCategory());
 
@@ -101,16 +107,16 @@ public class FileUploadService {
         }
     }
 
-    private void validateAddSpaceId (final Long spaceId) {
+    private void validateAddSpaceId (final Long spaceId, FlagType flagType) {
         boolean existsSpaceId = spaceWallRepository.existsByAddSpaceId(spaceId);
-        if (existsSpaceId) {
+        if (existsSpaceId && flagType == FlagType.SAVED) {
             throw new ApplicationException(ApiStatus.INVALID_DATA, "스페이스 하나당 공유페이지 하나만 생성 가능합니다.");
         }
     }
 
-    private void checkDuplicateShareURL(final String shareURL) {
+    private void checkDuplicateShareURL(final String shareURL, FlagType flagType) {
         boolean existsShareURL = spaceWallRepository.existsByShareURLAndFlag(shareURL, FlagType.SAVED);
-        if (existsShareURL) {
+        if (existsShareURL && flagType == FlagType.SAVED) {
             throw new ApplicationException(ApiStatus.ALREADY_EXIST, "이미 사용중인 shareURL입니다.");
         }
     }
@@ -140,13 +146,13 @@ public class FileUploadService {
                 Long position = blocksPositionCounter.getAndIncrement();
 
                 String strategyName = blockType.getStrategyName();
-                MoveBlockStrategy blockProcessingStrategy = blockStrategyFactory.findMoveBlockStrategy(strategyName);
+                MoveBlockStrategy moveBlockStrategy = blockStrategyFactory.findMoveBlockStrategy(strategyName);
 
-                if (BlockStrategyName.FileBlockStrategy.name().equals(blockProcessingStrategy.getStrategyName())) {
-                    blockProcessingStrategy.uploadFile(files.get(fileIndexCounter.getAndIncrement()));
+                if (BlockStrategyName.FileBlockStrategy.name().equals(moveBlockStrategy.getStrategyName())) {
+                    moveBlockStrategy.uploadFile(files.get(fileIndexCounter.getAndIncrement()));
                 }
 
-                blockProcessingStrategy.saveBlocks(block, blockInfoArray, position);
+                moveBlockStrategy.saveBlocks(block, blockInfoArray, position);
             });
         } catch (IndexOutOfBoundsException e) {
             throw new ApplicationException(ApiStatus.INVALID_DATA, "파일이 첨부되지 않은 파일블록이 있습니다.");
@@ -177,7 +183,129 @@ public class FileUploadService {
                                         final List<MultipartFile> files, final MultipartFile backgroundImgURL,
                                         final MultipartFile wallInfoImgURL, final MultipartFile styleImgURL){
 
+        DataUpdateRequest data = spaceWallRequest.getData();
 
-        return new SpaceWallSaveResponse(1L);
+        Long spaceWallId = data.getSpaceWallId();
+
+        Member member = memberRepository.findMember(memberId);
+
+        AddSpace addSpace = addSpaceRepository.findAddSpace(data.getSpaceId());
+
+        validateSpaceOwnership(member, addSpace);
+
+        SpaceWall spaceWall = spaceWallRepository.findSpaceWall(spaceWallId, addSpace.getId(), memberId, flagType);
+
+        ArrayNode blockInfoArray = blockJsonProcessor.createArrayNode();
+
+        List<BlockSaveRequest<?>> blocksRequest = data.getBlocks();
+
+        AtomicLong blocksPositionCounter = new AtomicLong(INITIAL_POSITION);
+
+        updateWallInfoBlock(data, backgroundImgURL, wallInfoImgURL, blockInfoArray, blocksPositionCounter);
+
+        Map<BlockType, Set<Long>> existingBlockIdsByType = new HashMap<>();
+
+        Map<BlockType, Set<Long>> updatedBlockIdsByType = new HashMap<>();
+
+        String existingBlocks = spaceWall.getBlocks();
+
+        processBlocks(blocksRequest, files, blockInfoArray, blocksPositionCounter, existingBlockIdsByType, updatedBlockIdsByType, existingBlocks);
+
+        deleteRemainingBlocks(existingBlockIdsByType, updatedBlockIdsByType);
+
+        updateStyleSettingBlock(data, styleImgURL, blockInfoArray, blocksPositionCounter);
+
+        String blocks = blockInfoArray.toString();
+
+        spaceWall.fileUpdate(data, flagType, blocks);
+
+        spaceWallId = spaceWallRepository.save(spaceWall).getId();
+
+        return new SpaceWallSaveResponse(spaceWallId);
+    }
+
+    private void updateWallInfoBlock(final DataUpdateRequest data, final MultipartFile backgroundImgURL, final MultipartFile wallInfoImgURL,
+        final ArrayNode blockInfoArray, final AtomicLong blocksPositionCounter) {
+
+        String wallInfoBlockStrategyName = BlockType.WALL_INFO_BLOCK.getStrategyName();
+
+        FixBlockStrategy wallInfoBlockStrategy = blockStrategyFactory.findFixBlockStrategy(wallInfoBlockStrategyName);
+
+        wallInfoBlockStrategy.uploadTwoFiles(backgroundImgURL, wallInfoImgURL);
+
+        Long wallInfoBlockPosition = blocksPositionCounter.getAndIncrement();
+
+        wallInfoBlockStrategy.updateBlocks(data, blockInfoArray, wallInfoBlockPosition);
+    }
+
+    private void processBlocks(final List<BlockSaveRequest<?>> blocks, final List<MultipartFile> files, final ArrayNode blockInfoArray, final AtomicLong blocksPositionCounter,
+        final Map<BlockType, Set<Long>> existingBlockIdsByType, final Map<BlockType, Set<Long>> updatedBlockIdsByType, final String existingBlocks) {
+
+        try {
+            AtomicInteger fileIndexCounter = new AtomicInteger();
+
+            blocks.forEach(block -> {
+                BlockType blockType = BlockType.findBlockTypeByString(block.getBlockType());
+
+                Long position = blocksPositionCounter.getAndIncrement();
+                String strategyName = blockType.getStrategyName();
+                MoveBlockStrategy moveBlockStrategy = blockStrategyFactory.findMoveBlockStrategy(strategyName);
+
+                if (BlockStrategyName.FileBlockStrategy.name().equals(moveBlockStrategy.getStrategyName())) {
+                    moveBlockStrategy.uploadFile(files.get(fileIndexCounter.getAndIncrement()));
+                }
+
+                processBlock(block, blockInfoArray, position, existingBlockIdsByType, updatedBlockIdsByType,
+                    existingBlocks, blockType, moveBlockStrategy);
+            });
+        }  catch (IndexOutOfBoundsException e) {
+            throw new ApplicationException(ApiStatus.INVALID_DATA, "파일이 첨부되지 않은 파일블록이 있습니다.");
+        }
+    }
+
+    private void processBlock(final BlockSaveRequest<?> block, final ArrayNode blockInfoArray, final Long position,
+        final Map<BlockType, Set<Long>> existingBlockIdsByType, final Map<BlockType, Set<Long>> updatedBlockIdsByType, final String existingBlocks, final BlockType blockType, MoveBlockStrategy moveBlockStrategy) {
+
+        if (!existingBlockIdsByType.containsKey(blockType)) {
+            Set<Long> existingBlockIdsForThisType = blockJsonProcessor.existingBlockIds(existingBlocks, blockType);
+            existingBlockIdsByType.put(blockType, existingBlockIdsForThisType);
+        }
+
+        Set<Long> updatedIds = moveBlockStrategy.updateBlocks(block, blockInfoArray, position);
+
+        updatedIds.forEach(blockId ->
+            blockJsonProcessor.addBlockInfoToArray(blockInfoArray, position, blockType, blockId, block.getBlockUUID()));
+
+        if (!updatedBlockIdsByType.containsKey(blockType)) {
+            updatedBlockIdsByType.put(blockType, new HashSet<>());
+        }
+
+        updatedBlockIdsByType.get(blockType).addAll(updatedIds);
+    }
+
+    private void deleteRemainingBlocks(final Map<BlockType, Set<Long>> existingBlockIdsByType, final Map<BlockType, Set<Long>> updatedBlockIdsByType) {
+
+        for (BlockType blockType : existingBlockIdsByType.keySet()) {
+            Set<Long> remainingBlockIds = existingBlockIdsByType.get(blockType);
+            remainingBlockIds.removeAll(updatedBlockIdsByType.getOrDefault(blockType, Collections.emptySet()));
+
+            if (!remainingBlockIds.isEmpty()) {
+                MoveBlockStrategy moveBlockStrategy = blockStrategyFactory.findMoveBlockStrategy((blockType.getStrategyName()));
+                moveBlockStrategy.deleteAllById(remainingBlockIds);
+            }
+        }
+    }
+
+    private void updateStyleSettingBlock(final DataUpdateRequest data,  final MultipartFile styleImgURL, final ArrayNode blockInfoArray, final AtomicLong blocksPositionCounter) {
+
+        String styleSettingBlockStrategyName = BlockType.STYLE_SETTING.getStrategyName();
+
+        FixBlockStrategy styleSettingBlockStrategy = blockStrategyFactory.findFixBlockStrategy(styleSettingBlockStrategyName);
+
+        styleSettingBlockStrategy.uploadSingleFile(styleImgURL);
+
+        Long styleSettingPosition = blocksPositionCounter.getAndIncrement();
+
+        styleSettingBlockStrategy.updateBlocks(data, blockInfoArray, styleSettingPosition);
     }
 }

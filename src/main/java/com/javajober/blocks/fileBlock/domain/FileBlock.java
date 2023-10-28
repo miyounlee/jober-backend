@@ -63,7 +63,7 @@ public class FileBlock {
         this.fileName = fileName;
     }
 
-    public void fileUpdate(final FileBlockUpdateRequest request, String file) {
+    public void update(final FileBlockUpdateRequest request, String file) {
         this.fileTitle = request.getFileTitle();
         this.fileDescription = request.getFileDescription();
         this.file = file;

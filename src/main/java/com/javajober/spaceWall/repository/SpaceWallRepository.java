@@ -27,10 +27,9 @@ public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
     @Query("SELECT s.id FROM SpaceWall s WHERE s.member.id = :memberId AND s.addSpace.id = :addSpaceId AND s.flag = :flag")
     Optional<Long> findSpaceWallId(@Param("memberId") final Long memberId, @Param("addSpaceId") final Long addSpaceId, @Param("flag") final FlagType flag);
 
-    Optional<SpaceWall> findByIdAndAddSpaceIdAndMemberIdAndFlag(final Long id, final Long addSpaceId, final Long memberId, final FlagType flag);
+    Optional<SpaceWall> findByIdAndAddSpaceIdAndMemberIdAndFlagAndDeletedAtIsNull(final Long id, final Long addSpaceId, final Long memberId, final FlagType flag);
 
-    Optional<SpaceWall> findByShareURL(final String shareURL);
-
+    Optional<SpaceWall> findByShareURLAndFlagAndDeletedAtIsNull(final String shareURL, final FlagType flag);
 
     default List<SpaceWall> findSpaceWallsOrThrow(final Long memberId, final Long addSpaceId) {
         List<SpaceWall> spaceWalls = findSpaceWalls(memberId, addSpaceId);
@@ -47,13 +46,13 @@ public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
     }
 
     default SpaceWall findSpaceWall(Long id, Long addSpaceId, Long memberId, FlagType flag) {
-        return findByIdAndAddSpaceIdAndMemberIdAndFlag(id, addSpaceId, memberId, flag)
+        return findByIdAndAddSpaceIdAndMemberIdAndFlagAndDeletedAtIsNull(id, addSpaceId, memberId, flag)
                 .orElseThrow(() -> new ApplicationException(ApiStatus.NOT_FOUND, "공유페이지를 찾을 수 없습니다."));
     }
 
     default SpaceWall getByShareURL(final String shareURL) {
         try {
-            return findByShareURL(shareURL)
+            return findByShareURLAndFlagAndDeletedAtIsNull(shareURL, FlagType.SAVED)
                     .orElseThrow(() -> new ApplicationException(ApiStatus.NOT_FOUND, "존재하지 않는 shareURL입니다."));
         } catch (IncorrectResultSizeDataAccessException e) {
             throw new ApplicationException(ApiStatus.EXCEPTION, "중복된 shareURL이 존재합니다.");

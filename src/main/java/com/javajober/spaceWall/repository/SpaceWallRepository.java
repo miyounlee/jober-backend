@@ -16,7 +16,7 @@ import java.util.Optional;
 public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
 
     @Modifying
-    @Query("DELETE FROM SpaceWall sw WHERE sw.id IN (SELECT s.id FROM SpaceWall s WHERE s.member.id = :memberId AND s.addSpace.id = :addSpaceId AND s.flag = :flag)")
+    @Query("DELETE FROM SpaceWall sw WHERE sw.member.id = :memberId AND sw.addSpace.id = :addSpaceId AND sw.flag = :flag")
     void deleteByMemberIdAndAddSpaceIdAndFlag(@Param("memberId") Long memberId, @Param("addSpaceId") Long addSpaceId, @Param("flag") FlagType flag);
 
     SpaceWall save(final SpaceWall spaceWall);

@@ -5,6 +5,7 @@ import com.javajober.core.exception.ApplicationException;
 import com.javajober.spaceWall.domain.FlagType;
 import com.javajober.spaceWall.domain.SpaceWall;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SpaceWallRepository extends Repository<SpaceWall, Long> {
+
+    @Modifying
+    @Query("DELETE FROM SpaceWall sw WHERE sw.id IN (SELECT s.id FROM SpaceWall s WHERE s.member.id = :memberId AND s.addSpace.id = :addSpaceId AND s.flag = :flag)")
+    void deleteByMemberIdAndAddSpaceIdAndFlag(@Param("memberId") Long memberId, @Param("addSpaceId") Long addSpaceId, @Param("flag") FlagType flag);
 
     SpaceWall save(final SpaceWall spaceWall);
 

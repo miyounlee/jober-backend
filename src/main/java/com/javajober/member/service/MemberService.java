@@ -1,12 +1,10 @@
 package com.javajober.member.service;
 
-
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.transaction.Transactional;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +15,11 @@ import com.javajober.member.dto.MemberLoginRequest;
 import com.javajober.member.dto.MemberLoginResponse;
 import com.javajober.member.dto.MemberSignupRequest;
 import com.javajober.member.dto.MemberSignupResponse;
+import com.javajober.member.event.MemberSignupEvent;
 import com.javajober.member.repository.MemberRepository;
 import com.javajober.core.refreshToken.repository.RefreshTokenRepository;
 import com.javajober.core.security.JwtTokenizer;
 import com.javajober.core.refreshToken.domain.RefreshToken;
-import com.javajober.space.domain.AddSpace;
-import com.javajober.space.domain.SpaceType;
-import com.javajober.space.dto.request.SpaceSaveRequest;
-import com.javajober.space.repository.AddSpaceRepository;
 
 @Service
 public class MemberService {
@@ -32,19 +27,24 @@ public class MemberService {
 	private final PasswordEncoder passwordEncoder;
 	private final JwtTokenizer jwtTokenizer;
 	private final RefreshTokenRepository refreshTokenRepository;
-	private final AddSpaceRepository addSpaceRepository;
+	private final ApplicationEventPublisher eventPublisher;
 
-	public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, JwtTokenizer jwtTokenizer,
-		RefreshTokenRepository refreshTokenRepository, AddSpaceRepository addSpaceRepository) {
+	public MemberService(
+		final MemberRepository memberRepository,
+		final PasswordEncoder passwordEncoder,
+		final JwtTokenizer jwtTokenizer,
+		final RefreshTokenRepository refreshTokenRepository,
+		final ApplicationEventPublisher eventPublisher
+	) {
 		this.memberRepository = memberRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.jwtTokenizer = jwtTokenizer;
 		this.refreshTokenRepository = refreshTokenRepository;
-		this.addSpaceRepository = addSpaceRepository;
+		this.eventPublisher = eventPublisher;
 	}
 
 	@Transactional
-	public MemberSignupResponse signup(MemberSignupRequest memberSignupRequest) {
+	public MemberSignupResponse signup(final MemberSignupRequest memberSignupRequest) {
 		Optional<Member> existingMember = memberRepository.findMember(memberSignupRequest.getEmail());
 
 		if (existingMember.isPresent()) {
@@ -55,41 +55,13 @@ public class MemberService {
 		member.setPassword(passwordEncoder.encode(memberSignupRequest.getPassword()));
 		Member saveMember = memberRepository.save(member);
 
-		initializeAndSaveNewMemberSpaces(member);
+		eventPublisher.publishEvent(new MemberSignupEvent(member));
 
 		return new MemberSignupResponse(saveMember);
 	}
 
-	private void initializeAndSaveNewMemberSpaces(Member member) {
-
-		SpaceSaveRequest personalSpaceRequest = createSpaceSaveRequest(member.getMemberName(), SpaceType.PERSONAL.getEngTitle(), member.getMemberName());
-		SpaceSaveRequest organizationSpaceRequest = createSpaceSaveRequest(member.getMemberName(), SpaceType.ORGANIZATION.getEngTitle(), "임시회사명");
-
-		Set<AddSpace> spaces = new HashSet<>();
-
-		AddSpace personalSpace = SpaceSaveRequest.toEntity(personalSpaceRequest, member);
-		spaces.add(personalSpace);
-
-		AddSpace organizationSpace = SpaceSaveRequest.toEntity(organizationSpaceRequest, member);
-		spaces.add(organizationSpace);
-
-		saveSpaces(spaces);
-	}
-
-	private SpaceSaveRequest createSpaceSaveRequest(String spaceTitle, String spaceType, String representativeName) {
-			return SpaceSaveRequest.builder()
-				.spaceTitle(spaceTitle)
-				.spaceType(spaceType)
-				.representativeName(representativeName)
-				.build();
-	}
-
-	private void saveSpaces(Set<AddSpace> spaces) {
-		addSpaceRepository.saveAll(spaces);
-	}
-
 	@Transactional
-	public MemberLoginResponse login(MemberLoginRequest loginDto) {
+	public MemberLoginResponse login(final MemberLoginRequest loginDto) {
 		Member member = memberRepository.findMember(loginDto.getEmail()).orElseThrow(()
 			-> new ApplicationException(ApiStatus.NOT_FOUND, "존재하지 않는 회원 아이디입니다."));
 

@@ -102,9 +102,9 @@
 
 |                                               <div align="center">아키텍쳐(Architecture)</div>                                                |
 | :------------------------------------------------------------------------------------------------------------------------------------------: |
-|        <img src="https://github.com/Fastcampus-Final-Team3/jober-backend/assets/111266513/4aa7c991-576a-4758-b7cf-6bd7b15d87c0 " width="900"/>        |
+|        <img src="https://github.com/Fastcampus-Final-Team3/jober-backend/assets/111266513/6d3c873e-9766-4924-8018-09f2ca928ecb" width="900"/>        |
 |                                                           **개체-관계 모델 (ERD)**                                                           |
-| <img src="https://github.com/Fastcampus-Final-Team3/jober-backend/assets/111266513/23da776e-17a7-40ad-8f27-ae43d966d6d2" width="900" height="500" /> |
+| <img src="https://github.com/Fastcampus-Final-Team3/jober-backend/assets/111266513/2753972e-4d93-4cbf-92a0-8036734d7192" width="900" height="500" /> |
 
 <br />
 <div id="6"></div>

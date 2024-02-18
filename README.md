@@ -62,22 +62,7 @@
         <img src="https://img.shields.io/badge/Amazon AWS-41454A?style=flat-squre&logo=amazonaws&logoColor=white">    
     </div>
   </tr>
-  <tr>
-    <td align="center"><strong>배포</strong></td>
-    <td>
-      <a href="https://java-jober.netlify.app" target="_blank">
-        🔗 JavaJober[자바자버]
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td align="center"><strong>노션</strong></td>
-    <td>
-      <a href="https://spangle-rhubarb-620.notion.site/Java-Jober-fa3a64b84e99402fa5341aae843c5f19?pvs=4">
-        👉 노션 바로가기
-      </a>
-    </td>
-  </tr>
+  
 <table>
 <br />
 <div id="4"></div>
@@ -109,7 +94,7 @@
 <br />
 <div id="6"></div>
 
-## 📂 API 명세서 [🔗](https://spangle-rhubarb-620.notion.site/API-0fc3026a2d764cc1a19a144eacc86a17)
+## 📂 API 명세서 [🔗](https://www.notion.so/JavaJober-API-5e221fe9f97440c98d9cc35ff771d839?pvs=4)
 
 |                                               <div align="center">API 명세서</div>                                                |
 | :------------------------------------------------------------------------------------------------------------------------------------------: |
